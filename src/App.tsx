@@ -68,8 +68,8 @@ function App() {
           <Header isDark={isDark} setIsDark={setIsDark} />
           <main>
             <Hero />
-            <Experience />
             <Projects />
+            <Experience />
           </main>
           <Footer />
         </div>

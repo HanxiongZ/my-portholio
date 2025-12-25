@@ -1,84 +1,270 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { Card, CardContent } from '../ui/card';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ImageWithFallback } from '../figma/ImageWithFallback';
+
+interface Project {
+  id: number;
+  title: string;
+  category: string;
+  year: string;
+  image: string;
+  description: string;
+  tags: string[];
+}
+
+const mainProjects: Project[] = [
+  {
+    id: 1,
+    title: "Nordic Light",
+    category: "Architecture",
+    year: "2024",
+    image: "https://images.unsplash.com/photo-1566918127573-4f89954159ed?q=80&w=1200&auto=format&fit=crop",
+    description: "Exploring the relationship between natural light and concrete structures.",
+    tags: ["Spatial", "Concept"]
+  },
+  {
+    id: 2,
+    title: "Essence Object",
+    category: "Product Design",
+    year: "2023",
+    image: "https://images.unsplash.com/photo-1761830476467-0ff86dbcc75d?q=80&w=1200&auto=format&fit=crop",
+    description: "A study in reduction. Stripping away the non-essential.",
+    tags: ["Industrial", "Prototyping"]
+  },
+  {
+    id: 3,
+    title: "Digital Entropy",
+    category: "Interaction",
+    year: "2023",
+    image: "https://images.unsplash.com/photo-1605453169876-482f55dc24e5?q=80&w=1200&auto=format&fit=crop",
+    description: "Visualizing data chaos through algorithmic design patterns.",
+    tags: ["Web", "Data Viz"]
+  },
+  {
+    id: 4,
+    title: "Chronos",
+    category: "Interface",
+    year: "2022",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop",
+    description: "A time-management system designed for deep work.",
+    tags: ["UI/UX", "Mobile"]
+  },
+  {
+    id: 5,
+    title: "Silent Form",
+    category: "Editorial",
+    year: "2022",
+    image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop",
+    description: "A printed publication celebrating silence in a noisy world.",
+    tags: ["Print", "Art Direction"]
+  }
+];
+
+const sideProjects: Project[] = [
+  {
+    id: 6,
+    title: "Glyph Studies",
+    category: "Type Design",
+    year: "2024",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    description: "Experimental typography.",
+    tags: []
+  },
+  {
+    id: 7,
+    title: "Flora Generative",
+    category: "Creative Coding",
+    year: "2023",
+    image: "https://images.unsplash.com/photo-1763931768155-ffefc3099cb1?q=80&w=600&auto=format&fit=crop",
+    description: "Procedural plant growth.",
+    tags: []
+  },
+  {
+    id: 8,
+    title: "Echo Chamber",
+    category: "Sound Design",
+    year: "2023",
+    image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop",
+    description: "Audio-reactive visuals.",
+    tags: []
+  },
+  {
+    id: 9,
+    title: "Raw Material",
+    category: "Photography",
+    year: "2022",
+    image: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?q=80&w=600&auto=format&fit=crop",
+    description: "Texture studies.",
+    tags: []
+  }
+];
 
 export function Projects() {
-  const projects = [
-    {
-      year: '2025',
-      title: 'AGONISTIC DESIGN IN PRACTICE',
-      subtitle: 'Introducing Agonism to Interaction Design Pedagogy',
-      type: 'Nordes Paper 2025',
-      role: 'Co-author',
-      image: 'https://images.unsplash.com/photo-1704122545404-56107e7e7adf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-    },
-    {
-      year: '2024',
-      title: 'Obfuscation',
-      subtitle: 'ThingsCon Exhibition 2024 & Waag Futurelab 2025',
-      type: 'Art Installation',
-      role: 'Artist',
-      image: 'https://images.unsplash.com/photo-1763863044580-ed5e666415c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-    },
-    {
-      year: '2024',
-      title: 'Co-Act',
-      subtitle: 'UX Design Awards 2024 (Nominated)',
-      type: 'UX Design',
-      role: 'UX Designer',
-      image: 'https://images.unsplash.com/photo-1588084580191-db8604397b3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-    },
-  ];
+  const [activeId, setActiveId] = useState<number>(1);
+  const activeProject = mainProjects.find(p => p.id === activeId) || mainProjects[0];
 
   return (
-    <section id="projects" className="py-24 relative z-10">
-      <div className="container mx-auto px-6 md:px-12">
-        <motion.h2 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-3xl font-bold mb-16 tracking-tight text-foreground transition-colors"
-        >
-          Selected Works
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group cursor-pointer"
-            >
-              <div className="overflow-hidden rounded-xl mb-6 relative aspect-[4/3] bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 transition-colors duration-500">
-                 <img 
-                   src={project.image} 
-                   alt={project.title}
-                   className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                 />
-                 <div className="absolute inset-0 bg-black/5 dark:bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
-                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/60 dark:bg-white/20 backdrop-blur-md rounded-full p-2 border border-white/30 dark:border-white/20">
-                    <ArrowUpRight className="w-5 h-5 text-black dark:text-white" />
-                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl font-bold text-foreground group-hover:text-pink-500 transition-colors">
-                    {project.title}
-                  </h3>
-                  <span className="text-sm font-mono text-foreground/40">{project.year}</span>
-                </div>
-                <p className="text-sm text-pink-500/80 uppercase tracking-wider">{project.type}</p>
-                <p className="text-base text-foreground/80">{project.subtitle}</p>
-                <p className="text-sm text-foreground/50">Role: {project.role}</p>
-              </div>
-            </motion.div>
-          ))}
+    <section id="projects" className="relative w-full py-24 md:py-32 overflow-hidden">
+      
+      {/* BACKGROUND GRID - Coherent with Hero (No bg color, just lines) */}
+      <div className="absolute inset-0 container mx-auto px-6 md:px-12 pointer-events-none">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 h-full">
+           {[...Array(12)].map((_, i) => (
+             <div key={i} className="h-full border-l border-foreground/5 relative first:border-l-0 md:first:border-l"></div>
+           ))}
+           <div className="absolute right-6 md:right-12 top-0 bottom-0 w-px bg-foreground/5" />
+           <div className="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-foreground/5" />
         </div>
+      </div>
+
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
+        
+        {/* --- HEADER --- */}
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-16">
+           <div className="col-span-2 md:col-span-4 pl-2 md:pl-3 backdrop-blur-sm">
+              <span className="inline-block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">
+                Selected Works
+              </span>
+              <div className="h-px bg-foreground/10 w-full mt-2" />
+           </div>
+        </div>
+
+        {/* --- SPLIT LAYOUT --- */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-32 min-h-[400px]">
+            
+            {/* LEFT: LIST (Typography matched to Hero) */}
+            <div className="col-span-1 md:col-span-4 flex flex-col pt-2 relative z-20 pl-2 md:pl-3 backdrop-blur-sm">
+               {mainProjects.map((project) => (
+                 <div 
+                   key={project.id}
+                   onMouseEnter={() => setActiveId(project.id)}
+                   className="group relative cursor-pointer py-3 border-b border-foreground/10 last:border-0"
+                 >
+                    <div className="flex items-center justify-between">
+                       <div className="flex flex-col gap-1">
+                          <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${activeId === project.id ? 'text-pink-500' : 'text-foreground/40'}`}>
+                            0{project.id}
+                          </span>
+                          <h3 className={`text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeId === project.id ? 'text-foreground translate-x-2' : 'text-foreground/70'}`}>
+                            {project.title}
+                          </h3>
+                       </div>
+                       
+                       <ArrowRight className={`w-3 h-3 transition-all duration-300 ${activeId === project.id ? 'opacity-100 translate-x-0 text-pink-500' : 'opacity-0 -translate-x-2'}`} />
+                    </div>
+                 </div>
+               ))}
+            </div>
+
+            {/* RIGHT: PREVIEW (Tight & Aligned) */}
+            <div className="hidden md:block col-span-1 md:col-span-7 md:col-start-6 h-full pl-2 md:pl-3 backdrop-blur-sm">
+               <div className="sticky top-24">
+                 <AnimatePresence mode="popLayout">
+                   <motion.div
+                     key={activeProject.id}
+                     initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                     exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                     className="w-full relative"
+                   >
+                      {/* Image - WIDE & TIGHT (2.5:1) */}
+                      <div className="aspect-[2.5/1] w-full overflow-hidden bg-foreground/5 mb-6 relative border border-foreground/10">
+                         <ImageWithFallback
+                           src={activeProject.image}
+                           alt={activeProject.title}
+                           className="w-full h-full object-cover"
+                         />
+                      </div>
+                      
+                      {/* Details - Grid Aligned */}
+                      <div className="grid grid-cols-2 gap-x-6 pt-4 border-t border-foreground/10">
+                         <div className="col-span-1">
+                            <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">Context</span>
+                            <p className="text-xs font-medium leading-relaxed text-justify hyphens-auto text-foreground/80">
+                               {activeProject.description}
+                            </p>
+                         </div>
+
+                         <div className="col-span-1 flex flex-col items-end">
+                            <div className="text-right mb-6">
+                              <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-1 leading-none">Year</span>
+                              <span className="text-xs font-bold uppercase tracking-wider leading-none">{activeProject.year}</span>
+                            </div>
+                            
+                            <button className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 border border-transparent hover:border-foreground">
+                               View Case <ArrowUpRight className="w-3 h-3" />
+                            </button>
+                         </div>
+                      </div>
+
+                   </motion.div>
+                 </AnimatePresence>
+               </div>
+            </div>
+
+            {/* MOBILE VIEW */}
+            <div className="md:hidden col-span-1 mt-8 space-y-12">
+               {mainProjects.map(p => (
+                  <div key={p.id} className="group border-b border-foreground/10 pb-8 last:border-0 backdrop-blur-sm">
+                     <div className="aspect-[2/1] bg-foreground/5 mb-4 overflow-hidden border border-foreground/10">
+                        <ImageWithFallback src={p.image} className="w-full h-full object-cover" />
+                     </div>
+                     <div className="flex justify-between items-start mb-2">
+                       <h3 className="text-sm font-bold uppercase tracking-wider">{p.title}</h3>
+                       <span className="text-[10px] font-mono uppercase text-foreground/40">{p.year}</span>
+                     </div>
+                     <p className="text-xs text-foreground/70 mb-4 leading-relaxed">{p.description}</p>
+                     <button className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-2 py-1 border border-foreground/20">
+                        View Case
+                     </button>
+                  </div>
+               ))}
+            </div>
+
+        </div>
+
+
+        {/* --- SIDE PROJECTS (Thinner) --- */}
+        <div>
+           <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-12">
+             <div className="col-span-2 md:col-span-4 pl-2 md:pl-3 backdrop-blur-sm">
+                <span className="inline-block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">
+                  Playground
+                </span>
+                <div className="h-px bg-foreground/10 w-full mt-2" />
+             </div>
+           </div>
+
+           {/* 
+              THINNER SIDE PROJECTS:
+              - Used `md:grid-cols-4` (Standard columns) but with `aspect-[3/4]` (Portrait) images.
+              - This makes the cards physically narrower/thinner visually compared to squares or landscape.
+           */}
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pl-2 md:pl-3">
+             {sideProjects.map((project) => (
+               <div key={project.id} className="group cursor-pointer backdrop-blur-sm">
+                 <div className="aspect-[3/4] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
+                    <ImageWithFallback
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-500 ease-out"
+                    />
+                 </div>
+                 <div className="flex flex-col gap-1 pr-4">
+                   <h4 className="text-[10px] font-bold uppercase tracking-wider group-hover:text-pink-500 transition-colors">
+                     {project.title}
+                   </h4>
+                   <span className="text-[9px] font-mono text-foreground/40">
+                     {project.category}
+                   </span>
+                 </div>
+               </div>
+             ))}
+           </div>
+        </div>
+
       </div>
     </section>
   );
