@@ -16,9 +16,9 @@ interface Project {
 const mainProjects: Project[] = [
   {
     id: 1,
-    title: "Nordic Light",
-    category: "Architecture",
-    year: "2024",
+    title: "Aguemented haptics",
+    category: "Physical UX",
+    year: "2025",
     image: "https://images.unsplash.com/photo-1566918127573-4f89954159ed?q=80&w=1200&auto=format&fit=crop",
     description: "Exploring the relationship between natural light and concrete structures.",
     tags: ["Spatial", "Concept"]
@@ -105,9 +105,9 @@ export function Projects() {
   const activeProject = mainProjects.find(p => p.id === activeId) || mainProjects[0];
 
   return (
-    <section id="projects" className="relative w-full py-24 md:py-32 overflow-hidden">
+    <section id="projects" className="relative w-full py-24 md:py-32 overflow-hidden scroll-mt-24">
       
-      {/* BACKGROUND GRID - Coherent with Hero (No bg color, just lines) */}
+      {/* BACKGROUND GRID */}
       <div className="absolute inset-0 container mx-auto px-6 md:px-12 pointer-events-none">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 h-full">
            {[...Array(12)].map((_, i) => (
@@ -133,25 +133,30 @@ export function Projects() {
         {/* --- SPLIT LAYOUT --- */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-32 min-h-[400px]">
             
-            {/* LEFT: LIST (Typography matched to Hero) */}
+            {/* LEFT: LIST (Interactive - Inverted Hover) */}
             <div className="col-span-1 md:col-span-4 flex flex-col pt-2 relative z-20 pl-2 md:pl-3 backdrop-blur-sm">
                {mainProjects.map((project) => (
                  <div 
                    key={project.id}
                    onMouseEnter={() => setActiveId(project.id)}
-                   className="group relative cursor-pointer py-3 border-b border-foreground/10 last:border-0"
+                   className={`
+                     group relative cursor-pointer py-3 px-3 border-b border-foreground/10 last:border-0 transition-colors duration-300
+                     ${activeId === project.id 
+                        ? 'bg-foreground text-background border-transparent' 
+                        : 'hover:bg-foreground hover:text-background hover:border-transparent text-foreground'}
+                   `}
                  >
                     <div className="flex items-center justify-between">
                        <div className="flex flex-col gap-1">
-                          <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${activeId === project.id ? 'text-pink-500' : 'text-foreground/40'}`}>
+                          <span className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${activeId === project.id ? 'text-background/60' : 'text-foreground/40 group-hover:text-background/60'}`}>
                             0{project.id}
                           </span>
-                          <h3 className={`text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeId === project.id ? 'text-foreground translate-x-2' : 'text-foreground/70'}`}>
+                          <h3 className={`text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeId === project.id ? 'text-background translate-x-2' : 'group-hover:text-background group-hover:translate-x-2'}`}>
                             {project.title}
                           </h3>
                        </div>
                        
-                       <ArrowRight className={`w-3 h-3 transition-all duration-300 ${activeId === project.id ? 'opacity-100 translate-x-0 text-pink-500' : 'opacity-0 -translate-x-2'}`} />
+                       <ArrowRight className={`w-3 h-3 transition-all duration-300 ${activeId === project.id ? 'opacity-100 translate-x-0 text-background' : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-background'}`} />
                     </div>
                  </div>
                ))}
@@ -182,9 +187,16 @@ export function Projects() {
                       <div className="grid grid-cols-2 gap-x-6 pt-4 border-t border-foreground/10">
                          <div className="col-span-1">
                             <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">Context</span>
-                            <p className="text-xs font-medium leading-relaxed text-justify hyphens-auto text-foreground/80">
+                            <p className="text-xs font-medium leading-relaxed text-justify hyphens-auto text-foreground/80 mb-4">
                                {activeProject.description}
                             </p>
+                            <div className="flex flex-wrap gap-2">
+                              {activeProject.tags.map((tag, i) => (
+                                <span key={i} className="inline-block text-[9px] font-mono text-foreground/50 uppercase border border-foreground/15 px-1.5 py-0.5 rounded">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
                          </div>
 
                          <div className="col-span-1 flex flex-col items-end">
@@ -226,7 +238,7 @@ export function Projects() {
         </div>
 
 
-        {/* --- SIDE PROJECTS (Thinner) --- */}
+        {/* --- SIDE PROJECTS (Shorter) --- */}
         <div>
            <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-12">
              <div className="col-span-2 md:col-span-4 pl-2 md:pl-3 backdrop-blur-sm">
@@ -238,14 +250,14 @@ export function Projects() {
            </div>
 
            {/* 
-              THINNER SIDE PROJECTS:
-              - Used `md:grid-cols-4` (Standard columns) but with `aspect-[3/4]` (Portrait) images.
-              - This makes the cards physically narrower/thinner visually compared to squares or landscape.
+              SHORTER SIDE PROJECTS:
+              - Used `aspect-[3/2]` (Landscape) instead of portrait.
+              - This makes them significantly "shorter" vertically.
            */}
            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pl-2 md:pl-3">
              {sideProjects.map((project) => (
                <div key={project.id} className="group cursor-pointer backdrop-blur-sm">
-                 <div className="aspect-[3/4] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
+                 <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
                     <ImageWithFallback
                       src={project.image}
                       alt={project.title}

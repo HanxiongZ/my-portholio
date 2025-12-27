@@ -45,6 +45,15 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
     { name: 'Contact', href: '#contact' },
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsOpen(false);
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
@@ -76,6 +85,7 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
                 <a 
                   key={item.name} 
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className="text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap"
                 >
                   {item.name}
@@ -128,6 +138,7 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
               <motion.a 
                 key={item.name} 
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}

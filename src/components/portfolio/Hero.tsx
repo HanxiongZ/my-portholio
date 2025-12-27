@@ -5,6 +5,14 @@ import { ArrowDownRight } from 'lucide-react';
 export function Hero() {
   const bioText = "Hi, I'm an interaction designer who tells stories about human, technology and life :)";
 
+  const handleScrollToProjects = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const projectsSection = document.getElementById('projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="min-h-screen relative w-full pt-[140px] pb-12 flex flex-col justify-between overflow-hidden">
       
@@ -102,7 +110,11 @@ export function Hero() {
                 </p>
                 
                 <div className="mt-8">
-                  <a href="#projects" className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap">
+                  <a 
+                    href="#projects" 
+                    onClick={handleScrollToProjects}
+                    className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
+                  >
                     <span>Explore Projects</span>
                     <ArrowDownRight className="w-3 h-3" />
                   </a>
