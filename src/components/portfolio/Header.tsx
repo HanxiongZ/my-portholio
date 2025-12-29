@@ -62,7 +62,7 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
           : 'bg-transparent border-transparent py-8'
       }`}
     >
-      <div className="container mx-auto px-6 md:px-12 grid grid-cols-2 md:grid-cols-12 gap-6 items-center">
+      <div className="relative z-50 container mx-auto px-6 md:px-12 grid grid-cols-2 md:grid-cols-12 gap-6 items-center">
         
         {/* Logo - Aligns with Col 1 */}
         <div className="col-span-1 md:col-span-2 pl-2 md:pl-3">

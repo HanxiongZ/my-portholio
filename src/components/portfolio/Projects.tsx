@@ -134,7 +134,7 @@ export function Projects() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-32 min-h-[400px]">
             
             {/* LEFT: LIST (Interactive - Inverted Hover) */}
-            <div className="col-span-1 md:col-span-4 flex flex-col pt-2 relative z-20 pl-2 md:pl-3 backdrop-blur-sm">
+            <div className="hidden md:flex col-span-1 md:col-span-4 flex-col pt-2 relative z-20 pl-2 md:pl-3 backdrop-blur-sm">
                {mainProjects.map((project) => (
                  <div 
                    key={project.id}

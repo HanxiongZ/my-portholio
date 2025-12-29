@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Camera, Music, Code, Palette } from "lucide-react";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 interface SpecialStar {
   id: number;
@@ -9,40 +10,47 @@ interface SpecialStar {
   title: string;
   description: string;
   icon: React.ReactNode;
+  image: string;
 }
+
+const ME_IMAGE = "https://images.unsplash.com/photo-1583381976514-ed9c71c5e06f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMG9mJTIwaW50ZXJhY3Rpb24lMjBkZXNpZ25lciUyMHdvcmtpbmd8ZW58MXx8fHwxNzY3MDIyMjA2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral";
 
 const SPECIAL_STARS: SpecialStar[] = [
   {
     id: 1,
     x: 12, // Bottom Left Area
     y: 65,
-    title: "Experienced Prototyping",
-    description: "Learning by making.",
+    title: "Prototyping",
+    description: "Learning by making physical interfaces.",
     icon: <Palette size={14} />,
+    image: ME_IMAGE
   },
   {
     id: 2,
     x: 22, // Bottom Left Area (Lower)
     y: 80,
     title: "Creative Coding",
-    description: "React & WebGL experiments.",
+    description: "Experimenting with React & WebGL.",
     icon: <Code size={14} />,
+    image: ME_IMAGE
   },
   {
     id: 3,
     x: 78, // Mid Right Area (Higher)
     y: 25,
-    title: "Analog Photography",
+    title: "Analog Photo",
     description: "Capturing moments on 35mm film.",
     icon: <Camera size={14} />,
+    image: ME_IMAGE
   },
   {
     id: 4,
     x: 90, // Mid Right Area (Lower)
     y: 40,
     title: "Sound Design",
-    description: "Synthesizer enthusiast.",
+    description: "Synthesizer enthusiast & noisemaker.",
     icon: <Music size={14} />,
+    image: ME_IMAGE
   },
 ];
 
@@ -62,8 +70,6 @@ export const Constellation: React.FC<{ isDark: boolean }> = ({
           const next = SPECIAL_STARS[i + 1];
 
           // Calculate Control Points for a smooth S-curve
-          // CP1: Midpoint X, Start Y
-          // CP2: Midpoint X, End Y
           const midX = (star.x + next.x) / 2;
           const d = `M ${star.x} ${star.y} C ${midX} ${star.y}, ${midX} ${next.y}, ${next.x} ${next.y}`;
 
@@ -79,8 +85,8 @@ export const Constellation: React.FC<{ isDark: boolean }> = ({
                 ease: "easeInOut",
               }}
               stroke={isDark ? "white" : "#1e293b"}
-              strokeWidth="0.5" // Scaled relative to viewBox 0-100, so 0.5 is roughly 0.5% width
-              vectorEffect="non-scaling-stroke" // Ensures line stays thin (1px-ish)
+              strokeWidth="0.3" 
+              vectorEffect="non-scaling-stroke"
               fill="none"
               strokeDasharray="4 6"
             />
@@ -180,58 +186,45 @@ const StarPoint: React.FC<{
       {/* Floating Info (Star Chart Style) */}
       <AnimatePresence mode="wait">
         {isHovered ? (
-          /* Full Tooltip (Hover State) */
+          /* CARD LAYOUT: Picture + Text */
           <motion.div
-            key="full-tooltip"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute left-1/2 -translate-x-1/2 top-5 flex flex-col items-center pointer-events-none z-20 w-56"
+            key="card-tooltip"
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className={`absolute left-1/2 -translate-x-1/2 top-6 z-40 w-56 rounded-lg border backdrop-blur-md shadow-2xl p-3 ${
+               isDark 
+                 ? "bg-black/80 border-white/10 text-white" 
+                 : "bg-white/80 border-black/10 text-black"
+            }`}
           >
-            {/* Animated Connector Line */}
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 24, opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className={`w-[1px] mb-2 ${
-                isDark
-                  ? "bg-gradient-to-b from-white/0 via-white/40 to-white/0"
-                  : "bg-gradient-to-b from-slate-800/0 via-slate-800/30 to-slate-800/0"
-              }`}
-            />
-
-            {/* Text Content - Floating & Clean */}
-            <motion.div
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              className="flex flex-col items-center text-center"
-            >
-              {/* Title Row */}
-              <div
-                className={`flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-[2px] ${
-                  isDark
-                    ? "bg-black/20 text-blue-100"
-                    : "bg-white/40 text-slate-800"
-                }`}
-              >
-                <span className="opacity-80">{star.icon}</span>
-                <span className="text-xs font-bold tracking-[0.15em] uppercase">
-                  {star.title}
-                </span>
+            {/* Image */}
+            <div className="w-full aspect-[4/3] rounded overflow-hidden mb-3 bg-foreground/5 relative">
+              <ImageWithFallback 
+                src={star.image} 
+                alt={star.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm p-1 rounded-full text-white">
+                {star.icon}
               </div>
+            </div>
 
-              {/* Description */}
-              <p
-                className={`text-[10px] font-medium tracking-wide mt-1 max-w-[180px] ${
-                  isDark ? "text-slate-400" : "text-slate-600"
-                }`}
-              >
+            {/* Text Content */}
+            <div className="text-left">
+              <h4 className="text-xs font-bold uppercase tracking-wider mb-1">
+                {star.title}
+              </h4>
+              <p className={`text-[10px] leading-relaxed ${isDark ? "text-white/70" : "text-black/70"}`}>
                 {star.description}
               </p>
-            </motion.div>
+            </div>
+
+            {/* Decorative Corner */}
+            <div className={`absolute -bottom-1 -right-1 w-2 h-2 border-r border-b ${isDark ? "border-white/30" : "border-black/30"}`} />
+            <div className={`absolute -top-1 -left-1 w-2 h-2 border-l border-t ${isDark ? "border-white/30" : "border-black/30"}`} />
+            
           </motion.div>
         ) : null}
       </AnimatePresence>
