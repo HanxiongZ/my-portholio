@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Camera, Music, Code, Palette } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import meImage from "figma:asset/48475c04b4dc4f7672591e38d16075f857e522a3.png";
 
 interface SpecialStar {
   id: number;
@@ -13,8 +14,6 @@ interface SpecialStar {
   image: string;
 }
 
-const ME_IMAGE = "https://images.unsplash.com/photo-1583381976514-ed9c71c5e06f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMG9mJTIwaW50ZXJhY3Rpb24lMjBkZXNpZ25lciUyMHdvcmtpbmd8ZW58MXx8fHwxNzY3MDIyMjA2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral";
-
 const SPECIAL_STARS: SpecialStar[] = [
   {
     id: 1,
@@ -23,7 +22,7 @@ const SPECIAL_STARS: SpecialStar[] = [
     title: "Prototyping",
     description: "Learning by making physical interfaces.",
     icon: <Palette size={14} />,
-    image: ME_IMAGE
+    image: meImage
   },
   {
     id: 2,
@@ -32,7 +31,7 @@ const SPECIAL_STARS: SpecialStar[] = [
     title: "Creative Coding",
     description: "Experimenting with React & WebGL.",
     icon: <Code size={14} />,
-    image: ME_IMAGE
+    image: meImage
   },
   {
     id: 3,
@@ -41,7 +40,7 @@ const SPECIAL_STARS: SpecialStar[] = [
     title: "Analog Photo",
     description: "Capturing moments on 35mm film.",
     icon: <Camera size={14} />,
-    image: ME_IMAGE
+    image: meImage
   },
   {
     id: 4,
@@ -50,7 +49,7 @@ const SPECIAL_STARS: SpecialStar[] = [
     title: "Sound Design",
     description: "Synthesizer enthusiast & noisemaker.",
     icon: <Music size={14} />,
-    image: ME_IMAGE
+    image: meImage
   },
 ];
 
@@ -58,7 +57,7 @@ export const Constellation: React.FC<{ isDark: boolean }> = ({
   isDark,
 }) => {
   return (
-    <div className="absolute inset-0 h-screen z-30 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 h-screen z-30 pointer-events-none">
       {/* Constellation Lines (Bezier Curves) */}
       <svg
         className="absolute inset-0 w-full h-full"
@@ -112,6 +111,7 @@ const StarPoint: React.FC<{
   hasGuide: boolean;
 }> = ({ star, isDark, hasGuide }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const isBottomArea = star.y > 60; // If star is in lower 40% of screen, show tooltip above
 
   return (
     <div
@@ -189,11 +189,13 @@ const StarPoint: React.FC<{
           /* CARD LAYOUT: Picture + Text */
           <motion.div
             key="card-tooltip"
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            initial={{ opacity: 0, scale: 0.95, y: isBottomArea ? 10 : -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            exit={{ opacity: 0, scale: 0.95, y: isBottomArea ? 10 : -10 }}
             transition={{ duration: 0.2 }}
-            className={`absolute left-1/2 -translate-x-1/2 top-6 z-40 w-56 rounded-lg border backdrop-blur-md shadow-2xl p-3 ${
+            className={`absolute left-1/2 -translate-x-1/2 z-40 w-56 rounded-lg border backdrop-blur-md shadow-2xl p-3 ${
+               isBottomArea ? "bottom-6" : "top-6"
+            } ${
                isDark 
                  ? "bg-black/80 border-white/10 text-white" 
                  : "bg-white/80 border-black/10 text-black"
