@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 
-interface Project {
+export interface Project {
   id: number;
   title: string;
   category: string;
@@ -15,7 +15,7 @@ interface Project {
   tags: string[];
 }
 
-const mainProjects: Project[] = [
+export const mainProjects: Project[] = [
   {
     id: 1,
     title: "Crafting Haptic Expression",
@@ -72,7 +72,7 @@ const mainProjects: Project[] = [
   },
 ];
 
-const sideProjects: Project[] = [
+export const sideProjects: Project[] = [
   {
     id: 6,
     title: "Glyph Studies",
@@ -115,7 +115,7 @@ const sideProjects: Project[] = [
   },
 ];
 
-export function Projects() {
+export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Project) => void }) {
   const [activeId, setActiveId] = useState<number>(1);
   const activeProject =
     mainProjects.find((p) => p.id === activeId) ||
@@ -162,6 +162,7 @@ export function Projects() {
               <div
                 key={project.id}
                 onMouseEnter={() => setActiveId(project.id)}
+                onClick={() => onProjectSelect?.(project)}
                 className={`
                      group relative cursor-pointer py-3 px-3 border-b border-foreground/10 last:border-0 transition-colors duration-300
                      ${
@@ -260,7 +261,10 @@ export function Projects() {
                         </span>
                       </div>
 
-                      <button className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 border border-transparent hover:border-foreground">
+                      <button 
+                        onClick={() => onProjectSelect?.(activeProject)}
+                        className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 border border-transparent hover:border-foreground"
+                      >
                         View Case{" "}
                         <ArrowUpRight className="w-3 h-3" />
                       </button>
@@ -276,7 +280,8 @@ export function Projects() {
             {mainProjects.map((p) => (
               <div
                 key={p.id}
-                className="group border-b border-foreground/10 pb-8 last:border-0 backdrop-blur-sm"
+                onClick={() => onProjectSelect?.(p)}
+                className="group border-b border-foreground/10 pb-8 last:border-0 backdrop-blur-sm cursor-pointer"
               >
                 <div className="aspect-[3/2] bg-foreground/5 mb-4 overflow-hidden border border-foreground/10">
                   <ImageWithFallback
@@ -323,6 +328,7 @@ export function Projects() {
             {sideProjects.map((project) => (
               <div
                 key={project.id}
+                onClick={() => onProjectSelect?.(project)}
                 className="group cursor-pointer backdrop-blur-sm"
               >
                 <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">

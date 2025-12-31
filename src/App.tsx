@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Header } from "./components/portfolio/Header";
 import { Hero } from "./components/portfolio/Hero";
 import { Experience } from "./components/portfolio/Experience";
-import { Projects } from "./components/portfolio/Projects";
+import { Projects, Project } from "./components/portfolio/Projects";
+import { ProjectDetail } from "./components/portfolio/ProjectDetail";
 import { Footer } from "./components/portfolio/Footer";
 import { StarField } from "./components/portfolio/StarField";
 import { Constellation } from "./components/portfolio/Constellation";
@@ -15,6 +16,16 @@ function App() {
     y: 0,
   });
   const [isDark, setIsDark] = useState(true);
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
+
+  const handleProjectSelect = (project: Project) => {
+    setActiveProject(project);
+    window.scrollTo(0,0);
+  };
+
+  const handleBack = () => {
+    setActiveProject(null);
+  };
 
   // Google Analytics (GA4) – only runs in browser, and only injected once
   useEffect(() => {
@@ -89,8 +100,8 @@ function App() {
         {/* Interactive Star Field (Background) */}
         <StarField isDark={isDark} />
 
-        {/* Interactive Constellation (Foreground Highlights) */}
-        <Constellation isDark={isDark} />
+        {/* Interactive Constellation (Foreground Highlights) - Only on Home */}
+        {!activeProject && <Constellation isDark={isDark} />}
 
         {/* Custom Cursor Follower - Simplified */}
         <div
@@ -104,11 +115,19 @@ function App() {
         <div className="relative z-10">
           <Header isDark={isDark} setIsDark={setIsDark} />
           <main>
-            <Hero />
-            <Projects />
-            <Experience />
+            <AnimatePresence mode="wait">
+              {activeProject ? (
+                <ProjectDetail key="detail" project={activeProject} onBack={handleBack} onSelectProject={handleProjectSelect} />
+              ) : (
+                <motion.div key="home" exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+                  <Hero />
+                  <Projects onProjectSelect={handleProjectSelect} />
+                  <Experience />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </main>
-          <Footer />
+          {!activeProject && <Footer />}
         </div>
       </div>
     </div>
