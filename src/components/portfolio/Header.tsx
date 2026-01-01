@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
 
 export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: boolean) => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [time, setTime] = useState<string>("");
+  
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,13 +49,25 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
     { name: 'Contact', href: '#contact' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLElement>, href: string) => {
     e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
+    
+    if (location.pathname !== '/') {
+      navigate('/');
+      // Wait for navigation to complete before scrolling
+      setTimeout(() => {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+    setIsOpen(false);
   };
 
   return (
@@ -66,12 +82,12 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
         
         {/* Logo - Aligns with Col 1 */}
         <div className="col-span-1 md:col-span-2 pl-2 md:pl-3">
-          <a href="#" className="relative group inline-block">
+          <Link to="/" className="relative group inline-block">
             <span className="text-xl tracking-[0.1em] font-light text-foreground uppercase">
               Hanx
             </span>
             <span className="text-pink-500 font-bold ml-0.5">.</span>
-          </a>
+          </Link>
         </div>
 
         {/* Spacer - Spans Col 3-? depending on content width */}
@@ -86,7 +102,7 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
                   key={item.name} 
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap"
+                  className="text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
                 >
                   {item.name}
                 </a>
@@ -143,8 +159,7 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ delay: i * 0.1 }}
-                className="text-3xl font-bold tracking-[0.2em] uppercase text-foreground hover:text-pink-500 transition-colors"
-                onClick={() => setIsOpen(false)}
+                className="text-3xl font-bold tracking-[0.2em] uppercase text-foreground hover:text-pink-500 transition-colors cursor-pointer"
               >
                 {item.name}
               </motion.a>
