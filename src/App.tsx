@@ -1,48 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Header } from "./components/portfolio/Header";
-import { Hero } from "./components/portfolio/Hero";
-import { Experience } from "./components/portfolio/Experience";
-import { Projects, Project } from "./components/portfolio/Projects";
+import { Home } from "./components/portfolio/Home";
 import { ProjectDetail } from "./components/portfolio/ProjectDetail";
-import { Footer } from "./components/portfolio/Footer";
 import { StarField } from "./components/portfolio/StarField";
-import { Constellation } from "./components/portfolio/Constellation";
-import { motion, AnimatePresence } from "motion/react";
-import { Sun, Moon } from "lucide-react";
+import { AnimatePresence } from "motion/react";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
   const [mousePosition, setMousePosition] = useState({
     x: 0,
     y: 0,
   });
   const [isDark, setIsDark] = useState(true);
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
-  const handleProjectSelect = (project: Project) => {
-    setActiveProject(project);
-    window.scrollTo(0,0);
-  };
-
-  const handleBack = () => {
-    setActiveProject(null);
-  };
-
-  // Google Analytics (GA4) – only runs in browser, and only injected once
+  // Google Analytics (GA4)
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    // 如果已经注入过，就不要重复注入
     if (document.getElementById("ga-script-tag")) return;
 
-    // 1. 加载 GA 的外部脚本
     const gaScript = document.createElement("script");
     gaScript.async = true;
-    gaScript.src =
-      "https://www.googletagmanager.com/gtag/js?id=G-ZDYLBLE4LF";
+    gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-ZDYLBLE4LF";
     gaScript.id = "ga-script-tag";
     document.head.appendChild(gaScript);
 
-    // 2. 初始化 GA
     const inlineScript = document.createElement("script");
     inlineScript.innerHTML = `
       window.dataLayer = window.dataLayer || [];
@@ -51,14 +33,11 @@ function App() {
       gtag('config', 'G-ZDYLBLE4LF');
     `;
     document.head.appendChild(inlineScript);
-
-    // 不需要清理：GA 脚本只注入一次即可
   }, []);
 
   // Initialize theme based on local time
   useEffect(() => {
     const hour = new Date().getHours();
-    // Scandinavian Dawn/Daytime: 6 AM to 6 PM
     if (hour >= 6 && hour < 18) {
       setIsDark(false);
     } else {
@@ -73,8 +52,7 @@ function App() {
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () =>
-      window.removeEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
@@ -100,9 +78,6 @@ function App() {
         {/* Interactive Star Field (Background) */}
         <StarField isDark={isDark} />
 
-        {/* Interactive Constellation (Foreground Highlights) - Only on Home */}
-        {!activeProject && <Constellation isDark={isDark} />}
-
         {/* Custom Cursor Follower - Simplified */}
         <div
           className="fixed w-8 h-8 border border-foreground/30 rounded-full pointer-events-none z-50 hidden md:block transition-transform duration-75 ease-out -translate-x-1/2 -translate-y-1/2"
@@ -116,21 +91,23 @@ function App() {
           <Header isDark={isDark} setIsDark={setIsDark} />
           <main>
             <AnimatePresence mode="wait">
-              {activeProject ? (
-                <ProjectDetail key="detail" project={activeProject} onBack={handleBack} onSelectProject={handleProjectSelect} />
-              ) : (
-                <motion.div key="home" exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-                  <Hero />
-                  <Projects onProjectSelect={handleProjectSelect} />
-                  <Experience />
-                </motion.div>
-              )}
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Home isDark={isDark} />} />
+                <Route path="/project/:id" element={<ProjectDetail />} />
+              </Routes>
             </AnimatePresence>
           </main>
-          {!activeProject && <Footer />}
         </div>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }
 

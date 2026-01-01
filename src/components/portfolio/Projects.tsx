@@ -1,6 +1,7 @@
 import image_8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5 from "figma:asset/8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5.png";
 import image_de931ac5e43ce9de9725a2a9c3f54de0f489bc02 from "figma:asset/de931ac5e43ce9de9725a2a9c3f54de0f489bc02.png";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
@@ -115,7 +116,9 @@ export const sideProjects: Project[] = [
   },
 ];
 
-export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Project) => void }) {
+export const allProjects = [...mainProjects, ...sideProjects];
+
+export function Projects() {
   const [activeId, setActiveId] = useState<number>(1);
   const activeProject =
     mainProjects.find((p) => p.id === activeId) ||
@@ -147,7 +150,7 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
         {/* --- HEADER --- */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-16">
           <div className="col-span-2 md:col-span-4 pl-2 md:pl-3 backdrop-blur-sm">
-            <span className="inline-block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">
+            <span className="inline-block text-xs font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none">
               Selected Works
             </span>
             <div className="h-px bg-foreground/10 w-full mt-2" />
@@ -155,16 +158,16 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
         </div>
 
         {/* --- SPLIT LAYOUT --- */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-32 min-h-[400px]">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-32 min-h-[500px]">
           {/* LEFT: LIST (Interactive - Inverted Hover) */}
           <div className="hidden md:flex col-span-1 md:col-span-4 flex-col pt-2 relative z-20 pl-2 md:pl-3 backdrop-blur-sm">
             {mainProjects.map((project) => (
-              <div
+              <Link
                 key={project.id}
+                to={`/project/${project.id}`}
                 onMouseEnter={() => setActiveId(project.id)}
-                onClick={() => onProjectSelect?.(project)}
                 className={`
-                     group relative cursor-pointer py-3 px-3 border-b border-foreground/10 last:border-0 transition-colors duration-300
+                     group relative cursor-pointer block py-4 px-3 border-b border-foreground/10 last:border-0 transition-colors duration-300
                      ${
                        activeId === project.id
                          ? "bg-foreground text-background border-transparent"
@@ -173,24 +176,24 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
                    `}
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-1.5">
                     <span
-                      className={`text-[9px] font-mono uppercase tracking-widest transition-colors ${activeId === project.id ? "text-background/60" : "text-foreground/40 group-hover:text-background/60"}`}
+                      className={`text-[10px] font-mono uppercase tracking-widest transition-colors ${activeId === project.id ? "text-background/60" : "text-foreground/40 group-hover:text-background/60"}`}
                     >
                       0{project.id}
                     </span>
                     <h3
-                      className={`text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeId === project.id ? "text-background translate-x-2" : "group-hover:text-background group-hover:translate-x-2"}`}
+                      className={`text-base font-bold uppercase tracking-wide transition-all duration-300 ${activeId === project.id ? "text-background translate-x-2" : "group-hover:text-background group-hover:translate-x-2"}`}
                     >
                       {project.title}
                     </h3>
                   </div>
 
                   <ArrowRight
-                    className={`w-3 h-3 transition-all duration-300 ${activeId === project.id ? "opacity-100 translate-x-0 text-background" : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-background"}`}
+                    className={`w-4 h-4 transition-all duration-300 ${activeId === project.id ? "opacity-100 translate-x-0 text-background" : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-background"}`}
                   />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -222,7 +225,7 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
                   className="w-full relative"
                 >
                   {/* Image - Standard Ratio (3:2) */}
-                  <div className="aspect-[3/2] w-full overflow-hidden bg-foreground/5 mb-6 relative border border-foreground/10">
+                  <div className="aspect-[3/2] w-full overflow-hidden bg-foreground/5 mb-8 relative border border-foreground/10">
                     <ImageWithFallback
                       src={activeProject.image}
                       alt={activeProject.title}
@@ -231,19 +234,19 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
                   </div>
 
                   {/* Details - Grid Aligned */}
-                  <div className="grid grid-cols-[64fr_36fr] gap-x-6 pt-4 border-t border-foreground/10">
+                  <div className="grid grid-cols-[64fr_36fr] gap-x-6 pt-6 border-t border-foreground/10">
                     <div className="col-span-1">
-                      <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">
+                      <span className="block text-xs font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none">
                         Context
                       </span>
-                      <p className="text-xs font-medium leading-relaxed text-left hyphens-auto text-foreground/80 mb-4">
+                      <p className="text-sm md:text-base font-light leading-relaxed text-left hyphens-auto text-foreground/80 mb-6 text-pretty">
                         {activeProject.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {activeProject.tags.map((tag, i) => (
                           <span
                             key={i}
-                            className="inline-block text-[9px] font-mono text-foreground/50 uppercase border border-foreground/15 px-1.5 py-0.5 rounded"
+                            className="inline-block text-[10px] font-mono text-foreground/60 uppercase border border-foreground/15 px-2 py-1 rounded bg-background/50"
                           >
                             {tag}
                           </span>
@@ -252,22 +255,22 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
                     </div>
 
                     <div className="col-span-1 flex flex-col items-end">
-                      <div className="text-right mb-6">
-                        <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-1 leading-none">
+                      <div className="text-right mb-8">
+                        <span className="block text-xs font-mono uppercase text-foreground/40 mb-2 tracking-widest leading-none">
                           Year
                         </span>
-                        <span className="text-xs font-bold uppercase tracking-wider leading-none">
+                        <span className="text-sm font-bold uppercase tracking-wider leading-none">
                           {activeProject.year}
                         </span>
                       </div>
 
-                      <button 
-                        onClick={() => onProjectSelect?.(activeProject)}
-                        className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 border border-transparent hover:border-foreground"
+                      <Link 
+                        to={`/project/${activeProject.id}`}
+                        className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-3 py-1.5 border border-transparent hover:border-foreground"
                       >
                         View Case{" "}
-                        <ArrowUpRight className="w-3 h-3" />
-                      </button>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
@@ -276,34 +279,34 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
           </div>
 
           {/* MOBILE VIEW */}
-          <div className="md:hidden col-span-1 mt-8 space-y-12">
+          <div className="md:hidden col-span-1 mt-8 space-y-16">
             {mainProjects.map((p) => (
-              <div
+              <Link
                 key={p.id}
-                onClick={() => onProjectSelect?.(p)}
-                className="group border-b border-foreground/10 pb-8 last:border-0 backdrop-blur-sm cursor-pointer"
+                to={`/project/${p.id}`}
+                className="group block border-b border-foreground/10 pb-12 last:border-0 backdrop-blur-sm cursor-pointer"
               >
-                <div className="aspect-[3/2] bg-foreground/5 mb-4 overflow-hidden border border-foreground/10">
+                <div className="aspect-[3/2] bg-foreground/5 mb-6 overflow-hidden border border-foreground/10">
                   <ImageWithFallback
                     src={p.image}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-sm font-bold uppercase tracking-wider">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="text-lg font-bold uppercase tracking-wide">
                     {p.title}
                   </h3>
-                  <span className="text-[10px] font-mono uppercase text-foreground/40">
+                  <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
                     {p.year}
                   </span>
                 </div>
-                <p className="text-xs text-foreground/70 mb-4 leading-relaxed">
+                <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
                   {p.description}
                 </p>
-                <button className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-2 py-1 border border-foreground/20">
+                <button className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
                   View Case
                 </button>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -312,41 +315,36 @@ export function Projects({ onProjectSelect }: { onProjectSelect?: (project: Proj
         <div>
           <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-12">
             <div className="col-span-2 md:col-span-4 pl-2 md:pl-3 backdrop-blur-sm">
-              <span className="inline-block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">
+              <span className="inline-block text-xs font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none">
                 Playground
               </span>
               <div className="h-px bg-foreground/10 w-full mt-2" />
             </div>
           </div>
 
-          {/* 
-              SHORTER SIDE PROJECTS:
-              - Used `aspect-[3/2]` (Landscape) instead of portrait.
-              - This makes them significantly "shorter" vertically.
-           */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pl-2 md:pl-3">
             {sideProjects.map((project) => (
-              <div
+              <Link
                 key={project.id}
-                onClick={() => onProjectSelect?.(project)}
-                className="group cursor-pointer backdrop-blur-sm"
+                to={`/project/${project.id}`}
+                className="group cursor-pointer backdrop-blur-sm block"
               >
-                <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
+                <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-4 border border-foreground/10">
                   <ImageWithFallback
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-500 ease-out"
                   />
                 </div>
-                <div className="flex flex-col gap-1 pr-4">
-                  <h4 className="text-[10px] font-bold uppercase tracking-wider group-hover:text-pink-500 transition-colors">
+                <div className="flex flex-col gap-1.5 pr-4">
+                  <h4 className="text-xs font-bold uppercase tracking-wider group-hover:text-foreground/60 transition-colors">
                     {project.title}
                   </h4>
-                  <span className="text-[9px] font-mono text-foreground/40">
+                  <span className="text-[10px] font-mono text-foreground/40 tracking-wide">
                     {project.category}
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

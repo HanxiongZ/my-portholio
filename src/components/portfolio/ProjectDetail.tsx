@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, ArrowUp } from 'lucide-react';
-import { Project, mainProjects } from './Projects';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { allProjects, mainProjects, sideProjects } from './Projects';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 
-interface ProjectDetailProps {
-  project: Project;
-  onBack: () => void;
-  onSelectProject: (project: Project) => void;
-}
-
-export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetailProps) {
+export function ProjectDetail() {
+  const { id } = useParams();
+  const projectId = Number(id);
+  const project = allProjects.find(p => p.id === projectId);
   
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // Scroll to top on mount or project change
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [project]);
+  }, [projectId]);
 
   const [showScrollTop, setShowScrollTop] = React.useState(false);
 
@@ -27,10 +28,22 @@ export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetai
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const currentIndex = mainProjects.findIndex(p => p.id === project.id);
-  // Loop navigation
-  const nextProject = currentIndex === -1 ? mainProjects[0] : (mainProjects[currentIndex + 1] || mainProjects[0]);
-  const prevProject = currentIndex === -1 ? mainProjects[mainProjects.length - 1] : (mainProjects[currentIndex - 1] || mainProjects[mainProjects.length - 1]);
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.key !== "default") {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
+  if (!project) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-foreground">
+        Project not found
+      </div>
+    );
+  }
 
   return (
     <motion.section 
@@ -57,8 +70,8 @@ export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetai
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-12 md:mb-24">
            <div className="col-span-2 md:col-span-12 backdrop-blur-sm">
              <button 
-               onClick={onBack}
-               className="group inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/50 hover:text-foreground transition-colors"
+               onClick={handleBack}
+               className="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground px-3 py-1.5 border border-transparent hover:border-foreground transition-colors cursor-pointer"
              >
                <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
                Back to Index
@@ -67,17 +80,17 @@ export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetai
         </div>
 
         {/* --- HERO HEADER --- */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-12 md:mb-20 items-end">
-           <div className="col-span-1 md:col-span-8 md:col-start-1 backdrop-blur-sm">
-              <span className="inline-block text-[10px] font-mono uppercase text-foreground/40 mb-4 md:mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-12 md:mb-24 items-end">
+           <div className="col-span-1 md:col-span-10 md:col-start-1 backdrop-blur-sm">
+              <span className="inline-block text-xs font-mono uppercase text-foreground/50 mb-4 md:mb-6 tracking-widest">
                  {project.category} — {project.year}
               </span>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight leading-none mb-6">
+              <h1 className="text-4xl md:text-6xl lg:text-8xl font-medium uppercase tracking-tighter leading-[0.85] mb-8">
                 {project.title}
               </h1>
               <div className="flex flex-wrap gap-2">
                  {project.tags.map((tag, i) => (
-                   <span key={i} className="inline-block text-[9px] font-mono text-foreground/50 uppercase border border-foreground/15 px-2 py-1 rounded-full">
+                   <span key={i} className="inline-block text-[10px] md:text-xs font-mono text-foreground/60 uppercase border border-foreground/20 px-2 py-1 rounded-full bg-background/50">
                      {tag}
                    </span>
                  ))}
@@ -88,46 +101,55 @@ export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetai
         {/* --- MAIN CONTENT LAYOUT --- */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6">
             
-            {/* LEFT COLUMN: TABLE OF CONTENTS & META */}
-            <div className="col-span-1 md:col-span-3 mb-12 md:mb-0 backdrop-blur-sm">
-               <div className="sticky top-32 space-y-12">
+            {/* LEFT COLUMN: META & TOC - DESIGNED */}
+            <div className="col-span-1 md:col-span-3 mb-16 md:mb-0 backdrop-blur-sm">
+               <div className="sticky top-32 flex flex-col gap-10">
                   
-                  {/* Table of Contents */}
-                  <div>
-                    <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-4">Index</span>
-                    <ul className="space-y-3">
-                       {['01 Context', '02 Approach', '03 Visuals', '04 Outcome'].map((item) => (
-                         <li key={item} className="group cursor-pointer flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-foreground/50 hover:text-foreground transition-colors">
-                            <span className="w-1.5 h-1.5 rounded-full bg-transparent border border-foreground/30 group-hover:bg-foreground group-hover:border-foreground transition-colors"></span>
-                            {item}
-                         </li>
-                       ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-2">Description</span>
-                    <p className="text-xs font-medium leading-relaxed text-foreground/80">
+                  {/* Brief */}
+                  <div className="border-t border-foreground/10 pt-3">
+                    <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
+                       (01) Brief
+                    </span>
+                    <p className="text-sm leading-relaxed text-foreground/80 font-normal text-pretty">
                       {project.description}
                     </p>
                   </div>
 
-                  <div>
-                    <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-2">Role</span>
-                    <ul className="space-y-1">
+                  {/* Scope */}
+                  <div className="border-t border-foreground/10 pt-3">
+                    <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
+                       (02) Scope
+                    </span>
+                    <ul className="space-y-2">
                       {project.tags.map((tag, i) => (
-                        <li key={i} className="text-xs font-bold uppercase tracking-wider text-foreground/70">
+                        <li key={i} className="text-xs font-bold uppercase tracking-wide text-foreground/70 flex items-center gap-2">
+                          <span className="w-1 h-1 bg-foreground/30 rounded-full"></span>
                           {tag}
                         </li>
                       ))}
                     </ul>
                   </div>
 
+                  {/* Navigator */}
+                  <div className="border-t border-foreground/10 pt-3">
+                    <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
+                       (03) Jump To
+                    </span>
+                    <ul className="space-y-0">
+                       {['Context', 'Approach', 'Visuals', 'Outcome'].map((item, i) => (
+                         <li key={item} className="group cursor-pointer flex items-center justify-between py-2 border-b border-foreground/5 last:border-0 text-xs font-mono uppercase tracking-widest text-foreground/50 hover:text-foreground transition-colors">
+                            <span>0{i+1}. {item}</span>
+                            <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
+                         </li>
+                       ))}
+                    </ul>
+                  </div>
+
                </div>
             </div>
 
-            {/* RIGHT COLUMN: VISUALS */}
-            <div className="col-span-1 md:col-span-8 md:col-start-5 space-y-8 md:space-y-16 backdrop-blur-sm mb-24 md:mb-40">
+            {/* RIGHT COLUMN: VISUALS & NARRATIVE */}
+            <div className="col-span-1 md:col-span-8 md:col-start-5 space-y-16 md:space-y-32 backdrop-blur-sm mb-32 md:mb-48">
                
                {/* Hero Image */}
                <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden">
@@ -138,42 +160,78 @@ export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetai
                   />
                </div>
 
-               {/* Content Block 1 */}
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="col-span-1">
-                     <p className="text-sm md:text-base leading-relaxed text-foreground/90">
-                       The project began with a fundamental question: how can we reduce visual noise while maximizing information density? The solution lay in the strict application of a 12-column grid and a limited typographic scale.
+               {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
+               <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12">
+                  
+                  {/* Divider & Header */}
+                  <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 mb-4">
+                     <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">01 — The Challenge</span>
+                  </div>
+
+                  {/* Lead Text (Big, Airy) */}
+                  <div className="col-span-1 md:col-span-5">
+                     <p className="text-xl md:text-2xl leading-relaxed font-light text-foreground/90 text-pretty">
+                       <span className="text-foreground/40 font-serif italic pr-2">"</span>
+                       The project began with a fundamental question: how can we reduce visual noise while maximizing information density?
                      </p>
                   </div>
-                  <div className="col-span-1">
-                     <p className="text-sm md:text-base leading-relaxed text-foreground/80">
-                       By leveraging negative space as an active design element, we created a system that feels both expansive and precise—echoing the vast landscapes of Northern Sweden.
+
+                  {/* Pull Quote / Sidebar Note */}
+                  <div className="col-span-1 md:col-span-3 md:pl-6 border-l border-foreground/10 hidden md:block">
+                     <p className="text-xs font-mono uppercase leading-relaxed text-foreground/60">
+                        DESIGN SYSTEM<br/>
+                        GRID: 12 COLUMNS<br/>
+                        TYPE: SANS + MONO
                      </p>
                   </div>
+
+                  {/* Body Text (Narrow Measure for Readability) */}
+                  <div className="col-span-1 md:col-span-5 md:col-start-1">
+                     <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
+                       The solution lay in the strict application of a 12-column grid and a limited typographic scale. By leveraging negative space as an active design element, we created a system that feels both expansive and precise.
+                     </p>
+                     <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
+                       Echoing the vast landscapes of Northern Sweden where the initial concepts were developed, every pixel was placed with intention, removing the superfluous to reveal the essential.
+                     </p>
+                  </div>
+
                </div>
 
-               {/* Secondary Images (Placeholder Grid) */}
+               {/* Secondary Images (Asymmetric Grid) */}
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden">
                       <ImageWithFallback 
                         src={project.image} 
-                        className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                        className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                       />
                   </div>
-                  <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden mt-0 md:mt-12">
+                  <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden mt-0 md:mt-24">
                        <ImageWithFallback 
                         src={project.image} 
-                        className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                        className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                       />
+                      <div className="mt-4 text-xs font-mono uppercase text-foreground/40 text-right">
+                         Figure 02. Interaction Pattern
+                      </div>
                   </div>
                </div>
                
-               {/* Full Width Image */}
-                <div className="aspect-[2.5/1] w-full bg-foreground/5 border border-foreground/10 overflow-hidden">
-                  <ImageWithFallback 
-                    src={project.image} 
-                    className="w-full h-full object-cover"
-                  />
+               {/* Full Width Image with Caption */}
+                <div className="w-full">
+                  <div className="aspect-[2.5/1] w-full bg-foreground/5 border border-foreground/10 overflow-hidden mb-4">
+                    <ImageWithFallback 
+                      src={project.image} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-8 gap-6">
+                     <div className="col-span-1 md:col-span-2 text-xs font-mono uppercase text-foreground/40 border-t border-foreground/10 pt-2">
+                        Figure 03
+                     </div>
+                     <div className="col-span-1 md:col-span-6 text-xs font-mono uppercase text-foreground/40 border-t border-foreground/10 pt-2 text-right md:text-left">
+                        Final Composition
+                     </div>
+                  </div>
                </div>
 
             </div>
@@ -182,40 +240,66 @@ export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetai
 
       </div>
 
-      {/* --- FOOTER NAVIGATION --- */}
-      <div className="border-t border-foreground/10 bg-background/50 backdrop-blur-md">
+      {/* --- FOOTER: 12-COLUMN NAVIGATOR --- */}
+      <div className="border-t border-foreground/10 bg-background/50 backdrop-blur-md py-12 md:py-16">
          <div className="container mx-auto px-6 md:px-12">
-            <div className="grid grid-cols-2">
+            
+            <div className="grid grid-cols-2 md:grid-cols-12 gap-6">
                
-               {/* PREVIOUS */}
-               <button 
-                 onClick={() => onSelectProject(prevProject)}
-                 className="group border-r border-foreground/10 py-12 md:py-16 pr-6 flex flex-col items-start text-left hover:bg-foreground/5 transition-colors"
-               >
-                  <span className="text-[10px] font-mono uppercase text-foreground/40 mb-2 flex items-center gap-2">
-                     <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
-                     Previous Project
-                  </span>
-                  <span className="text-lg md:text-xl font-bold uppercase tracking-wide">
-                    {prevProject.title}
-                  </span>
-               </button>
+               {/* Projects 1-5 */}
+               {mainProjects.map((p) => (
+                  <Link 
+                     key={p.id}
+                     to={`/project/${p.id}`}
+                     className={`
+                        col-span-1 md:col-span-2 group flex flex-col justify-between h-32 md:h-40 p-5 border border-transparent transition-all duration-300
+                        ${p.id === projectId 
+                           ? 'opacity-40 cursor-default pointer-events-none grayscale' 
+                           : 'hover:bg-foreground hover:text-background'
+                        }
+                     `}
+                  >
+                     <div className="flex justify-between items-start w-full">
+                        <span className="text-xs font-mono uppercase tracking-widest opacity-60 group-hover:opacity-100">
+                           0{p.id}
+                        </span>
+                        {p.id !== projectId && (
+                           <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        )}
+                     </div>
+                     
+                     <div>
+                        <span className="block text-xs font-mono uppercase opacity-50 mb-2 group-hover:opacity-80 tracking-wider">
+                           {p.category}
+                        </span>
+                        <h4 className="text-base font-bold uppercase leading-tight tracking-wide">
+                           {p.title}
+                        </h4>
+                     </div>
+                  </Link>
+               ))}
 
-               {/* NEXT */}
+               {/* Index Link (fills last 2 columns to complete the 12-grid) */}
                <button 
-                 onClick={() => onSelectProject(nextProject)}
-                 className="group py-12 md:py-16 pl-6 flex flex-col items-end text-right hover:bg-foreground/5 transition-colors"
+                  onClick={handleBack}
+                  className="col-span-1 md:col-span-2 group flex flex-col justify-between h-32 md:h-40 p-5 border border-foreground/10 hover:bg-foreground hover:text-background hover:border-transparent transition-all duration-300 w-full text-left"
                >
-                  <span className="text-[10px] font-mono uppercase text-foreground/40 mb-2 flex items-center gap-2">
-                     Next Project
-                     <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <span className="text-lg md:text-xl font-bold uppercase tracking-wide">
-                    {nextProject.title}
-                  </span>
+                  <div className="flex justify-between items-start w-full">
+                     <span className="text-xs font-mono uppercase tracking-widest opacity-60 group-hover:opacity-100">
+                        Index
+                     </span>
+                     <ArrowLeft className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  
+                  <div className="flex items-end justify-between">
+                     <h4 className="text-base font-bold uppercase leading-tight tracking-wide">
+                        View All
+                     </h4>
+                  </div>
                </button>
 
             </div>
+
          </div>
       </div>
 
@@ -227,9 +311,9 @@ export function ProjectDetail({ project, onBack, onSelectProject }: ProjectDetai
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-8 right-8 z-50 p-3 bg-background border border-foreground/10 text-foreground hover:bg-foreground hover:text-background transition-colors backdrop-blur-sm"
+            className="fixed bottom-8 right-8 z-50 p-4 bg-background border border-foreground/10 text-foreground hover:bg-foreground hover:text-background transition-colors backdrop-blur-sm"
           >
-            <ArrowUp className="w-4 h-4" />
+            <ArrowUp className="w-5 h-5" />
           </motion.button>
         )}
       </AnimatePresence>
