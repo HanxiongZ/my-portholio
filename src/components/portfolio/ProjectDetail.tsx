@@ -242,13 +242,13 @@ export function ProjectDetail() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden">
                 <ImageWithFallback
-                  src={project.image}
+                  src={project.gallery?.[0] || project.image}
                   className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                 />
               </div>
               <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden mt-0 md:mt-24">
                 <ImageWithFallback
-                  src={project.image}
+                  src={project.gallery?.[1] || project.image}
                   className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                 />
                 <div className="mt-4 text-xs font-mono uppercase text-foreground/40 text-right">
@@ -261,7 +261,7 @@ export function ProjectDetail() {
             <div className="w-full">
               <div className="aspect-[2.5/1] w-full bg-foreground/5 border border-foreground/10 overflow-hidden mb-4">
                 <ImageWithFallback
-                  src={project.image}
+                  src={project.gallery?.[2] || project.image}
                   className="w-full h-full object-cover"
                 />
               </div>

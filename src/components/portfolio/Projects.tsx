@@ -16,6 +16,7 @@ export interface Project {
   description: string;
   content: string;
   toc?: string[];
+  gallery?: string[];
   tags: string[];
 }
 
@@ -31,6 +32,11 @@ export const mainProjects: Project[] = [
     content:
       "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls. For communicating system states, intent, and safety-critical information without increasing visual or cognitive load intuitively.",
     toc: ["Context", "Research", "Prototyping", "Outcome"],
+    gallery: [
+      "https://images.unsplash.com/photo-1558443607-a9e1f14bf576?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdXRvbW90aXZlJTIwaW50ZXJpb3IlMjBkZXRhaWx8ZW58MXx8fHwxNzY3MzcxMDYyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    ],
     tags: [
       "HAPTICS",
       "PHYSICAL UX",
@@ -50,6 +56,11 @@ export const mainProjects: Project[] = [
     content:
       "Essence Object is a formal exploration of minimalism in everyday objects. The goal was to identify the core function of a household item and strip away every element that did not directly support that function. Through iterative sketching and 3D modeling, I arrived at a form that is both purely functional and aesthetically silent. The final object exists comfortably in the background, only asserting its presence when in use.",
     toc: ["Concept", "Process", "Result"],
+    gallery: [
+      "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    ],
     tags: ["Industrial", "Prototyping"],
   },
   {
@@ -64,6 +75,11 @@ export const mainProjects: Project[] = [
     content:
       "We live in an age of data saturation. Digital Entropy is an interactive web experiment that visualizes the overwhelming flow of information we encounter daily. Using generative algorithms, the system takes structured data inputs and subjects them to simulated 'entropy', breaking them down into abstract visual patterns. Users can interact with the decay process, observing how order dissolves into beautiful chaos.",
     toc: ["Overview", "Algorithm", "Gallery"],
+    gallery: [
+      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1558443607-a9e1f14bf576?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdXRvbW90aXZlJTIwaW50ZXJpb3IlMjBkZXRhaWx8ZW58MXx8fHwxNzY3MzcxMDYyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    ],
     tags: ["Web", "Data Viz"],
   },
   {
@@ -78,6 +94,11 @@ export const mainProjects: Project[] = [
     content:
       "Chronos challenges the conventional calendar interface. Instead of viewing time as a series of rigid blocks, Chronos visualizes it as a fluid resource. The interface is designed to support 'deep work' states, minimizing notifications and highlighting contiguous blocks of focus time. The dark-mode-first aesthetic reduces eye strain during late-night sessions, while the typography emphasizes clarity and hierarchy.",
     toc: ["Problem", "Design System", "Interface"],
+    gallery: [
+      "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    ],
     tags: ["UI/UX", "Mobile"],
   },
   {
@@ -92,6 +113,11 @@ export const mainProjects: Project[] = [
     content:
       "Silent Form is a limited-edition art book that explores the concept of silence through photography and typography. The layout utilizes aggressive negative space, forcing the reader to slow down and appreciate the void between elements. The paper selection—a heavy, uncoated stock—adds a tactile dimension to the reading experience, grounding the abstract concepts in physical reality.",
     toc: ["Editorial", "Typography", "Photography"],
+    gallery: [
+      "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1558443607-a9e1f14bf576?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdXRvbW90aXZlJTIwaW50ZXJpb3IlMjBkZXRhaWx8ZW58MXx8fHwxNzY3MzcxMDYyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    ],
     tags: ["Print", "Art Direction"],
   },
 ];
@@ -108,6 +134,7 @@ export const sideProjects: Project[] = [
     content:
       "A daily practice of creating new letterforms based on strict geometric constraints.",
     toc: ["Overview", "Details"],
+    gallery: [],
     tags: [],
   },
   {
@@ -121,6 +148,7 @@ export const sideProjects: Project[] = [
     content:
       "Simulating organic growth patterns using recursive functions and L-systems.",
     toc: ["Overview", "Details"],
+    gallery: [],
     tags: [],
   },
   {
@@ -134,6 +162,7 @@ export const sideProjects: Project[] = [
     content:
       "Real-time visualization of sound frequencies using Web Audio API and Canvas.",
     toc: ["Overview", "Details"],
+    gallery: [],
     tags: [],
   },
   {
@@ -147,6 +176,7 @@ export const sideProjects: Project[] = [
     content:
       "A photographic series documenting the decay of industrial materials in urban environments.",
     toc: ["Overview", "Details"],
+    gallery: [],
     tags: [],
   },
 ];
