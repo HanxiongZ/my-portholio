@@ -102,7 +102,7 @@ export function Header({ isDark, setIsDark }: { isDark: boolean; setIsDark: (v: 
                   key={item.name} 
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
+                  className="text-[12px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
                 >
                   {item.name}
                 </a>

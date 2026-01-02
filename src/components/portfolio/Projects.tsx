@@ -1,3 +1,4 @@
+import image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844 from 'figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png';
 import image_8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5 from "figma:asset/8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5.png";
 import image_de931ac5e43ce9de9725a2a9c3f54de0f489bc02 from "figma:asset/de931ac5e43ce9de9725a2a9c3f54de0f489bc02.png";
 import React, { useState } from "react";
@@ -13,19 +14,29 @@ export interface Project {
   year: string;
   image: string;
   description: string;
+  content: string;
+  toc?: string[];
   tags: string[];
 }
 
 export const mainProjects: Project[] = [
   {
     id: 1,
-    title: "Crafting Haptic Expression",
-    category: "Physical UX",
+    title: "Beyond the Clicks",
+    category: "Physical UX Internship",
     year: "2025",
-    image: image_8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5,
+    image: image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844,
     description:
-      "A prototype-driven exploration into how haptic communication can enhance physical controls in next-generation Volvo cars.",
-    tags: ["HAPTICS", "PHYSICAL UX", "AUTOMOTIVE"],
+      "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
+    content:
+      "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls. For communicating system states, intent, and safety-critical information without increasing visual or cognitive load intuitively.",
+    toc: ["Context", "Research", "Prototyping", "Outcome"],
+    tags: [
+      "HAPTICS",
+      "PHYSICAL UX",
+      "AUTOMOTIVE",
+      "PROTOTYPING EXPLORATION",
+    ],
   },
   {
     id: 2,
@@ -36,6 +47,9 @@ export const mainProjects: Project[] = [
       "https://images.unsplash.com/photo-1761830476467-0ff86dbcc75d?q=80&w=1200&auto=format&fit=crop",
     description:
       "A study in reduction. Stripping away the non-essential.",
+    content:
+      "Essence Object is a formal exploration of minimalism in everyday objects. The goal was to identify the core function of a household item and strip away every element that did not directly support that function. Through iterative sketching and 3D modeling, I arrived at a form that is both purely functional and aesthetically silent. The final object exists comfortably in the background, only asserting its presence when in use.",
+    toc: ["Concept", "Process", "Result"],
     tags: ["Industrial", "Prototyping"],
   },
   {
@@ -47,6 +61,9 @@ export const mainProjects: Project[] = [
       "https://images.unsplash.com/photo-1605453169876-482f55dc24e5?q=80&w=1200&auto=format&fit=crop",
     description:
       "Visualizing data chaos through algorithmic design patterns.",
+    content:
+      "We live in an age of data saturation. Digital Entropy is an interactive web experiment that visualizes the overwhelming flow of information we encounter daily. Using generative algorithms, the system takes structured data inputs and subjects them to simulated 'entropy', breaking them down into abstract visual patterns. Users can interact with the decay process, observing how order dissolves into beautiful chaos.",
+    toc: ["Overview", "Algorithm", "Gallery"],
     tags: ["Web", "Data Viz"],
   },
   {
@@ -58,6 +75,9 @@ export const mainProjects: Project[] = [
       "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop",
     description:
       "A time-management system designed for deep work.",
+    content:
+      "Chronos challenges the conventional calendar interface. Instead of viewing time as a series of rigid blocks, Chronos visualizes it as a fluid resource. The interface is designed to support 'deep work' states, minimizing notifications and highlighting contiguous blocks of focus time. The dark-mode-first aesthetic reduces eye strain during late-night sessions, while the typography emphasizes clarity and hierarchy.",
+    toc: ["Problem", "Design System", "Interface"],
     tags: ["UI/UX", "Mobile"],
   },
   {
@@ -69,6 +89,9 @@ export const mainProjects: Project[] = [
       "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop",
     description:
       "A printed publication celebrating silence in a noisy world.",
+    content:
+      "Silent Form is a limited-edition art book that explores the concept of silence through photography and typography. The layout utilizes aggressive negative space, forcing the reader to slow down and appreciate the void between elements. The paper selection—a heavy, uncoated stock—adds a tactile dimension to the reading experience, grounding the abstract concepts in physical reality.",
+    toc: ["Editorial", "Typography", "Photography"],
     tags: ["Print", "Art Direction"],
   },
 ];
@@ -82,6 +105,9 @@ export const sideProjects: Project[] = [
     image:
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
     description: "Experimental typography.",
+    content:
+      "A daily practice of creating new letterforms based on strict geometric constraints.",
+    toc: ["Overview", "Details"],
     tags: [],
   },
   {
@@ -92,6 +118,9 @@ export const sideProjects: Project[] = [
     image:
       "https://images.unsplash.com/photo-1763931768155-ffefc3099cb1?q=80&w=600&auto=format&fit=crop",
     description: "Procedural plant growth.",
+    content:
+      "Simulating organic growth patterns using recursive functions and L-systems.",
+    toc: ["Overview", "Details"],
     tags: [],
   },
   {
@@ -102,6 +131,9 @@ export const sideProjects: Project[] = [
     image:
       "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop",
     description: "Audio-reactive visuals.",
+    content:
+      "Real-time visualization of sound frequencies using Web Audio API and Canvas.",
+    toc: ["Overview", "Details"],
     tags: [],
   },
   {
@@ -112,6 +144,9 @@ export const sideProjects: Project[] = [
     image:
       "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?q=80&w=600&auto=format&fit=crop",
     description: "Texture studies.",
+    content:
+      "A photographic series documenting the decay of industrial materials in urban environments.",
+    toc: ["Overview", "Details"],
     tags: [],
   },
 ];
@@ -236,17 +271,17 @@ export function Projects() {
                   {/* Details - Grid Aligned */}
                   <div className="grid grid-cols-[64fr_36fr] gap-x-6 pt-6 border-t border-foreground/10">
                     <div className="col-span-1">
-                      <span className="block text-xs font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none">
+                      <span className="block font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none text-[10px]">
                         Context
                       </span>
-                      <p className="text-sm md:text-base font-light leading-relaxed text-left hyphens-auto text-foreground/80 mb-6 text-pretty">
+                      <p className="text-[12px] md:text-[14px] font-normal leading-relaxed text-left hyphens-auto text-foreground/80 mb-6 text-pretty">
                         {activeProject.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {activeProject.tags.map((tag, i) => (
                           <span
                             key={i}
-                            className="inline-block text-[10px] font-mono text-foreground/60 uppercase border border-foreground/15 px-2 py-1 rounded bg-background/50"
+                            className="inline-block text-[8px] font-mono text-foreground/60 uppercase border border-foreground/15 px-2 py-1 rounded bg-background/50"
                           >
                             {tag}
                           </span>
@@ -264,7 +299,7 @@ export function Projects() {
                         </span>
                       </div>
 
-                      <Link 
+                      <Link
                         to={`/project/${activeProject.id}`}
                         className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-3 py-1.5 border border-transparent hover:border-foreground"
                       >

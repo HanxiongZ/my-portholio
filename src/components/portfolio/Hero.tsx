@@ -134,9 +134,9 @@ export function Hero() {
                   <a
                     href="#projects"
                     onClick={handleScrollToProjects}
-                    className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
+                    className="inline-flex items-center gap-2 text-[12px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
                   >
-                    <span>Go to Projects</span>
+                    <span>Explore Projects</span>
                     <ArrowDownRight className="w-3 h-3" />
                   </a>
                 </div>

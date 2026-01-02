@@ -77,6 +77,7 @@
     --spacing: .25rem;
     --container-md: 28rem;
     --container-xl: 36rem;
+    --container-3xl: 48rem;
     --container-4xl: 56rem;
     --text-xs: .75rem;
     --text-xs--line-height: calc(1 / .75);
@@ -903,6 +904,10 @@
     width: 1px;
   }
 
+  .max-w-3xl {
+    max-width: var(--container-3xl);
+  }
+
   .max-w-4xl {
     max-width: var(--container-4xl);
   }
@@ -1663,12 +1668,20 @@
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
 
+  .text-\[8px\] {
+    font-size: 8px;
+  }
+
   .text-\[9px\] {
     font-size: 9px;
   }
 
   .text-\[10px\] {
     font-size: 10px;
+  }
+
+  .text-\[12px\] {
+    font-size: 12px;
   }
 
   .leading-7 {
@@ -2280,12 +2293,6 @@
   }
 
   @media (hover: hover) {
-    .hover\:text-foreground:hover {
-      color: var(--foreground);
-    }
-  }
-
-  @media (hover: hover) {
     .hover\:text-pink-500:hover {
       color: var(--color-pink-500);
     }
@@ -2615,13 +2622,6 @@
   }
 
   @media (width >= 48rem) {
-    .md\:text-base {
-      font-size: var(--text-base);
-      line-height: var(--tw-leading, var(--text-base--line-height));
-    }
-  }
-
-  @media (width >= 48rem) {
     .md\:text-lg {
       font-size: var(--text-lg);
       line-height: var(--tw-leading, var(--text-lg--line-height));
@@ -2639,6 +2639,12 @@
     .md\:text-xs {
       font-size: var(--text-xs);
       line-height: var(--tw-leading, var(--text-xs--line-height));
+    }
+  }
+
+  @media (width >= 48rem) {
+    .md\:text-\[14px\] {
+      font-size: 14px;
     }
   }
 

@@ -207,7 +207,7 @@ export function Experience() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <span className="inline-block text-[10px] font-mono uppercase text-foreground/40 mb-2 leading-none">
+                <span className="inline-block text-[12px] font-mono uppercase text-foreground/40 mb-2 leading-none">
                   Experience
                 </span>
                 <div className="h-px bg-foreground/10 w-full mt-2" />
