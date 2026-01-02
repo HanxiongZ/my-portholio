@@ -1,4 +1,5 @@
-import image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844 from 'figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png';
+import image_a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0 from "figma:asset/a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0.png";
+import image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844 from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png";
 import image_8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5 from "figma:asset/8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5.png";
 import image_de931ac5e43ce9de9725a2a9c3f54de0f489bc02 from "figma:asset/de931ac5e43ce9de9725a2a9c3f54de0f489bc02.png";
 import React, { useState } from "react";
@@ -31,11 +32,17 @@ export const mainProjects: Project[] = [
       "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
     content:
       "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls. For communicating system states, intent, and safety-critical information without increasing visual or cognitive load intuitively.",
-    toc: ["Context", "Research", "Prototyping", "Outcome"],
+    toc: [
+      "Background and Focus",
+      "Research",
+      "Prototyping",
+      "Outcome",
+    ],
     gallery: [
-      "https://images.unsplash.com/photo-1558443607-a9e1f14bf576?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdXRvbW90aXZlJTIwaW50ZXJpb3IlMjBkZXRhaWx8ZW58MXx8fHwxNzY3MzcxMDYyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      image_a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0,
       "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
     ],
     tags: [
       "HAPTICS",
@@ -59,7 +66,7 @@ export const mainProjects: Project[] = [
     gallery: [
       "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
       "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
     ],
     tags: ["Industrial", "Prototyping"],
   },
@@ -78,7 +85,7 @@ export const mainProjects: Project[] = [
     gallery: [
       "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
       "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      "https://images.unsplash.com/photo-1558443607-a9e1f14bf576?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdXRvbW90aXZlJTIwaW50ZXJpb3IlMjBkZXRhaWx8ZW58MXx8fHwxNzY3MzcxMDYyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      image_a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0,
     ],
     tags: ["Web", "Data Viz"],
   },
@@ -97,7 +104,7 @@ export const mainProjects: Project[] = [
     gallery: [
       "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
       "https://images.unsplash.com/photo-1762279388952-85187155e48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3klMjBkYXRhJTIwdmlzdWFsaXphdGlvbnxlbnwxfHx8fDE3NjczMTUxNzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
     ],
     tags: ["UI/UX", "Mobile"],
   },
@@ -116,7 +123,7 @@ export const mainProjects: Project[] = [
     gallery: [
       "https://images.unsplash.com/photo-1617597835919-3fdbf6efe48d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwZGV0YWlsfGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
       "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      "https://images.unsplash.com/photo-1558443607-a9e1f14bf576?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdXRvbW90aXZlJTIwaW50ZXJpb3IlMjBkZXRhaWx8ZW58MXx8fHwxNzY3MzcxMDYyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      image_a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0,
     ],
     tags: ["Print", "Art Direction"],
   },

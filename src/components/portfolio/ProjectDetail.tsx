@@ -181,7 +181,7 @@ export function ProjectDetail() {
             {/* Hero Image */}
             <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden">
               <ImageWithFallback
-                src={project.image}
+                src={project.gallery?.[0] || project.image}
                 alt={project.title}
                 className="w-full h-full object-cover"
               />
@@ -192,7 +192,7 @@ export function ProjectDetail() {
               {/* Divider & Header */}
               <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 mb-4">
                 <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
-                  01 — The Challenge
+                  01 — Background and Focus
                 </span>
               </div>
 
@@ -202,38 +202,39 @@ export function ProjectDetail() {
                   <span className="text-foreground/40 font-serif italic pr-2">
                     "
                   </span>
-                  The project began with a fundamental question:
-                  how can we reduce visual noise while
-                  maximizing information density?
+                  Haptics is to touch, as optics is to sight.
+                  <span className="text-foreground/40 font-serif italic pr-2">
+                    "
+                  </span>
                 </p>
               </div>
 
               {/* Pull Quote / Sidebar Note */}
               <div className="col-span-1 md:col-span-3 md:pl-6 border-l border-foreground/10 hidden md:block">
                 <p className="text-xs font-mono uppercase leading-relaxed text-foreground/60">
-                  DESIGN SYSTEM
-                  <br />
-                  GRID: 12 COLUMNS
-                  <br />
-                  TYPE: SANS + MONO
+                  Will Provancher
                 </p>
               </div>
 
               {/* Body Text (Narrow Measure for Readability) */}
               <div className="col-span-1 md:col-span-5 md:col-start-1">
                 <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
-                  The solution lay in the strict application of
-                  a 12-column grid and a limited typographic
-                  scale. By leveraging negative space as an
-                  active design element, we created a system
-                  that feels both expansive and precise.
+                  This project was conducted during my
+                  internship at Volvo Cars, where in-car
+                  experiences are shaped across multiple
+                  modalities parallelly. Within this context,
+                  physical controls play a critical role in
+                  mediating people's intention and complex
+                  system behaviours. Particularly as controls in
+                  car rely more on screens and less on physical
+                  buttons under the EV era.
                 </p>
                 <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
-                  Echoing the vast landscapes of Northern Sweden
-                  where the initial concepts were developed,
-                  every pixel was placed with intention,
-                  removing the superfluous to reveal the
-                  essential.
+                  Within a larger visionary project, my focus
+                  was on exploring how tactile layers could be
+                  embedded in physical controls. The aim was to
+                  design a coherent and intuitive language that
+                  communicate with users in a tangible way.
                 </p>
               </div>
             </div>
@@ -242,13 +243,13 @@ export function ProjectDetail() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden">
                 <ImageWithFallback
-                  src={project.gallery?.[0] || project.image}
+                  src={project.gallery?.[1] || project.image}
                   className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                 />
               </div>
               <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden mt-0 md:mt-24">
                 <ImageWithFallback
-                  src={project.gallery?.[1] || project.image}
+                  src={project.gallery?.[2] || project.image}
                   className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                 />
                 <div className="mt-4 text-xs font-mono uppercase text-foreground/40 text-right">
@@ -261,7 +262,7 @@ export function ProjectDetail() {
             <div className="w-full">
               <div className="aspect-[2.5/1] w-full bg-foreground/5 border border-foreground/10 overflow-hidden mb-4">
                 <ImageWithFallback
-                  src={project.gallery?.[2] || project.image}
+                  src={project.gallery?.[3] || project.image}
                   className="w-full h-full object-cover"
                 />
               </div>
