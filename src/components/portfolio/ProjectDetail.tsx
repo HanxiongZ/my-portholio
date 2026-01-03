@@ -12,11 +12,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import {
-  allProjects,
-  mainProjects,
-  sideProjects,
-} from "./Projects";
+import { allProjects, mainProjects } from "./Projects";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 export function ProjectDetail() {
@@ -27,6 +23,21 @@ export function ProjectDetail() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // --- helpers: TOC slug + scroll ---
+  const slugify = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/&/g, "and")
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-");
+
+  const scrollToSection = (targetId: string) => {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   // Scroll to top on mount or project change
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,6 +45,9 @@ export function ProjectDetail() {
 
   const [showScrollTop, setShowScrollTop] =
     React.useState(false);
+
+  const [activeSectionId, setActiveSectionId] =
+    React.useState<string>("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -160,16 +174,30 @@ export function ProjectDetail() {
                   <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
                     Jump To
                   </span>
+
                   <ul className="space-y-0">
-                    {project.toc.map((item) => (
-                      <li
-                        key={item}
-                        className="group cursor-pointer flex items-center justify-between py-2 px-2 border-b border-foreground/5 last:border-0 text-xs font-mono uppercase tracking-widest text-foreground/50 hover:bg-foreground hover:text-background hover:border-transparent transition-colors"
-                      >
-                        <span>{item}</span>
-                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all group-hover:text-background" />
-                      </li>
-                    ))}
+                    {project.toc.map((item) => {
+                      const targetId = slugify(item);
+
+                      return (
+                        <li
+                          key={targetId}
+                          className="border-b border-foreground/5 last:border-0"
+                        >
+                          <motion.button
+                            type="button"
+                            onClick={() =>
+                              scrollToSection(targetId)
+                            }
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full group cursor-pointer flex items-center justify-between py-2 px-2 text-xs font-mono uppercase tracking-widest text-foreground/50 hover:bg-foreground hover:text-background hover:border-transparent transition-colors text-left"
+                          >
+                            <span>{item}</span>
+                            <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all group-hover:text-background" />
+                          </motion.button>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
@@ -190,7 +218,10 @@ export function ProjectDetail() {
             {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
             <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12">
               {/* Divider & Header */}
-              <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 mb-4">
+              <div
+                id={slugify("Background and Focus")}
+                className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 mb-4 scroll-mt-32"
+              >
                 <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
                   01 — Background and Focus
                 </span>
@@ -289,13 +320,13 @@ export function ProjectDetail() {
                 key={p.id}
                 to={`/project/${p.id}`}
                 className={`
-                        col-span-1 md:col-span-2 group flex flex-col justify-between h-32 md:h-40 p-5 border border-transparent transition-all duration-300
-                        ${
-                          p.id === projectId
-                            ? "opacity-40 cursor-default pointer-events-none grayscale"
-                            : "hover:bg-foreground hover:text-background"
-                        }
-                     `}
+                  col-span-1 md:col-span-2 group flex flex-col justify-between h-32 md:h-40 p-5 border border-transparent transition-all duration-300
+                  ${
+                    p.id === projectId
+                      ? "opacity-40 cursor-default pointer-events-none grayscale"
+                      : "hover:bg-foreground hover:text-background"
+                  }
+                `}
               >
                 <div className="flex justify-between items-start w-full">
                   <span className="text-xs font-mono uppercase tracking-widest opacity-60 group-hover:opacity-100">
