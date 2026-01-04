@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import { allProjects, mainProjects } from "./Projects";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { InteractionSpectrum } from "./InteractionSpectrum"; // 按你的实际路径
 
 export function ProjectDetail() {
   const { id } = useParams();
@@ -138,8 +139,8 @@ export function ProjectDetail() {
         {/* --- MAIN CONTENT LAYOUT --- */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6">
           {/* LEFT COLUMN: META & TOC - DESIGNED */}
-          <div className="col-span-1 md:col-span-3 mb-16 md:mb-0 backdrop-blur-sm">
-            <div className="sticky top-32 flex flex-col gap-10">
+          <div className="col-span-1 md:col-span-3 mb-16 md:mb-0 backdrop-blur-sm flex flex-col">
+            <div className="flex flex-col gap-10 flex-1 relative">
               {/* Brief */}
               <div className="border-t border-foreground/10 pt-3">
                 <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
@@ -170,7 +171,7 @@ export function ProjectDetail() {
 
               {/* Navigator */}
               {project.toc && project.toc.length > 0 && (
-                <div className="border-t border-foreground/10 pt-3">
+                <div className="border-t border-foreground/10 pt-3 sticky top-32">
                   <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
                     Jump To
                   </span>
@@ -217,7 +218,7 @@ export function ProjectDetail() {
 
             {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
             <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12">
-              {/* Divider & Header */}
+              {/* 01 Divider & Header */}
               <div
                 id={slugify("Background and Focus")}
                 className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 mb-4 scroll-mt-32"
@@ -227,7 +228,7 @@ export function ProjectDetail() {
                 </span>
               </div>
 
-              {/* Lead Text (Big, Airy) */}
+              {/* Lead Text */}
               <div className="col-span-1 md:col-span-5">
                 <p className="text-xl md:text-2xl leading-relaxed font-light text-foreground/90 text-pretty">
                   <span className="text-foreground/40 font-serif italic pr-2">
@@ -240,14 +241,14 @@ export function ProjectDetail() {
                 </p>
               </div>
 
-              {/* Pull Quote / Sidebar Note */}
+              {/* Pull Quote */}
               <div className="col-span-1 md:col-span-3 md:pl-6 border-l border-foreground/10 hidden md:block">
                 <p className="text-xs font-mono uppercase leading-relaxed text-foreground/60">
                   Will Provancher
                 </p>
               </div>
 
-              {/* Body Text (Narrow Measure for Readability) */}
+              {/* Body Text */}
               <div className="col-span-1 md:col-span-5 md:col-start-1">
                 <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
                   This project was conducted during my
@@ -268,6 +269,56 @@ export function ProjectDetail() {
                   communicate with users in a tangible way.
                 </p>
               </div>
+
+              {/* 02 Divider & Header (放回 grid 里) */}
+              <div
+                id={slugify("Frame the Exploration")}
+                className="col-span-1 md:col-span-8  pt-6 mb-4 scroll-mt-32"
+              >
+                <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
+                  02 — Frame the Exploration
+                </span>
+              </div>
+
+              {/* Body Text */}
+              <div className="col-span-1 md:col-span-5 md:col-start-1">
+                <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
+                  At the outset of the project, several
+                  hypotheses framed the exploration. It started
+                  from the assumption that haptic feedback could
+                  carry{" "}
+                  <strong className="font-semibold text-foreground">
+                    different kinds of information through
+                    distinct patterns
+                  </strong>
+                  , making physical controls more versatile and
+                  expressive. If perceived clearly, it was
+                  further assumed that haptics could contribute
+                  to{" "}
+                  <strong className="font-semibold text-foreground">
+                    a sense of reassurance
+                  </strong>
+                  , helping drivers feel confident and safe
+                  while interacting with controls. Finally, the
+                  exploration asked whether well-designed haptic
+                  feedback could also enrich the driving
+                  experience, adding{" "}
+                  <strong className="font-semibold text-foreground">
+                    moments of delight
+                  </strong>{" "}
+                  without distracting from the task of driving.
+                </p>
+
+                <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
+                  To explore these hypotheses, the work began
+                  with the simplest interaction unit: a single
+                  button.
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full">
+              <InteractionSpectrum />
             </div>
 
             {/* Secondary Images (Asymmetric Grid) */}

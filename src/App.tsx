@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { Header } from "./components/portfolio/Header";
 import { Home } from "./components/portfolio/Home";
 import { ProjectDetail } from "./components/portfolio/ProjectDetail";
@@ -21,7 +26,8 @@ function AppContent() {
 
     const gaScript = document.createElement("script");
     gaScript.async = true;
-    gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-ZDYLBLE4LF";
+    gaScript.src =
+      "https://www.googletagmanager.com/gtag/js?id=G-ZDYLBLE4LF";
     gaScript.id = "ga-script-tag";
     document.head.appendChild(gaScript);
 
@@ -52,7 +58,8 @@ function AppContent() {
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () =>
+      window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
@@ -61,7 +68,7 @@ function AppContent() {
     >
       {/* Main Wrapper */}
       <div
-        className={`min-h-screen text-foreground relative overflow-hidden transition-colors duration-1000 md:cursor-none ${isDark ? "bg-[#0A0F1C]" : "bg-[#FAF9F7]"}`}
+        className={`min-h-screen text-foreground relative overflow-x-hidden transition-colors duration-1000 md:cursor-none ${isDark ? "bg-[#0A0F1C]" : "bg-[#FAF9F7]"}`}
         style={
           isDark
             ? {
@@ -91,9 +98,18 @@ function AppContent() {
           <Header isDark={isDark} setIsDark={setIsDark} />
           <main>
             <AnimatePresence mode="wait">
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home isDark={isDark} />} />
-                <Route path="/project/:id" element={<ProjectDetail />} />
+              <Routes
+                location={location}
+                key={location.pathname}
+              >
+                <Route
+                  path="/"
+                  element={<Home isDark={isDark} />}
+                />
+                <Route
+                  path="/project/:id"
+                  element={<ProjectDetail />}
+                />
               </Routes>
             </AnimatePresence>
           </main>
