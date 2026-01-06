@@ -146,6 +146,7 @@ export function ProjectDetail() {
                 <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
                   Description
                 </span>
+
                 <p className="text-sm leading-relaxed text-foreground/80 font-normal text-pretty">
                   {project.content}
                 </p>
@@ -210,14 +211,14 @@ export function ProjectDetail() {
             {/* Hero Image */}
             <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden">
               <ImageWithFallback
-                src={project.gallery?.[0] || project.image}
+                src={project.gallery?.[5] || project.image}
                 alt={project.title}
                 className="w-full h-full object-cover"
               />
             </div>
 
             {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12">
+            <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12 mb-8 md:mb-10">
               {/* 01 Divider & Header */}
               <div
                 id={slugify("Background and Focus")}
@@ -317,37 +318,147 @@ export function ProjectDetail() {
               </div>
             </div>
 
-            <div className="w-full">
+            <div className="w-full mb-4">
               <InteractionSpectrum />
             </div>
 
-            {/* Secondary Images (Asymmetric Grid) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden">
-                <ImageWithFallback
-                  src={project.gallery?.[1] || project.image}
-                  className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
-                />
+            {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12 mb-8 md:mb-10">
+              {/* Body Text */}
+              <div className="col-span-1 md:col-span-5 md:col-start-1">
+                <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
+                  This specturm frames the interaction quality
+                  of a button, from digital to physical.(Feel
+                  free the click the buttons above)
+                </p>
+                <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
+                  On one end, digital buttons that rely
+                  primarily on visual feedback; on the
+                  other,analog controls communicate through
+                  mechanical form and resistance. Haptic
+                  feedback as an intermediate tactile layer
+                  within the spectrum seems like a good way of
+                  starting the exploration.
+                </p>
               </div>
-              <div className="aspect-[3/4] bg-foreground/5 border border-foreground/10 overflow-hidden mt-0 md:mt-24">
-                <ImageWithFallback
-                  src={project.gallery?.[2] || project.image}
-                  className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
-                />
-                <div className="mt-4 text-xs font-mono uppercase text-foreground/40 text-right">
-                  Figure 02. Interaction Pattern
+            </div>
+
+            {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12 mb-8 md:mb-10">
+              {/* 01 Divider & Header */}
+              <div
+                id={slugify("Learning through prototyping")}
+                className="col-span-1 md:col-span-8 pt-6 mb-4 scroll-mt-32"
+              >
+                <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
+                  03 — Learning by Prototyping
+                </span>
+              </div>
+
+              {/* Body Text */}
+              <div className="col-span-1 md:col-span-5 md:col-start-1">
+                <h3 className="text-xs md:text-sm font-semibold md:uppercase tracking-normal md:tracking-wide text-foreground whitespace-nowrap mt-[0px] mr-[0px] mb-[24px] ml-[0px]">
+                  First Prototype – Bring in haptics only
+                </h3>
+
+                <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
+                  The exploration started with a deliberately
+                  restrained prototype. Rather than introducing
+                  haptics aggressively, a vibration module and a
+                  pressure sensor were added to an otherwise
+                  simple button setup. This approach treated
+                  haptics as an added layer—supporting
+                  interaction rather than redefining it—allowing
+                  early insights into how haptic button could
+                  influence perceived feedback, confidence, and
+                  interaction quality.
+                </p>
+              </div>
+
+              {/* Media group: Expanded to full 8-col width */}
+              <div className="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-8 gap-6 mb-8 items-stretch">
+                {/* LEFT: big image (Span 5) */}
+                <div className="col-span-1 md:col-span-5 flex flex-col h-full">
+                  <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden relative w-full flex-1 min-h-[200px] md:min-h-0">
+                    <ImageWithFallback
+                      src={
+                        project.gallery?.[0] || project.image
+                      }
+                      alt="Prototype 01 main setup"
+                      className="absolute inset-0 w-full h-full object-cover block"
+                    />
+                  </div>
+                  <p className="text-xs font-mono text-foreground/60 mt-3 shrink-0">
+                    Figure 01 — Mimic the button feeling by
+                    putting a pressure sensor underneath an
+                    iPhone 14.
+                  </p>
                 </div>
+
+                {/* RIGHT: two stacked images (Span 3) */}
+                {/* 修改 1: gap-8 -> gap-4，减少上下两张图的间距，节省高度 */}
+                <div className="col-span-1 md:col-span-3 flex flex-col gap-4 h-full">
+                  <div>
+                    {/* 修改 2: aspect-[3/2] -> aspect-[16/9] 
+         (数字越大越扁。如果你觉得还不够矮，可以改成 aspect-[2/1]) 
+      */}
+                    <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
+                      <ImageWithFallback
+                        src={
+                          project.gallery?.[1] || project.image
+                        }
+                        alt="Prototype 01 detail view"
+                        className="w-full h-full object-cover block"
+                      />
+                    </div>
+                    <p className="text-xs font-mono text-foreground/60 mt-3">
+                      Figure 02 — Tactile surface is needed for
+                      button feeling.
+                    </p>
+                  </div>
+
+                  <div>
+                    {/* 同样的修改: aspect-[16/9] */}
+                    <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
+                      <ImageWithFallback
+                        src={
+                          project.gallery?.[2] || project.image
+                        }
+                        alt="Prototype 01 interaction test"
+                        className="w-full h-full object-cover block"
+                      />
+                    </div>
+                    <p className="text-xs font-mono text-foreground/60 mt-3">
+                      Figure 03 — Add damping structure to
+                      enhance intensity.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-1 md:col-span-5 md:col-start-1">
+                {/* Text stays as-is */}
+                <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
+                  The first round of prototyping showed that a
+                  haptic button could work(barely). While
+                  vibration improved confirmation,{" "}
+                  <strong className="font-semibold text-foreground">
+                    the absence of tactile surface limited
+                    reassurance and influence how people
+                    interact with the button
+                  </strong>
+                  . So I printed out button surfaces in
+                  different shape and depth, then chose the one
+                  that looks the most like a button without any
+                  design expression. So that the first
+                  experienced prototype that ready for testing
+                  was ready, as figure 03.
+                </p>
               </div>
             </div>
 
             {/* Full Width Image with Caption */}
-            <div className="w-full">
-              <div className="aspect-[2.5/1] w-full bg-foreground/5 border border-foreground/10 overflow-hidden mb-4">
-                <ImageWithFallback
-                  src={project.gallery?.[3] || project.image}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+            {/* <div className="w-full">
               <div className="grid grid-cols-2 md:grid-cols-8 gap-6">
                 <div className="col-span-1 md:col-span-2 text-xs font-mono uppercase text-foreground/40 border-t border-foreground/10 pt-2">
                   Figure 03
@@ -356,7 +467,7 @@ export function ProjectDetail() {
                   Final Composition
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

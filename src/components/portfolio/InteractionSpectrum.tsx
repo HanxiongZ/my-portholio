@@ -9,7 +9,7 @@ export function InteractionSpectrum() {
       <div
         className="
           w-full
-          bg-[#111111]
+          bg-transparent
           text-white
           overflow-hidden
           rounded-none
@@ -23,8 +23,10 @@ export function InteractionSpectrum() {
             max-w-[900px]
             px-4
             sm:px-10
-            py-8
-            sm:py-12
+            pt-4
+            sm:pt-6
+            pb-8
+            sm:pb-10
           "
         >
           {/* Buttons Row */}
@@ -65,49 +67,53 @@ export function InteractionSpectrum() {
 
           {/* Axis */}
           <div className="relative w-full h-[18px] sm:h-[20px] flex items-center">
-            {/* Main Line */}
-            <div className="absolute left-0 right-0 top-1/2 h-px bg-white/35" />
+            {/* Main Line — 缩进 6px，刚好避开箭头宽度 */}
+            <div className="absolute left-[6px] right-[6px] top-1/2 -translate-y-1/2 h-px bg-neutral-500" />
 
-            {/* Left Arrow */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 text-white/40">
+            {/* Left Arrow — 不要再 translate-x */}
+            <div className="absolute left-0 top-1/2 translate-x-1 -translate-y-1/2 z-20 text-neutral-500">
               <svg
                 width="6"
                 height="10"
                 viewBox="0 0 6 10"
                 fill="none"
+                className="block"
               >
                 <path
                   d="M5 1L1 5L5 9"
                   stroke="currentColor"
                   strokeWidth="1"
+                  strokeLinecap="square"
                 />
               </svg>
             </div>
 
-            {/* Right Arrow */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 text-white/40">
+            {/* Right Arrow — 不要再 translate-x */}
+            <div className="absolute right-0 top-1/2 -translate-x-1 -translate-y-1/2 z-20 text-neutral-500">
               <svg
                 width="6"
                 height="10"
                 viewBox="0 0 6 10"
                 fill="none"
+                className="block"
               >
                 <path
                   d="M1 1L5 5L1 9"
                   stroke="currentColor"
                   strokeWidth="1"
+                  strokeLinecap="square"
                 />
               </svg>
             </div>
 
             {/* Dots positions */}
-            <div className="w-1/3 min-w-0 flex justify-center relative z-10">
+            <div className="w-1/3 min-w-0 flex justify-center relative z-10 -translate-x-3">
               <div className="w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] bg-[#111111] border border-white/90 rounded-full" />
             </div>
             <div className="w-1/3 min-w-0 flex justify-center relative z-10">
-              <div className="w-[8px] h-[8px] sm:w-[9px] sm:h-[9px] bg-white rounded-full shadow-[0_0_10px_white]" />
+              <div className="w-[8px] h-[8px] sm:w-[9px] sm:h-[9px] bg-black border border-white/90 rounded-full shadow-[0_0_10px_white]" />
             </div>
-            <div className="w-1/3 min-w-0 flex justify-center relative z-10">
+            <div className="w-1/3 min-w-0 flex justify-center relative z-10 translate-x-3">
               <div className="w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] bg-[#111111] border border-white/90 rounded-full" />
             </div>
           </div>
@@ -115,28 +121,46 @@ export function InteractionSpectrum() {
           {/* Labels */}
           <div className="w-full flex justify-between items-start mt-6 sm:mt-8 gap-3 sm:gap-10">
             <div className="w-1/3 min-w-0 flex flex-col items-center text-center">
-              <span className="text-[12px] sm:text-sm font-semibold tracking-widest uppercase whitespace-normal break-words">
+              <span
+                className="text-[12px] sm:text-sm font-semibold tracking-widest uppercase
+                     text-foreground"
+              >
                 Digital
               </span>
-              <span className="text-[11px] sm:text-xs font-light text-white/50 whitespace-normal break-words">
+              <span
+                className="text-[11px] sm:text-xs font-light
+                     text-foreground/60"
+              >
                 Visual only
               </span>
             </div>
 
             <div className="w-1/3 min-w-0 flex flex-col items-center text-center">
-              <span className="text-[12px] sm:text-sm font-semibold tracking-widest uppercase whitespace-normal break-words">
+              <span
+                className="text-[12px] sm:text-sm font-semibold tracking-widest uppercase
+                     text-foreground"
+              >
                 Augmented
               </span>
-              <span className="text-[11px] sm:text-xs font-light text-white/50 whitespace-normal break-words">
+              <span
+                className="text-[11px] sm:text-xs font-light
+                     text-foreground/60"
+              >
                 Haptic + Visual
               </span>
             </div>
 
             <div className="w-1/3 min-w-0 flex flex-col items-center text-center">
-              <span className="text-[12px] sm:text-sm font-semibold tracking-widest uppercase whitespace-normal break-words">
+              <span
+                className="text-[12px] sm:text-sm font-semibold tracking-widest uppercase
+                     text-foreground"
+              >
                 Analog
               </span>
-              <span className="text-[11px] sm:text-xs font-light text-white/50 whitespace-normal break-words">
+              <span
+                className="text-[11px] sm:text-xs font-light
+                     text-foreground/60"
+              >
                 Mechanical
               </span>
             </div>
