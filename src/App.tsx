@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -6,8 +6,10 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Header } from "./components/portfolio/Header";
-import { Home } from "./components/portfolio/Home";
-import { ProjectDetail } from "./components/portfolio/ProjectDetail";
+// Lazy load route components
+const Home = React.lazy(() => import("./components/portfolio/Home").then(module => ({ default: module.Home })));
+const ProjectDetail = React.lazy(() => import("./components/portfolio/ProjectDetail").then(module => ({ default: module.ProjectDetail })));
+
 import { StarField } from "./components/portfolio/StarField";
 import { AnimatePresence } from "motion/react";
 
@@ -68,7 +70,7 @@ function AppContent() {
     >
       {/* Main Wrapper */}
       <div
-        className={`min-h-screen text-foreground relative overflow-x-hidden transition-colors duration-1000 md:cursor-none ${isDark ? "bg-[#0A0F1C]" : "bg-[#FAF9F7]"}`}
+        className={`min-h-screen text-foreground relative transition-colors duration-1000 md:cursor-none ${isDark ? "bg-[#0A0F1C]" : "bg-[#FAF9F7]"}`}
         style={
           isDark
             ? {
@@ -97,21 +99,27 @@ function AppContent() {
         <div className="relative z-10">
           <Header isDark={isDark} setIsDark={setIsDark} />
           <main>
-            <AnimatePresence mode="wait">
-              <Routes
-                location={location}
-                key={location.pathname}
-              >
-                <Route
-                  path="/"
-                  element={<Home isDark={isDark} />}
-                />
-                <Route
-                  path="/project/:id"
-                  element={<ProjectDetail />}
-                />
-              </Routes>
-            </AnimatePresence>
+            <Suspense fallback={
+              <div className="min-h-screen flex items-center justify-center text-foreground/40 font-mono text-sm tracking-widest uppercase">
+                Loading...
+              </div>
+            }>
+              <AnimatePresence mode="wait">
+                <Routes
+                  location={location}
+                  key={location.pathname}
+                >
+                  <Route
+                    path="/"
+                    element={<Home isDark={isDark} />}
+                  />
+                  <Route
+                    path="/project/:id"
+                    element={<ProjectDetail />}
+                  />
+                </Routes>
+              </AnimatePresence>
+            </Suspense>
           </main>
         </div>
       </div>

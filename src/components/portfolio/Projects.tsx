@@ -1,7 +1,7 @@
-import image_8994fa1327a92f7b701e78e633291923f28b2321 from 'figma:asset/8994fa1327a92f7b701e78e633291923f28b2321.png';
-import image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8 from 'figma:asset/70108fd6c9c376a1b76ede82c22cd85977d7f3d8.png';
-import image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4 from 'figma:asset/c656abc72ab1b2cb94b8c53e549e3a891ca424a4.png';
-import image_13994231acacbf6d832ee34fa8cf8db0db3624ef from 'figma:asset/13994231acacbf6d832ee34fa8cf8db0db3624ef.png';
+import image_8994fa1327a92f7b701e78e633291923f28b2321 from "figma:asset/8994fa1327a92f7b701e78e633291923f28b2321.png";
+import image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8 from "figma:asset/70108fd6c9c376a1b76ede82c22cd85977d7f3d8.png";
+import image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4 from "figma:asset/c656abc72ab1b2cb94b8c53e549e3a891ca424a4.png";
+import image_13994231acacbf6d832ee34fa8cf8db0db3624ef from "figma:asset/13994231acacbf6d832ee34fa8cf8db0db3624ef.png";
 import image_8d35ff54c5ddf2a8ae15483543c88e8221ec70ac from "figma:asset/8d35ff54c5ddf2a8ae15483543c88e8221ec70ac.png";
 import image_a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0 from "figma:asset/a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0.png";
 import image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844 from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png";
@@ -29,9 +29,9 @@ export interface Project {
 export const mainProjects: Project[] = [
   {
     id: 1,
-    title: "Beyond the Clicks",
-    category: "Physical UX Internship",
-    year: "2025",
+    title: "From Novelity to Normality",
+    category: "Master Thesis Project",
+    year: "2026",
     image: image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844,
     description:
       "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
@@ -58,22 +58,32 @@ export const mainProjects: Project[] = [
   },
   {
     id: 2,
-    title: "Essence Object",
-    category: "Product Design",
-    year: "2023",
-    image:
-      "https://images.unsplash.com/photo-1761830476467-0ff86dbcc75d?q=80&w=1200&auto=format&fit=crop",
+    title: "Beyond the Clicks",
+    category: "Physical UX Internship",
+    year: "2025",
+    image: image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844,
     description:
-      "A study in reduction. Stripping away the non-essential.",
+      "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
     content:
-      "Essence Object is a formal exploration of minimalism in everyday objects. The goal was to identify the core function of a household item and strip away every element that did not directly support that function. Through iterative sketching and 3D modeling, I arrived at a form that is both purely functional and aesthetically silent. The final object exists comfortably in the background, only asserting its presence when in use.",
-    toc: ["Concept", "Process", "Result"],
+      "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls. For communicating system states, intent, and safety-critical information without increasing visual or cognitive load intuitively.",
+    toc: [
+      "Background and Focus",
+      "Research",
+      "Prototyping",
+      "Outcome",
+    ],
     gallery: [
-      "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4,
       image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8,
       image_8994fa1327a92f7b701e78e633291923f28b2321,
+      image_8994fa1327a92f7b701e78e633291923f28b2321,
     ],
-    tags: ["Industrial", "Prototyping"],
+    tags: [
+      "HAPTICS",
+      "PHYSICAL UX",
+      "AUTOMOTIVE",
+      "PROTOTYPING",
+    ],
   },
   {
     id: 3,
@@ -307,6 +317,7 @@ export function Projects() {
                       src={activeProject.image}
                       alt={activeProject.title}
                       className="w-full h-full object-cover"
+                      loading="eager"
                     />
                   </div>
 
@@ -367,6 +378,7 @@ export function Projects() {
                   <ImageWithFallback
                     src={p.image}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
                 <div className="flex justify-between items-start mb-3">
@@ -411,6 +423,7 @@ export function Projects() {
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-500 ease-out"
+                    loading="lazy"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5 pr-4">

@@ -21,8 +21,7 @@ export function InteractionSpectrum() {
             mx-auto
             w-full
             max-w-[900px]
-            px-4
-            sm:px-10
+            
             pt-4
             sm:pt-6
             pb-8
