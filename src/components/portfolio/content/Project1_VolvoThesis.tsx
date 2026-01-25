@@ -277,7 +277,7 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
                 src={project.gallery?.[0] || project.image}
                 alt="Prototype 01 main setup"
                 className="absolute inset-0 w-full h-full object-cover block"
-                loading="lazy"
+                loading="eager"
               />
             </div>
             <p className="text-xs font-mono text-foreground/60 mt-3 shrink-0">
@@ -294,7 +294,7 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
                   src={project.gallery?.[1] || project.image}
                   alt="Prototype 01 detail view"
                   className="w-full h-full object-cover block"
-                  loading="lazy"
+                  loading="eager"
                 />
               </div>
               <p className="text-xs font-mono text-foreground/60 mt-3">
@@ -308,7 +308,7 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
                   src={project.gallery?.[2] || project.image}
                   alt="Prototype 01 interaction test"
                   className="w-full h-full object-cover block"
-                  loading="lazy"
+                  loading="eager"
                 />
               </div>
               <p className="text-xs font-mono text-foreground/60 mt-3">
@@ -367,7 +367,7 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
               src={project.gallery?.[1] || project.image}
               alt="Real Prototype"
               className="w-full h-full object-cover"
-              loading="lazy"
+              loading="eager"
             />
             <div className="absolute bottom-3 right-3 text-[10px] font-mono uppercase bg-background/80 backdrop-blur px-2 py-1 text-foreground/60 border border-foreground/5">
               Physical Prototype

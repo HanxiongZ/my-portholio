@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { useLocation } from "react-router-dom";
 import { Hero } from "./Hero";
 import { Projects } from "./Projects";
 import { Experience } from "./Experience";
@@ -11,6 +12,19 @@ interface HomeProps {
 }
 
 export function Home({ isDark }: HomeProps) {
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    if (location.state?.scrollToTop) {
+      window.scrollTo(0, 0);
+      // Double check to override any browser scroll restoration
+      const timer = setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [location.state]);
+
   return (
     <motion.div 
       initial={{ opacity: 0 }} 

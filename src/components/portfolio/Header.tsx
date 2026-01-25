@@ -95,14 +95,17 @@ export function Header({
       <div className="relative z-50 container mx-auto px-6 md:px-12 grid grid-cols-2 md:grid-cols-12 gap-6 items-center">
         {/* Logo - Aligns with Col 1 */}
         <div className="col-span-1 md:col-span-2 pl-2 md:pl-3">
-      <Link
-  to="https://hanxiongzhang.se/"
-  onClick={() => {
-    if (location.pathname === "/") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }}
->
+          <Link
+            to="/"
+            onClick={(e) => {
+              e.preventDefault();
+              if (location.pathname === "/") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              } else {
+                navigate("/", { state: { scrollToTop: true } });
+              }
+            }}
+          >
             <span className="text-xl tracking-[0.1em] font-light text-foreground uppercase">
               Hanx
             </span>

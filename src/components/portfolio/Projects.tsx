@@ -378,7 +378,7 @@ export function Projects() {
                   <ImageWithFallback
                     src={p.image}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
                 <div className="flex justify-between items-start mb-3">
@@ -423,7 +423,7 @@ export function Projects() {
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-500 ease-out"
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5 pr-4">

@@ -41,7 +41,7 @@ export function Project4_Chronos({ project, slugify }: Props) {
                     src={project.gallery[index]}
                     alt={`${project.title} - ${section}`}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
               )}

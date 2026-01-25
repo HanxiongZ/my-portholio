@@ -39,7 +39,7 @@ export function Project3_DigitalEntropy({ project, slugify }: Props) {
                 src={project.gallery[0]}
                 alt="Overview"
                 className="w-full h-full object-cover"
-                loading="lazy"
+                loading="eager"
               />
             </div>
           )}
@@ -64,7 +64,7 @@ export function Project3_DigitalEntropy({ project, slugify }: Props) {
                 src={project.gallery[1]}
                 alt="Algorithm"
                 className="w-full h-full object-cover"
-                loading="lazy"
+                loading="eager"
               />
             </div>
           )}
@@ -89,7 +89,7 @@ export function Project3_DigitalEntropy({ project, slugify }: Props) {
                 src={project.gallery[2]}
                 alt="Gallery"
                 className="w-full h-full object-cover"
-                loading="lazy"
+                loading="eager"
               />
             </div>
           )}
