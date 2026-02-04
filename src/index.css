@@ -260,6 +260,9 @@
     letter-spacing: inherit;
     color: inherit;
     opacity: 1;
+    --lightningcss-light: initial;
+    --lightningcss-dark: ;
+    color-scheme: light;
     background-color: #0000;
     border-radius: 0;
   }
@@ -271,6 +274,9 @@
     letter-spacing: inherit;
     color: inherit;
     opacity: 1;
+    --lightningcss-light: initial;
+    --lightningcss-dark: ;
+    color-scheme: light;
     background-color: #0000;
     border-radius: 0;
   }
@@ -699,6 +705,10 @@
     }
   }
 
+  .m-\[0px\] {
+    margin: 0;
+  }
+
   .mx-auto {
     margin-inline: auto;
   }
@@ -909,6 +919,10 @@
 
   .h-\[150px\] {
     height: 150px;
+  }
+
+  .h-auto {
+    height: auto;
   }
 
   .h-fit {
@@ -1274,12 +1288,6 @@
     margin-block-end: calc(calc(var(--spacing) * 0) * calc(1 - var(--tw-space-y-reverse)));
   }
 
-  :where(.space-y-2 > :not(:last-child)) {
-    --tw-space-y-reverse: 0;
-    margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
-    margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
-  }
-
   :where(.space-y-8 > :not(:last-child)) {
     --tw-space-y-reverse: 0;
     margin-block-start: calc(calc(var(--spacing) * 8) * var(--tw-space-y-reverse));
@@ -1290,6 +1298,10 @@
     --tw-space-y-reverse: 0;
     margin-block-start: calc(calc(var(--spacing) * 16) * var(--tw-space-y-reverse));
     margin-block-end: calc(calc(var(--spacing) * 16) * calc(1 - var(--tw-space-y-reverse)));
+  }
+
+  .gap-x-0 {
+    column-gap: calc(var(--spacing) * 0);
   }
 
   .gap-x-6 {
@@ -1761,6 +1773,10 @@
 
   .p-5 {
     padding: calc(var(--spacing) * 5);
+  }
+
+  .p-\[0px\] {
+    padding: 0;
   }
 
   .px-0 {
@@ -2880,6 +2896,12 @@
   @media (width >= 48rem) {
     .md\:col-span-8 {
       grid-column: span 8 / span 8;
+    }
+  }
+
+  @media (width >= 48rem) {
+    .md\:col-span-9 {
+      grid-column: span 9 / span 9;
     }
   }
 

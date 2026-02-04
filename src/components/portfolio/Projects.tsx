@@ -1,12 +1,5 @@
-import image_8994fa1327a92f7b701e78e633291923f28b2321 from "figma:asset/8994fa1327a92f7b701e78e633291923f28b2321.png";
-import image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8 from "figma:asset/70108fd6c9c376a1b76ede82c22cd85977d7f3d8.png";
-import image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4 from "figma:asset/c656abc72ab1b2cb94b8c53e549e3a891ca424a4.png";
-import image_13994231acacbf6d832ee34fa8cf8db0db3624ef from "figma:asset/13994231acacbf6d832ee34fa8cf8db0db3624ef.png";
-import image_8d35ff54c5ddf2a8ae15483543c88e8221ec70ac from "figma:asset/8d35ff54c5ddf2a8ae15483543c88e8221ec70ac.png";
-import image_a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0 from "figma:asset/a7d51431f3b9259f0337e17d7d3bc300dbf8d3e0.png";
-import image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844 from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png";
-import image_8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5 from "figma:asset/8d6ff16d295012b90ba5e0a703ab3fe87e5a8ae5.png";
-import image_de931ac5e43ce9de9725a2a9c3f54de0f489bc02 from "figma:asset/de931ac5e43ce9de9725a2a9c3f54de0f489bc02.png";
+import image_Thesis_TN from "figma:asset/325ad9525b40756e6f62a5dc436fbc98f6dccef3.png";
+import image_BeyondClicks_TN_sm from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
@@ -32,7 +25,7 @@ export const mainProjects: Project[] = [
     title: "From Novelity to Normality",
     category: "Master Thesis Project",
     year: "2026",
-    image: image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844,
+    image: image_Thesis_TN,
     description:
       "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
     content:
@@ -43,12 +36,7 @@ export const mainProjects: Project[] = [
       "Prototyping",
       "Outcome",
     ],
-    gallery: [
-      image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4,
-      image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8,
-      image_8994fa1327a92f7b701e78e633291923f28b2321,
-      image_8994fa1327a92f7b701e78e633291923f28b2321,
-    ],
+    gallery: [image_Thesis_TN],
     tags: [
       "HAPTICS",
       "PHYSICAL UX",
@@ -61,23 +49,18 @@ export const mainProjects: Project[] = [
     title: "Beyond the Clicks",
     category: "Physical UX Internship",
     year: "2025",
-    image: image_50fe6443ca11a0c1a8a16fd06fffcd8f48e20844,
+    image: image_BeyondClicks_TN_sm,
     description:
       "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
     content:
-      "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls. For communicating system states, intent, and safety-critical information without increasing visual or cognitive load intuitively.",
+      "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls.",
     toc: [
       "Background and Focus",
       "Research",
       "Prototyping",
       "Outcome",
     ],
-    gallery: [
-      image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4,
-      image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8,
-      image_8994fa1327a92f7b701e78e633291923f28b2321,
-      image_8994fa1327a92f7b701e78e633291923f28b2321,
-    ],
+    gallery: [image_BeyondClicks_TN_sm],
     tags: [
       "HAPTICS",
       "PHYSICAL UX",
@@ -90,18 +73,13 @@ export const mainProjects: Project[] = [
     title: "Digital Entropy",
     category: "Interaction",
     year: "2023",
-    image:
-      "https://images.unsplash.com/photo-1605453169876-482f55dc24e5?q=80&w=1200&auto=format&fit=crop",
+    image: image_BeyondClicks_TN_sm,
     description:
       "Visualizing data chaos through algorithmic design patterns.",
     content:
       "We live in an age of data saturation. Digital Entropy is an interactive web experiment that visualizes the overwhelming flow of information we encounter daily. Using generative algorithms, the system takes structured data inputs and subjects them to simulated 'entropy', breaking them down into abstract visual patterns. Users can interact with the decay process, observing how order dissolves into beautiful chaos.",
     toc: ["Overview", "Algorithm", "Gallery"],
-    gallery: [
-      image_8994fa1327a92f7b701e78e633291923f28b2321,
-      image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8,
-      image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4,
-    ],
+    gallery: [image_BeyondClicks_TN_sm],
     tags: ["Web", "Data Viz"],
   },
   {
@@ -110,15 +88,13 @@ export const mainProjects: Project[] = [
     category: "Interface",
     year: "2022",
     image:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop",
     description:
       "A time-management system designed for deep work.",
     content:
       "Chronos challenges the conventional calendar interface. Instead of viewing time as a series of rigid blocks, Chronos visualizes it as a fluid resource. The interface is designed to support 'deep work' states, minimizing notifications and highlighting contiguous blocks of focus time. The dark-mode-first aesthetic reduces eye strain during late-night sessions, while the typography emphasizes clarity and hierarchy.",
     toc: ["Problem", "Design System", "Interface"],
     gallery: [
-      image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8,
-      image_8994fa1327a92f7b701e78e633291923f28b2321,
       "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
     ],
     tags: ["UI/UX", "Mobile"],
@@ -136,9 +112,7 @@ export const mainProjects: Project[] = [
       "Silent Form is a limited-edition art book that explores the concept of silence through photography and typography. The layout utilizes aggressive negative space, forcing the reader to slow down and appreciate the void between elements. The paper selection—a heavy, uncoated stock—adds a tactile dimension to the reading experience, grounding the abstract concepts in physical reality.",
     toc: ["Editorial", "Typography", "Photography"],
     gallery: [
-      image_70108fd6c9c376a1b76ede82c22cd85977d7f3d8,
       "https://images.unsplash.com/photo-1761353854316-ef3803c6437b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGVzaWduJTIwb2JqZWN0fGVufDF8fHx8MTc2NzM3MTA2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      image_c656abc72ab1b2cb94b8c53e549e3a891ca424a4,
     ],
     tags: ["Print", "Art Direction"],
   },

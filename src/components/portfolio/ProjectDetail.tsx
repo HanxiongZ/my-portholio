@@ -18,50 +18,59 @@ import { allProjects, mainProjects } from "./Projects";
 const Project1_VolvoThesis = React.lazy(() =>
   import("./content/Project1_VolvoThesis").then((module) => ({
     default: module.Project1_VolvoThesis,
-  }))
+  })),
 );
 const Project2_VolvoInternship = React.lazy(() =>
-  import("./content/Project2_VolvoInternship").then((module) => ({
-    default: module.Project2_VolvoInternship,
-  }))
+  import("./content/Project2_VolvoInternship").then(
+    (module) => ({
+      default: module.Project2_VolvoInternship,
+    }),
+  ),
 );
 const Project3_DigitalEntropy = React.lazy(() =>
-  import("./content/Project3_DigitalEntropy").then((module) => ({
-    default: module.Project3_DigitalEntropy,
-  }))
+  import("./content/Project3_DigitalEntropy").then(
+    (module) => ({
+      default: module.Project3_DigitalEntropy,
+    }),
+  ),
 );
 const Project4_Chronos = React.lazy(() =>
   import("./content/Project4_Chronos").then((module) => ({
     default: module.Project4_Chronos,
-  }))
+  })),
 );
 const Project5_SilentForm = React.lazy(() =>
   import("./content/Project5_SilentForm").then((module) => ({
     default: module.Project5_SilentForm,
-  }))
+  })),
 );
 const Project6_GlyphStudies = React.lazy(() =>
   import("./content/Project6_GlyphStudies").then((module) => ({
     default: module.Project6_GlyphStudies,
-  }))
+  })),
 );
 const Project7_FloraGenerative = React.lazy(() =>
-  import("./content/Project7_FloraGenerative").then((module) => ({
-    default: module.Project7_FloraGenerative,
-  }))
+  import("./content/Project7_FloraGenerative").then(
+    (module) => ({
+      default: module.Project7_FloraGenerative,
+    }),
+  ),
 );
 const Project8_EchoChamber = React.lazy(() =>
   import("./content/Project8_EchoChamber").then((module) => ({
     default: module.Project8_EchoChamber,
-  }))
+  })),
 );
 const Project9_RawMaterial = React.lazy(() =>
   import("./content/Project9_RawMaterial").then((module) => ({
     default: module.Project9_RawMaterial,
-  }))
+  })),
 );
 
-const ProjectComponents: Record<number, React.LazyExoticComponent<any>> = {
+const ProjectComponents: Record<
+  number,
+  React.LazyExoticComponent<any>
+> = {
   1: Project1_VolvoThesis,
   2: Project2_VolvoInternship,
   3: Project3_DigitalEntropy,
@@ -101,7 +110,8 @@ export function ProjectDetail() {
     window.scrollTo(0, 0);
   }, [projectId]);
 
-  const [showScrollTop, setShowScrollTop] = React.useState(false);
+  const [showScrollTop, setShowScrollTop] =
+    React.useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -190,36 +200,18 @@ export function ProjectDetail() {
         </div>
 
         {/* --- MAIN CONTENT LAYOUT --- */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-0">
           {/* LEFT COLUMN: META & TOC - STICKY */}
-          <div className="col-span-1 md:col-span-3 mb-16 md:mb-0 md:sticky md:top-32 md:self-start h-fit">
-            <div className="backdrop-blur-sm flex flex-col gap-10">
+          <div className="col-span-1 md:col-span-2 mb-16 md:mb-0 md:sticky md:top-32 md:self-start h-fit">
+            <div className="backdrop-blur-sm flex flex-col gap-10 p-[0px] m-[0px]">
               {/* Brief */}
               <div className="border-t border-foreground/10 pt-3">
                 <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
                   Description
                 </span>
-                <p className="text-sm leading-relaxed text-foreground/80 font-normal text-pretty">
+                <p className="leading-relaxed text-foreground/80 font-normal text-pretty text-[12px] text-left">
                   {project.content}
                 </p>
-              </div>
-
-              {/* Scope */}
-              <div className="border-t border-foreground/10 pt-3">
-                <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
-                  Scope
-                </span>
-                <ul className="space-y-2">
-                  {project.tags.map((tag, i) => (
-                    <li
-                      key={i}
-                      className="text-xs font-bold uppercase tracking-wide text-foreground/70 flex items-center gap-2"
-                    >
-                      <span className="w-1 h-1 bg-foreground/30 rounded-full"></span>
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
               </div>
 
               {/* Navigator */}
@@ -240,7 +232,9 @@ export function ProjectDetail() {
                         >
                           <motion.button
                             type="button"
-                            onClick={() => scrollToSection(targetId)}
+                            onClick={() =>
+                              scrollToSection(targetId)
+                            }
                             whileTap={{ scale: 0.98 }}
                             className="w-full group cursor-pointer flex items-center justify-between py-2 px-2 text-xs font-mono uppercase tracking-widest text-foreground/50 hover:bg-foreground hover:text-background hover:border-transparent transition-colors text-left"
                           >
@@ -266,10 +260,13 @@ export function ProjectDetail() {
               }
             >
               {ProjectComponents[project.id] ? (
-                React.createElement(ProjectComponents[project.id], {
-                  project,
-                  slugify,
-                })
+                React.createElement(
+                  ProjectComponents[project.id],
+                  {
+                    project,
+                    slugify,
+                  },
+                )
               ) : (
                 <div className="text-foreground/50">
                   Content coming soon.
@@ -347,7 +344,9 @@ export function ProjectDetail() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() =>
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }
             className="fixed bottom-8 right-8 z-50 p-4 bg-background border border-foreground/10 text-foreground hover:bg-foreground hover:text-background transition-colors backdrop-blur-sm"
           >
             <ArrowUp className="w-5 h-5" />

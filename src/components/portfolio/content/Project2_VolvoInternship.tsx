@@ -9,7 +9,10 @@ interface Props {
   slugify: (text: string) => string;
 }
 
-export function Project2_VolvoInternship({ project, slugify }: Props) {
+export function Project2_VolvoInternship({
+  project,
+  slugify,
+}: Props) {
   // This content mirrors Project 1 for now but is a separate component for independent editing
   return (
     <>
@@ -29,12 +32,12 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
           className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 mb-4 scroll-mt-32"
         >
           <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
-            01 — Background and Focus
+            01 — Background
           </span>
         </div>
 
         {/* Lead Text */}
-        <div className="col-span-1 md:col-span-8">
+        <div className="col-span-1 md:col-span-9">
           <p className="text-xl md:text-2xl leading-relaxed font-light text-foreground/90 text-pretty">
             <span className="text-foreground/40 font-serif italic pr-2">
               "
@@ -46,29 +49,38 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
           </p>
         </div>
 
-        {/* Pull Quote */}
-        <div className="col-span-1 md:col-span-4 md:pl-6 border-l border-foreground/10 hidden md:block">
+        {/* Pull Quote - Sidebar */}
+        <div className="col-span-1 md:col-span-3 md:pl-6 border-l border-foreground/10 hidden md:block">
           <p className="text-xs font-mono uppercase leading-relaxed text-foreground/60">
             Will Provancher
           </p>
         </div>
 
-        {/* Body Text */}
-        <div className="col-span-1 md:col-span-8 md:col-start-1">
-          <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
-            This project was conducted during my internship at Volvo Cars, where
-            in-car experiences are shaped across multiple modalities parallelly.
-            Within this context, physical controls play a critical role in
-            mediating people's intention and complex system behaviours.
-            Particularly as controls in car rely more on screens and less on
-            physical buttons under the EV era.
-          </p>
+        {/* Body Text (保持 9 列，为了阅读体验) */}
+        <div className="col-span-1 md:col-span-9 md:col-start-1 mb-8">
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
-            Within a larger visionary project, my focus was on exploring how
-            tactile layers could be embedded in physical controls. The aim was
-            to design a coherent and intuitive language that communicate with
-            users in a tangible way.
+            During my internship at Volvo Cars, I explored the
+            role of physical controls in an era dominated by
+            screens. My focus was on embedding tactile layers to
+            create a coherent, intuitive language that bridges
+            user intention with complex system behaviors.
           </p>
+        </div>
+        {/* 注意：这里先把上面的 div 闭合了 */}
+
+        {/* Image (独立出来，占满 12 列) */}
+        <div className="col-span-1 md:col-span-12 w-full">
+          <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full">
+            <ImageWithFallback
+              src={project.gallery?.[7] || project.image}
+              alt="Prototype 01 main setup"
+              className="w-full h-auto block"
+            />
+          </div>
+          {/* 可选：加个图片注脚 */}
+          <span className="block text-xs text-foreground/40 mt-2 font-mono">
+            Figure 01: Setup overview
+          </span>
         </div>
 
         {/* 02 Divider & Header */}
@@ -116,8 +128,9 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
                   Versatile Information
                 </h3>
                 <p className="text-xs text-foreground/70 mt-1 leading-relaxed text-pretty">
-                  Haptic feedback carries meaning through distinct patterns,
-                  making physical controls more expressive and versatile.
+                  Haptic feedback carries meaning through
+                  distinct patterns, making physical controls
+                  more expressive and versatile.
                 </p>
               </div>
             </div>
@@ -163,8 +176,9 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
                   Sense of Reassurance
                 </h3>
                 <p className="text-xs text-foreground/70 mt-1 leading-relaxed text-pretty">
-                  Clear tactile feedback builds confidence and safety,
-                  confirming interactions without requiring visual attention.
+                  Clear tactile feedback builds confidence and
+                  safety, confirming interactions without
+                  requiring visual attention.
                 </p>
               </div>
             </div>
@@ -198,18 +212,20 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
                   Moments of Delight
                 </h3>
                 <p className="text-xs text-foreground/70 mt-1 leading-relaxed text-pretty">
-                  Well-designed haptics enrich the driving experience, adding
-                  subtle moments of joy to daily interactions.
+                  Well-designed haptics enrich the driving
+                  experience, adding subtle moments of joy to
+                  daily interactions.
                 </p>
               </div>
             </div>
           </div>
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
-            The exploration was framed by three intial hypotheses.
+            The exploration was framed by three intial
+            hypotheses.
           </p>
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
-            To explore these hypotheses, the work began with the simplest
-            interaction unit: a single button.
+            To explore these hypotheses, the work began with the
+            simplest interaction unit: a single button.
           </p>
 
           <div className="w-full mb-4">
@@ -223,14 +239,17 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
         {/* Body Text */}
         <div className="col-span-1 md:col-span-5 md:col-start-1">
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
-            This specturm frames the interaction quality of a button, from
-            digital to physical.(Feel free the click the buttons above)
+            This specturm frames the interaction quality of a
+            button, from digital to physical.(Feel free the
+            click the buttons above)
           </p>
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
-            On one end, digital buttons that rely primarily on visual feedback;
-            on the other,analog controls communicate through mechanical form and
-            resistance. Haptic feedback as an intermediate tactile layer within
-            the spectrum seems like a good way of starting the exploration.
+            On one end, digital buttons that rely primarily on
+            visual feedback; on the other,analog controls
+            communicate through mechanical form and resistance.
+            Haptic feedback as an intermediate tactile layer
+            within the spectrum seems like a good way of
+            starting the exploration.
           </p>
         </div>
       </div>
@@ -251,13 +270,15 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
           </h3>
 
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
-            The exploration started with a deliberately restrained prototype.
-            Rather than introducing haptics aggressively, a vibration module and
-            a pressure sensor were added to an otherwise simple button setup.
-            This approach treated haptics as an added layer—supporting
-            interaction rather than redefining it—allowing early insights into
-            how haptic button could influence perceived feedback, confidence,
-            and interaction quality.
+            The exploration started with a deliberately
+            restrained prototype. Rather than introducing
+            haptics aggressively, a vibration module and a
+            pressure sensor were added to an otherwise simple
+            button setup. This approach treated haptics as an
+            added layer—supporting interaction rather than
+            redefining it—allowing early insights into how
+            haptic button could influence perceived feedback,
+            confidence, and interaction quality.
           </p>
         </div>
 
@@ -271,8 +292,8 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
               />
             </div>
             <p className="text-xs font-mono text-foreground/60 mt-3 shrink-0">
-              Figure 01 — Mimic the button feeling by putting a pressure sensor
-              underneath an iPhone 14.
+              Figure 01 — Mimic the button feeling by putting a
+              pressure sensor underneath an iPhone 14.
             </p>
           </div>
 
@@ -286,7 +307,8 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
                 />
               </div>
               <p className="text-xs font-mono text-foreground/60 mt-3">
-                Figure 02 — Tactile surface is needed for button feeling.
+                Figure 02 — Tactile surface is needed for button
+                feeling.
               </p>
             </div>
 
@@ -307,16 +329,18 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
 
         <div className="col-span-1 md:col-span-5 md:col-start-1">
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-8">
-            The first round of prototyping showed that a haptic button could
-            work(barely). But the absence of tactile surface limited reassurance
-            and influence how people interact with the button. So button
-            surfaces were added as well. While testing, two of the findings are
-            noticeable, that{" "}
+            The first round of prototyping showed that a haptic
+            button could work(barely). But the absence of
+            tactile surface limited reassurance and influence
+            how people interact with the button. So button
+            surfaces were added as well. While testing, two of
+            the findings are noticeable, that{" "}
             <strong className="font-semibold text-foreground">
-              the shape of a button will influnce the force and touching time
+              the shape of a button will influnce the force and
+              touching time
             </strong>{" "}
-            on the button. Short pressing is tricky to precive haptics for
-            requiring{" "}
+            on the button. Short pressing is tricky to precive
+            haptics for requiring{" "}
             <strong className="font-semibold text-foreground">
               low latency and large intensity
             </strong>
@@ -328,11 +352,13 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
           </h3>
 
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
-            These findings informed the next iteration, shifting the focus from
-            adding haptics to shaping how haptics are physically mediated.
-            Instead of treating vibration as an isolated effect, the work began
-            to examine how form, material, and structural constraints ground
-            haptic feedback in physically feasible interaction.
+            These findings informed the next iteration, shifting
+            the focus from adding haptics to shaping how haptics
+            are physically mediated. Instead of treating
+            vibration as an isolated effect, the work began to
+            examine how form, material, and structural
+            constraints ground haptic feedback in physically
+            feasible interaction.
           </p>
 
           <div className="aspect-video w-full  overflow-hidden">
