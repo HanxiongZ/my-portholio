@@ -5,7 +5,7 @@ import {
   Link,
   useLocation,
   useNavigate,
-} from "react-router-dom";
+} from "react-router";
 import { ThemeToggle } from "./ThemeToggle";
 
 export function Header({

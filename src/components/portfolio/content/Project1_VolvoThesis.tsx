@@ -3,6 +3,7 @@ import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { InteractionSpectrum } from "../InteractionSpectrum";
 import { PressAnimation } from "../PressAnimation";
 import { Project } from "../Projects";
+import { getContentImage } from "../projectImages";
 
 interface Props {
   project: Project;
@@ -10,51 +11,57 @@ interface Props {
 }
 
 export function Project1_VolvoThesis({ project, slugify }: Props) {
+  // Get all content images for this project from the registry
+  const img = {
+    hero: getContentImage(1, "hero"),
+    fig01: getContentImage(1, "fig01"),
+    fig02: getContentImage(1, "fig02"),
+    fig03: getContentImage(1, "fig03"),
+    fig04: getContentImage(1, "fig04"),
+  };
+
   return (
     <>
       {/* Hero Image */}
       <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden">
         <ImageWithFallback
-          src={project.gallery?.[5] || project.image}
+          src={img.hero}
           alt={project.title}
           className="w-full h-full object-cover"
         />
       </div>
 
-      {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 gap-y-12 mb-8 md:mb-10">
-        {/* 01 Divider & Header */}
+      {/* ── 01 Background and Focus ── */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-16 md:mb-24">
+        {/* Left 4 cols: Section title */}
         <div
           id={slugify("Background and Focus")}
-          className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 mb-4 scroll-mt-32"
+          className="col-span-1 md:col-span-4 border-t border-foreground/10 pt-6 mb-4 md:mb-0 scroll-mt-32"
         >
           <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
             01 — Background and Focus
           </span>
         </div>
 
-        {/* Lead Text */}
-        <div className="col-span-1 md:col-span-8">
-          <p className="text-xl md:text-2xl leading-relaxed font-light text-foreground/90 text-pretty">
-            <span className="text-foreground/40 font-serif italic pr-2">
-              "
-            </span>
-            Haptics is to touch, as optics is to sight.
-            <span className="text-foreground/40 font-serif italic pr-2">
-              "
-            </span>
-          </p>
-        </div>
+        {/* Right 8 cols: Content */}
+        <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 md:border-t-0 md:pt-6">
+          {/* Lead Quote */}
+          <div className="mb-8">
+            <p className="text-xl md:text-2xl leading-relaxed font-light text-foreground/90 text-pretty">
+              <span className="text-foreground/40 font-serif italic pr-2">
+                "
+              </span>
+              Haptics is to touch, as optics is to sight.
+              <span className="text-foreground/40 font-serif italic pr-2">
+                "
+              </span>
+            </p>
+            <p className="text-xs font-mono uppercase leading-relaxed text-foreground/60 mt-3">
+              Will Provancher
+            </p>
+          </div>
 
-        {/* Pull Quote */}
-        <div className="col-span-1 md:col-span-4 md:pl-6 border-l border-foreground/10 hidden md:block">
-          <p className="text-xs font-mono uppercase leading-relaxed text-foreground/60">
-            Will Provancher
-          </p>
-        </div>
-
-        {/* Body Text */}
-        <div className="col-span-1 md:col-span-8 md:col-start-1">
+          {/* Body Text */}
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
             This project was conducted during my internship at Volvo Cars, where
             in-car experiences are shaped across multiple modalities parallelly.
@@ -70,24 +77,27 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
             users in a tangible way.
           </p>
         </div>
+      </div>
 
-        {/* 02 Divider & Header */}
+      {/* ── 02 Frame the Exploration ── */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-16 md:mb-24">
+        {/* Left 4 cols: Section title */}
         <div
           id={slugify("Frame the Exploration")}
-          className="col-span-1 md:col-span-8  pt-6 mb-4 scroll-mt-32"
+          className="col-span-1 md:col-span-4 border-t border-foreground/10 pt-6 mb-4 md:mb-0 scroll-mt-32"
         >
           <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
             02 — Frame the Exploration
           </span>
         </div>
 
-        {/* Body Text */}
-        <div className="col-span-1 md:col-span-8 md:col-start-1">
+        {/* Right 8 cols: Content */}
+        <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 md:border-t-0 md:pt-6">
+          {/* Hypothesis Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {/* Hypothesis 01: Versatile Information */}
             <div className="flex flex-col gap-3 group">
               <div className="h-32 w-full bg-foreground/1 border border-foreground/10 rounded-xs flex items-center justify-center relative overflow-hidden">
-                {/* Background Grid Pattern */}
                 <div
                   className="absolute inset-0 opacity-[0.06]"
                   style={{
@@ -96,7 +106,6 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
                     backgroundSize: "8px 8px",
                   }}
                 ></div>
-                {/* Visual: Distinct Patterns (Signal) */}
                 <svg
                   viewBox="0 0 80 40"
                   className="w-1/2 text-foreground opacity-80 group-hover:opacity-100 transition-opacity duration-500"
@@ -135,7 +144,6 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
                     backgroundSize: "8px 8px",
                   }}
                 ></div>
-                {/* Visual: Reassurance (Stable Feedback Loop) */}
                 <svg
                   viewBox="0 0 80 40"
                   className="w-1/2 text-foreground opacity-80 group-hover:opacity-100 transition-opacity duration-500"
@@ -183,7 +191,6 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
                     backgroundSize: "8px 8px",
                   }}
                 ></div>
-                {/* Visual: Delight (Spark) */}
                 <svg
                   viewBox="0 0 40 40"
                   className="h-1/2 text-foreground opacity-80 group-hover:opacity-100 transition-opacity duration-500"
@@ -208,6 +215,7 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
               </div>
             </div>
           </div>
+
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
             The exploration was framed by three intial hypotheses.
           </p>
@@ -216,17 +224,11 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
             interaction unit: a single button.
           </p>
 
-          <div className="w-full mb-4">
+          <div className="w-full mb-4 mt-8">
             <InteractionSpectrum />
           </div>
-        </div>
-      </div>
 
-      {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12 mb-8 md:mb-10">
-        {/* Body Text */}
-        <div className="col-span-1 md:col-span-5 md:col-start-1">
-          <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6">
+          <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-6 mt-8">
             This specturm frames the interaction quality of a button, from
             digital to physical.(Feel free the click the buttons above)
           </p>
@@ -239,20 +241,20 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
         </div>
       </div>
 
-      {/* NARRATIVE SECTION - Enhanced Graphic Design Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-8 gap-x-6 gap-y-12 mb-8 md:mb-10">
-        {/* 01 Divider & Header */}
+      {/* ── 03 Learning by Prototyping ── */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-16 md:mb-24">
+        {/* Left 4 cols: Section title */}
         <div
           id={slugify("Learning through prototyping")}
-          className="col-span-1 md:col-span-8 pt-6 mb-4 scroll-mt-32"
+          className="col-span-1 md:col-span-4 border-t border-foreground/10 pt-6 mb-4 md:mb-0 scroll-mt-32"
         >
           <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
             03 — Learning by Prototyping
           </span>
         </div>
 
-        {/* Body Text */}
-        <div className="col-span-1 md:col-span-5 md:col-start-1">
+        {/* Right 8 cols: Content */}
+        <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 md:border-t-0 md:pt-6">
           <h3 className="text-xs md:text-sm font-semibold md:uppercase tracking-normal md:tracking-wide text-foreground whitespace-nowrap mt-[0px] mr-[0px] mb-[24px] ml-[0px]">
             First Prototype – Bring in haptics only
           </h3>
@@ -266,60 +268,55 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
             how haptic button could influence perceived feedback, confidence,
             and interaction quality.
           </p>
-        </div>
 
-        {/* Media group: Expanded to full 8-col width */}
-        <div className="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-8 gap-6 mb-8 items-stretch">
-          {/* LEFT: big image (Span 5) */}
-          <div className="col-span-1 md:col-span-5 flex flex-col h-full">
-            <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden relative w-full flex-1 min-h-[200px] md:min-h-0">
-              <ImageWithFallback
-                src={project.gallery?.[0] || project.image}
-                alt="Prototype 01 main setup"
-                className="absolute inset-0 w-full h-full object-cover block"
-                loading="eager"
-              />
-            </div>
-            <p className="text-xs font-mono text-foreground/60 mt-3 shrink-0">
-              Figure 01 — Mimic the button feeling by putting a pressure sensor
-              underneath an iPhone 14.
-            </p>
-          </div>
-
-          {/* RIGHT: two stacked images (Span 3) */}
-          <div className="col-span-1 md:col-span-3 flex flex-col gap-4 h-full">
-            <div>
-              <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
+          {/* Media group */}
+          <div className="grid grid-cols-1 md:grid-cols-8 gap-6 mb-8 items-stretch">
+            <div className="col-span-1 md:col-span-5 flex flex-col h-full">
+              <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden relative w-full flex-1 min-h-[200px] md:min-h-0">
                 <ImageWithFallback
-                  src={project.gallery?.[1] || project.image}
-                  alt="Prototype 01 detail view"
-                  className="w-full h-full object-cover block"
+                  src={img.fig01}
+                  alt="Prototype 01 main setup"
+                  className="absolute inset-0 w-full h-full object-cover block"
                   loading="eager"
                 />
               </div>
-              <p className="text-xs font-mono text-foreground/60 mt-3">
-                Figure 02 — Tactile surface is needed for button feeling.
+              <p className="text-xs font-mono text-foreground/60 mt-3 shrink-0">
+                Figure 01 — Mimic the button feeling by putting a pressure sensor
+                underneath an iPhone 14.
               </p>
             </div>
 
-            <div>
-              <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
-                <ImageWithFallback
-                  src={project.gallery?.[2] || project.image}
-                  alt="Prototype 01 interaction test"
-                  className="w-full h-full object-cover block"
-                  loading="eager"
-                />
+            <div className="col-span-1 md:col-span-3 flex flex-col gap-4 h-full">
+              <div>
+                <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
+                  <ImageWithFallback
+                    src={img.fig02}
+                    alt="Prototype 01 detail view"
+                    className="w-full h-full object-cover block"
+                    loading="eager"
+                  />
+                </div>
+                <p className="text-xs font-mono text-foreground/60 mt-3">
+                  Figure 02 — Tactile surface is needed for button feeling.
+                </p>
               </div>
-              <p className="text-xs font-mono text-foreground/60 mt-3">
-                Figure 03 — Testing with people in the team
-              </p>
+
+              <div>
+                <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
+                  <ImageWithFallback
+                    src={img.fig03}
+                    alt="Prototype 01 interaction test"
+                    className="w-full h-full object-cover block"
+                    loading="eager"
+                  />
+                </div>
+                <p className="text-xs font-mono text-foreground/60 mt-3">
+                  Figure 03 — Testing with people in the team
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="col-span-1 md:col-span-5 md:col-start-1">
-          {/* Text stays as-is */}
           <p className="text-base leading-7 font-light text-foreground/80 text-pretty mb-8">
             The first round of prototyping showed that a haptic button could
             work(barely). But the absence of tactile surface limited reassurance
@@ -349,28 +346,26 @@ export function Project1_VolvoThesis({ project, slugify }: Props) {
             haptic feedback in physically feasible interaction.
           </p>
 
-          <div className="aspect-video w-full  overflow-hidden">
-            <PressAnimation />
-          </div>
-        </div>
-
-        {/* Animation & Real Photo - Side by Side */}
-        <div className="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-8 mb-4">
-          {/* Left: Interactive Animation */}
-          <div className="aspect-video w-full  overflow-hidden">
+          <div className="aspect-video w-full overflow-hidden mb-8">
             <PressAnimation />
           </div>
 
-          {/* Right: Real Photo */}
-          <div className="aspect-video w-full relative border border-foreground/10 overflow-hidden bg-background/50">
-            <ImageWithFallback
-              src={project.gallery?.[1] || project.image}
-              alt="Real Prototype"
-              className="w-full h-full object-cover"
-              loading="eager"
-            />
-            <div className="absolute bottom-3 right-3 text-[10px] font-mono uppercase bg-background/80 backdrop-blur px-2 py-1 text-foreground/60 border border-foreground/5">
-              Physical Prototype
+          {/* Animation & Real Photo - Side by Side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mt-8 mb-4">
+            <div className="aspect-video w-full overflow-hidden">
+              <PressAnimation />
+            </div>
+
+            <div className="aspect-video w-full relative border border-foreground/10 overflow-hidden bg-background/50">
+              <ImageWithFallback
+                src={img.fig04}
+                alt="Real Prototype"
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+              <div className="absolute bottom-3 right-3 text-[10px] font-mono uppercase bg-background/80 backdrop-blur px-2 py-1 text-foreground/60 border border-foreground/5">
+                Physical Prototype
+              </div>
             </div>
           </div>
         </div>

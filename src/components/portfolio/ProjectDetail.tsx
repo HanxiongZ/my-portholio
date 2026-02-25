@@ -11,8 +11,9 @@ import {
   Link,
   useNavigate,
   useLocation,
-} from "react-router-dom";
+} from "react-router";
 import { allProjects, mainProjects } from "./Projects";
+import { sideProjects } from "./Projects";
 
 // Lazy load project content components to reduce initial bundle size
 const Project1_VolvoThesis = React.lazy(() =>
@@ -84,11 +85,15 @@ const ProjectComponents: Record<
 
 export function ProjectDetail() {
   const { id } = useParams();
-  const projectId = Number(id);
+  const location = useLocation();
+
+  // Extract project ID from params or from the URL path directly (for explicit routes)
+  const projectId = id
+    ? Number(id)
+    : Number(location.pathname.split("/").pop());
   const project = allProjects.find((p) => p.id === projectId);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   // --- helpers: TOC slug + scroll ---
   const slugify = (text: string) =>
@@ -277,62 +282,151 @@ export function ProjectDetail() {
         </div>
       </div>
 
-      {/* --- FOOTER: 12-COLUMN NAVIGATOR --- */}
+      {/* --- FOOTER: HORIZONTAL SCROLL NAVIGATOR --- */}
       <div className="border-t border-foreground/10 bg-background/50 backdrop-blur-md py-12 md:py-16">
         <div className="container mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-2 md:grid-cols-12 gap-6">
-            {/* Projects 1-5 */}
-            {mainProjects.map((p) => (
-              <Link
-                key={p.id}
-                to={`/project/${p.id}`}
-                className={`
-                  col-span-1 md:col-span-2 group flex flex-col justify-between h-32 md:h-40 p-5 border border-transparent transition-all duration-300
-                  ${
-                    p.id === projectId
-                      ? "opacity-40 cursor-default pointer-events-none grayscale"
-                      : "hover:bg-foreground hover:text-background"
-                  }
-                `}
+          {/* Section labels */}
+          <div className="flex items-center gap-6 mb-6">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-foreground/40">
+              All Projects
+            </span>
+            <div className="flex-1 h-px bg-foreground/10" />
+          </div>
+
+          {/* Scrollable strip */}
+          <div className="overflow-x-auto scrollbar-hide -mx-2 px-2">
+            <div className="flex gap-4 min-w-max pb-2">
+              {/* Main Projects */}
+              {mainProjects.map((p) => (
+                <Link
+                  key={p.id}
+                  to={`/project/${p.id}`}
+                  className={`
+                    group flex flex-col justify-between w-48 md:w-56 h-32 md:h-40 p-5 shrink-0 transition-all duration-300 border
+                    ${
+                      p.id === projectId
+                        ? "border-foreground bg-foreground text-background cursor-default"
+                        : "border-foreground/10 hover:bg-foreground hover:text-background hover:border-transparent"
+                    }
+                  `}
+                  onClick={p.id === projectId ? (e) => e.preventDefault() : undefined}
+                >
+                  <div className="flex justify-between items-start w-full">
+                    <span
+                      className={`text-xs font-mono uppercase tracking-widest transition-colors ${
+                        p.id === projectId
+                          ? "text-background/60"
+                          : "opacity-60 group-hover:opacity-100"
+                      }`}
+                    >
+                      0{p.id}
+                    </span>
+                    {p.id === projectId ? (
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-background/50">
+                        Current
+                      </span>
+                    ) : (
+                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    )}
+                  </div>
+
+                  <div>
+                    <span
+                      className={`block text-xs font-mono uppercase mb-2 tracking-wider transition-colors ${
+                        p.id === projectId
+                          ? "text-background/50"
+                          : "opacity-50 group-hover:opacity-80"
+                      }`}
+                    >
+                      {p.category}
+                    </span>
+                    <h4 className="text-base font-bold uppercase leading-tight tracking-wide">
+                      {p.title}
+                    </h4>
+                  </div>
+                </Link>
+              ))}
+
+              {/* Divider */}
+              <div className="shrink-0 flex flex-col items-center justify-center px-2">
+                <div className="w-px h-full bg-foreground/10" />
+              </div>
+
+              {/* Playground Projects */}
+              {sideProjects.map((p) => (
+                <Link
+                  key={p.id}
+                  to={`/project/${p.id}`}
+                  className={`
+                    group flex flex-col justify-between w-48 md:w-56 h-32 md:h-40 p-5 shrink-0 transition-all duration-300 border
+                    ${
+                      p.id === projectId
+                        ? "border-foreground bg-foreground text-background cursor-default"
+                        : "border-foreground/10 hover:bg-foreground hover:text-background hover:border-transparent"
+                    }
+                  `}
+                  onClick={p.id === projectId ? (e) => e.preventDefault() : undefined}
+                >
+                  <div className="flex justify-between items-start w-full">
+                    <span
+                      className={`text-xs font-mono uppercase tracking-widest transition-colors ${
+                        p.id === projectId
+                          ? "text-background/60"
+                          : "opacity-60 group-hover:opacity-100"
+                      }`}
+                    >
+                      0{p.id}
+                    </span>
+                    {p.id === projectId ? (
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-background/50">
+                        Current
+                      </span>
+                    ) : (
+                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    )}
+                  </div>
+
+                  <div>
+                    <span
+                      className={`block text-xs font-mono uppercase mb-2 tracking-wider transition-colors ${
+                        p.id === projectId
+                          ? "text-background/50"
+                          : "opacity-50 group-hover:opacity-80"
+                      }`}
+                    >
+                      {p.category}
+                    </span>
+                    <h4 className="text-base font-bold uppercase leading-tight tracking-wide">
+                      {p.title}
+                    </h4>
+                  </div>
+                </Link>
+              ))}
+
+              {/* Divider */}
+              <div className="shrink-0 flex flex-col items-center justify-center px-2">
+                <div className="w-px h-full bg-foreground/10" />
+              </div>
+
+              {/* Index Link */}
+              <button
+                onClick={handleBack}
+                className="shrink-0 group flex flex-col justify-between w-48 md:w-56 h-32 md:h-40 p-5 border border-foreground/10 hover:bg-foreground hover:text-background hover:border-transparent transition-all duration-300 text-left"
               >
                 <div className="flex justify-between items-start w-full">
                   <span className="text-xs font-mono uppercase tracking-widest opacity-60 group-hover:opacity-100">
-                    0{p.id}
+                    Index
                   </span>
-                  {p.id !== projectId && (
-                    <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  )}
+                  <ArrowLeft className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
 
-                <div>
-                  <span className="block text-xs font-mono uppercase opacity-50 mb-2 group-hover:opacity-80 tracking-wider">
-                    {p.category}
-                  </span>
+                <div className="flex items-end justify-between">
                   <h4 className="text-base font-bold uppercase leading-tight tracking-wide">
-                    {p.title}
+                    View All
                   </h4>
                 </div>
-              </Link>
-            ))}
-
-            {/* Index Link (fills last 2 columns to complete the 12-grid) */}
-            <button
-              onClick={handleBack}
-              className="col-span-1 md:col-span-2 group flex flex-col justify-between h-32 md:h-40 p-5 border border-foreground/10 hover:bg-foreground hover:text-background hover:border-transparent transition-all duration-300 w-full text-left"
-            >
-              <div className="flex justify-between items-start w-full">
-                <span className="text-xs font-mono uppercase tracking-widest opacity-60 group-hover:opacity-100">
-                  Index
-                </span>
-                <ArrowLeft className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-
-              <div className="flex items-end justify-between">
-                <h4 className="text-base font-bold uppercase leading-tight tracking-wide">
-                  View All
-                </h4>
-              </div>
-            </button>
+              </button>
+            </div>
           </div>
         </div>
       </div>

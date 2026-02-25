@@ -1,18 +1,16 @@
-import React, { useEffect, useLayoutEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import React, { useLayoutEffect } from 'react';
+import { useLocation, useOutletContext } from "react-router";
 import { Hero } from "./Hero";
 import { Projects } from "./Projects";
 import { Experience } from "./Experience";
 import { Constellation } from "./Constellation";
 import { Footer } from "./Footer";
 import { motion } from "motion/react";
+import type { OutletContextType } from "./Layout";
 
-interface HomeProps {
-  isDark: boolean;
-}
-
-export function Home({ isDark }: HomeProps) {
+export function Home() {
   const location = useLocation();
+  const { isDark } = useOutletContext<OutletContextType>();
 
   useLayoutEffect(() => {
     if (location.state?.scrollToTop) {
@@ -26,12 +24,7 @@ export function Home({ isDark }: HomeProps) {
   }, [location.state]);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div>
       {/* Interactive Constellation (Foreground Highlights) */}
       <Constellation isDark={isDark} />
 
@@ -39,6 +32,6 @@ export function Home({ isDark }: HomeProps) {
       <Projects />
       <Experience />
       <Footer />
-    </motion.div>
+    </div>
   );
 }

@@ -3,6 +3,7 @@ import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { InteractionSpectrum } from "../InteractionSpectrum";
 import { PressAnimation } from "../PressAnimation";
 import { Project } from "../Projects";
+import { getContentImage } from "../projectImages";
 
 interface Props {
   project: Project;
@@ -13,13 +14,22 @@ export function Project2_VolvoInternship({
   project,
   slugify,
 }: Props) {
+  const img = {
+    hero:  getContentImage(2, "hero"),
+    fig01: getContentImage(2, "fig01"),
+    fig02: getContentImage(2, "fig02"),
+    fig03: getContentImage(2, "fig03"),
+    fig04: getContentImage(2, "fig04"),
+    fig07: getContentImage(2, "fig07"),
+  };
+
   // This content mirrors Project 1 for now but is a separate component for independent editing
   return (
     <>
       {/* Hero Image */}
       <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden">
         <ImageWithFallback
-          src={project.gallery?.[5] || project.image}
+          src={img.hero}
           alt={project.title}
           className="w-full h-full object-cover"
         />
@@ -72,7 +82,7 @@ export function Project2_VolvoInternship({
         <div className="col-span-1 md:col-span-12 w-full">
           <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full">
             <ImageWithFallback
-              src={project.gallery?.[7] || project.image}
+              src={img.fig07}
               alt="Prototype 01 main setup"
               className="w-full h-auto block"
             />
@@ -286,7 +296,7 @@ export function Project2_VolvoInternship({
           <div className="col-span-1 md:col-span-5 flex flex-col h-full">
             <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden relative w-full flex-1 min-h-[200px] md:min-h-0">
               <ImageWithFallback
-                src={project.gallery?.[0] || project.image}
+                src={img.fig01}
                 alt="Prototype 01 main setup"
                 className="absolute inset-0 w-full h-full object-cover block"
               />
@@ -301,7 +311,7 @@ export function Project2_VolvoInternship({
             <div>
               <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
                 <ImageWithFallback
-                  src={project.gallery?.[1] || project.image}
+                  src={img.fig02}
                   alt="Prototype 01 detail view"
                   className="w-full h-full object-cover block"
                 />
@@ -315,7 +325,7 @@ export function Project2_VolvoInternship({
             <div>
               <div className="border border-foreground/10 bg-foreground/[0.03] overflow-hidden w-full aspect-[2/1]">
                 <ImageWithFallback
-                  src={project.gallery?.[2] || project.image}
+                  src={img.fig03}
                   alt="Prototype 01 interaction test"
                   className="w-full h-full object-cover block"
                 />
@@ -373,7 +383,7 @@ export function Project2_VolvoInternship({
 
           <div className="aspect-video w-full relative border border-foreground/10 overflow-hidden bg-background/50">
             <ImageWithFallback
-              src={project.gallery?.[1] || project.image}
+              src={img.fig04}
               alt="Real Prototype"
               className="w-full h-full object-cover"
             />
