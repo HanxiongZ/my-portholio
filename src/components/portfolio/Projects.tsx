@@ -25,9 +25,8 @@ export const mainProjects: Project[] = [
     year: "2026",
     image: getThumbnail(1),
     description:
-      "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
-    content:
-      "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls. For communicating system states, intent, and safety-critical information without increasing visual or cognitive load intuitively.",
+      "Exploring the long term interactions with AI in the rural healthcare system",
+    content: "This project is working in progress.",
     toc: [
       "Background and Focus",
       "Research",
@@ -35,10 +34,9 @@ export const mainProjects: Project[] = [
       "Outcome",
     ],
     tags: [
-      "HAPTICS",
-      "PHYSICAL UX",
-      "AUTOMOTIVE",
-      "PROTOTYPING EXPLORATION",
+      "Physical AI",
+      "Rural Healthcare",
+      "Long-term Interaction",
     ],
   },
   {

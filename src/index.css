@@ -75,6 +75,7 @@
     --font-sans: "Manrope", sans-serif;
     --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --color-amber-400: oklch(.828 .189 84.429);
     --color-yellow-200: oklch(.945 .129 101.54);
     --color-yellow-500: oklch(.795 .184 86.047);
     --color-sky-200: oklch(.901 .058 230.902);
@@ -762,6 +763,10 @@
     margin-bottom: calc(var(--spacing) * 1);
   }
 
+  .mb-1\.5 {
+    margin-bottom: calc(var(--spacing) * 1.5);
+  }
+
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
@@ -796,6 +801,10 @@
 
   .mb-20 {
     margin-bottom: calc(var(--spacing) * 20);
+  }
+
+  .mb-24 {
+    margin-bottom: calc(var(--spacing) * 24);
   }
 
   .mb-32 {
@@ -984,6 +993,10 @@
 
   .w-1 {
     width: calc(var(--spacing) * 1);
+  }
+
+  .w-1\.5 {
+    width: calc(var(--spacing) * 1.5);
   }
 
   .w-1\/2 {
@@ -1556,6 +1569,10 @@
     background-color: #fdb813;
   }
 
+  .bg-amber-400 {
+    background-color: var(--color-amber-400);
+  }
+
   .bg-background {
     background-color: var(--background);
   }
@@ -1957,6 +1974,10 @@
     padding-left: calc(var(--spacing) * 2);
   }
 
+  .pl-3\.5 {
+    padding-left: calc(var(--spacing) * 3.5);
+  }
+
   .text-center {
     text-align: center;
   }
@@ -2191,6 +2212,16 @@
 
   .text-foreground {
     color: var(--foreground);
+  }
+
+  .text-foreground\/25 {
+    color: var(--foreground);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .text-foreground\/25 {
+      color: color-mix(in oklab, var(--foreground) 25%, transparent);
+    }
   }
 
   .text-foreground\/30 {
@@ -3044,6 +3075,12 @@
   @media (width >= 48rem) {
     .md\:mb-24 {
       margin-bottom: calc(var(--spacing) * 24);
+    }
+  }
+
+  @media (width >= 48rem) {
+    .md\:mb-32 {
+      margin-bottom: calc(var(--spacing) * 32);
     }
   }
 

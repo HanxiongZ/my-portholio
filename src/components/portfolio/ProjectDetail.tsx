@@ -144,6 +144,10 @@ export function ProjectDetail() {
     );
   }
 
+  // Projects marked as Work In Progress — remove ID when ready to publish
+  const WIP_PROJECT_IDS = [1];
+  const isWIP = WIP_PROJECT_IDS.includes(project.id);
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -219,8 +223,26 @@ export function ProjectDetail() {
                 </p>
               </div>
 
-              {/* Navigator */}
-              {project.toc && project.toc.length > 0 && (
+              {/* Status badge — only when WIP */}
+              {isWIP && (
+                <div className="border-t border-foreground/10 pt-3">
+                  <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
+                    Status
+                  </span>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-foreground/50">
+                      In Progress
+                    </span>
+                  </div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-foreground/25 pl-3.5">
+                    Spring 2026
+                  </p>
+                </div>
+              )}
+
+              {/* Navigator — only when NOT WIP */}
+              {!isWIP && project.toc && project.toc.length > 0 && (
                 <div className="border-t border-foreground/10 pt-3 sticky top-32 max-h-[80vh] overflow-y-auto">
                   <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
                     Jump To
