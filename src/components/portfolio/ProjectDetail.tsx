@@ -242,38 +242,40 @@ export function ProjectDetail() {
               )}
 
               {/* Navigator — only when NOT WIP */}
-              {!isWIP && project.toc && project.toc.length > 0 && (
-                <div className="border-t border-foreground/10 pt-3 sticky top-32 max-h-[80vh] overflow-y-auto">
-                  <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
-                    Jump To
-                  </span>
+              {!isWIP &&
+                project.toc &&
+                project.toc.length > 0 && (
+                  <div className="border-t border-foreground/10 pt-3 sticky top-32 max-h-[80vh] overflow-y-auto">
+                    <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
+                      Jump To
+                    </span>
 
-                  <ul className="space-y-0">
-                    {project.toc.map((item) => {
-                      const targetId = slugify(item);
+                    <ul className="space-y-0">
+                      {project.toc.map((item) => {
+                        const targetId = slugify(item);
 
-                      return (
-                        <li
-                          key={targetId}
-                          className="border-b border-foreground/5 last:border-0"
-                        >
-                          <motion.button
-                            type="button"
-                            onClick={() =>
-                              scrollToSection(targetId)
-                            }
-                            whileTap={{ scale: 0.98 }}
-                            className="w-full group cursor-pointer flex items-center justify-between py-2 px-2 text-xs font-mono uppercase tracking-widest text-foreground/50 hover:bg-foreground hover:text-background hover:border-transparent transition-colors text-left"
+                        return (
+                          <li
+                            key={targetId}
+                            className="border-b border-foreground/5 last:border-0"
                           >
-                            <span>{item}</span>
-                            <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all group-hover:text-background" />
-                          </motion.button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
+                            <motion.button
+                              type="button"
+                              onClick={() =>
+                                scrollToSection(targetId)
+                              }
+                              whileTap={{ scale: 0.98 }}
+                              className="w-full group cursor-pointer flex items-center justify-between py-2 px-2 text-xs font-mono uppercase tracking-widest text-foreground/50 hover:bg-foreground hover:text-background hover:border-transparent transition-colors text-left"
+                            >
+                              <span>{item}</span>
+                              <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all group-hover:text-background" />
+                            </motion.button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
             </div>
           </div>
 
@@ -331,7 +333,11 @@ export function ProjectDetail() {
                         : "border-foreground/10 hover:bg-foreground hover:text-background hover:border-transparent"
                     }
                   `}
-                  onClick={p.id === projectId ? (e) => e.preventDefault() : undefined}
+                  onClick={
+                    p.id === projectId
+                      ? (e) => e.preventDefault()
+                      : undefined
+                  }
                 >
                   <div className="flex justify-between items-start w-full">
                     <span
@@ -387,7 +393,11 @@ export function ProjectDetail() {
                         : "border-foreground/10 hover:bg-foreground hover:text-background hover:border-transparent"
                     }
                   `}
-                  onClick={p.id === projectId ? (e) => e.preventDefault() : undefined}
+                  onClick={
+                    p.id === projectId
+                      ? (e) => e.preventDefault()
+                      : undefined
+                  }
                 >
                   <div className="flex justify-between items-start w-full">
                     <span

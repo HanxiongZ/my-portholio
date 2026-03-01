@@ -16,6 +16,7 @@
 // ─── Figma asset imports (projects 1 & 2) ───────────────────────
 import image_Thesis_TN from "figma:asset/4ead9f2c0d38f2409fbfa5938ab918c3abfd6ecf.png";
 import image_BeyondClicks_TN_sm from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png";
+import image_Coact_TN from "figma:asset/9b5361a5bb51f315ff390d2a3a392efc986f156f.png";
 
 // ─────────────────────────────────────────────────────────────────
 // TYPE
@@ -24,6 +25,12 @@ import image_BeyondClicks_TN_sm from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd
 export interface ProjectImages {
   /** Shown on homepage Selected Works / Playground cards */
   thumbnail: string;
+  /** Animated GIF shown on Playground hover (desktop) */
+  playgroundPreview?: string;
+  /** Video shown on Playground hover (desktop) — takes priority over playgroundPreview */
+  playgroundVideo?: string;
+  /** Video embedded in the project detail page */
+  contentVideo?: string;
   /** Used inside the project detail page — each key is a named slot */
   content: Record<string, string>;
 }
@@ -33,7 +40,7 @@ export interface ProjectImages {
 // ─────────────────────────────────────────────────────────────────
 
 const registry: Record<number, ProjectImages> = {
-  // ═══════════════════════════════════════════════════════════════
+  // ══════════════════════════════════════════════════════════════
   // PROJECT 1 — From Novelty to Normality (Master Thesis)
   // ═══════════════════════════════════════════════════════════════
   1: {
@@ -73,7 +80,7 @@ const registry: Record<number, ProjectImages> = {
   // PROJECT 3 — Digital Entropy
   // ═══════════════════════════════════════════════════════════════
   3: {
-    thumbnail: "REPLACE_P3_THUMBNAIL",
+    thumbnail: image_Coact_TN,
     content: {
       hero: "REPLACE_P3_HERO",
       fig01: "REPLACE_P3_FIG01",
@@ -113,6 +120,7 @@ const registry: Record<number, ProjectImages> = {
   // ═══════════════════════════════════════════════════════════════
   6: {
     thumbnail: "REPLACE_P6_THUMBNAIL",
+    playgroundPreview: "REPLACE_P6_PREVIEW_GIF",
     content: {
       hero: "REPLACE_P6_HERO",
       fig01: "REPLACE_P6_FIG01",
@@ -124,6 +132,7 @@ const registry: Record<number, ProjectImages> = {
   // ═══════════════════════════════════════════════════════════════
   7: {
     thumbnail: "REPLACE_P7_THUMBNAIL",
+    playgroundPreview: "REPLACE_P7_PREVIEW_GIF",
     content: {
       hero: "REPLACE_P7_HERO",
       fig01: "REPLACE_P7_FIG01",
@@ -135,6 +144,7 @@ const registry: Record<number, ProjectImages> = {
   // ═══════════════════════════════════════════════════════════════
   8: {
     thumbnail: "REPLACE_P8_THUMBNAIL",
+    playgroundPreview: "REPLACE_P8_PREVIEW_GIF",
     content: {
       hero: "REPLACE_P8_HERO",
       fig01: "REPLACE_P8_FIG01",
@@ -146,6 +156,12 @@ const registry: Record<number, ProjectImages> = {
   // ═══════════════════════════════════════════════════════════════
   9: {
     thumbnail: "REPLACE_P9_THUMBNAIL",
+    // Video preview for hover — replace with your own .mp4 URL
+    playgroundVideo:
+      "https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/Poster_video.mp4",
+    // Video embedded in detail page — replace with your own .mp4 URL
+    contentVideo:
+      "https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/Poster_video.mp4",
     content: {
       hero: "REPLACE_P9_HERO",
       fig01: "REPLACE_P9_FIG01",
@@ -175,6 +191,27 @@ export function getAllContentImages(
   projectId: number,
 ): Record<string, string> {
   return registry[projectId]?.content ?? {};
+}
+
+/** Get the Playground hover GIF for a project (falls back to thumbnail) */
+export function getPlaygroundPreview(
+  projectId: number,
+): string {
+  return (
+    registry[projectId]?.playgroundPreview ||
+    registry[projectId]?.thumbnail ||
+    ""
+  );
+}
+
+/** Get the Playground hover video for a project (returns empty string if none) */
+export function getPlaygroundVideo(projectId: number): string {
+  return registry[projectId]?.playgroundVideo || "";
+}
+
+/** Get the detail-page video for a project (returns empty string if none) */
+export function getContentVideo(projectId: number): string {
+  return registry[projectId]?.contentVideo || "";
 }
 
 export default registry;

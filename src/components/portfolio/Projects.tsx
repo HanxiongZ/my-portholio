@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { getThumbnail } from "./projectImages";
+import { getThumbnail, getPlaygroundPreview, getPlaygroundVideo } from "./projectImages";
 
 export interface Project {
   id: number;
@@ -64,16 +64,16 @@ export const mainProjects: Project[] = [
   },
   {
     id: 3,
-    title: "Digital Entropy",
-    category: "Interaction",
+    title: "Co-Act",
+    category: "Graphic User Interface",
     year: "2023",
     image: getThumbnail(3),
     description:
-      "Visualizing data chaos through algorithmic design patterns.",
+      "A collaborative GUI that empowers service mechanics to navigate machine complexity in forestry.",
     content:
       "We live in an age of data saturation. Digital Entropy is an interactive web experiment that visualizes the overwhelming flow of information we encounter daily. Using generative algorithms, the system takes structured data inputs and subjects them to simulated 'entropy', breaking them down into abstract visual patterns. Users can interact with the decay process, observing how order dissolves into beautiful chaos.",
     toc: ["Overview", "Algorithm", "Gallery"],
-    tags: ["Web", "Data Viz"],
+    tags: ["GUI", "Tacit knowledge"],
   },
   {
     id: 4,
@@ -162,18 +162,69 @@ export function Projects() {
     mainProjects.find((p) => p.id === activeId) ||
     mainProjects[0];
 
-  const [hoveredPlayground, setHoveredPlayground] = useState<
-    number | null
-  >(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  // ── Playground hover — zero React state, pure DOM ──────────────
+  // Using refs means mouse-move and row-enter never trigger a
+  // re-render, eliminating the flicker completely.
+  const previewRef = useRef<HTMLDivElement>(null);
+  const activeImgId = useRef<number | null>(null);
+  const imgEls = useRef(new Map<number, HTMLElement>());
+  const videoEls = useRef(new Map<number, HTMLVideoElement>());
+  const isVisible = useRef(false);
 
-  const handlePlaygroundMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
+  const onContainerMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!previewRef.current) return;
+      previewRef.current.style.transform = `translate(${
+        e.clientX - e.currentTarget.getBoundingClientRect().left + 24
+      }px, ${e.clientY - e.currentTarget.getBoundingClientRect().top - 90}px)`;
+    },
+    [],
+  );
+
+  const onContainerMouseLeave = useCallback(() => {
+    if (!previewRef.current) return;
+    previewRef.current.style.opacity = "0";
+    isVisible.current = false;
+    // Hide active layer instantly & pause any playing video
+    if (activeImgId.current !== null) {
+      const el = imgEls.current.get(activeImgId.current);
+      if (el) el.style.visibility = "hidden";
+      const vid = videoEls.current.get(activeImgId.current);
+      if (vid) { vid.pause(); vid.currentTime = 0; }
+      activeImgId.current = null;
+    }
+  }, []);
+
+  const onRowMouseEnter = useCallback((id: number) => {
+    if (!previewRef.current) return;
+    // Same project re-entry → do nothing (prevents flicker)
+    if (activeImgId.current === id) {
+      if (!isVisible.current) {
+        previewRef.current.style.opacity = "1";
+        isVisible.current = true;
+      }
+      return;
+    }
+    // Reveal preview container
+    if (!isVisible.current) {
+      previewRef.current.style.opacity = "1";
+      isVisible.current = true;
+    }
+    // Instant swap: hide previous, show next — no transition
+    if (activeImgId.current !== null) {
+      const prev = imgEls.current.get(activeImgId.current);
+      if (prev) prev.style.visibility = "hidden";
+      // Pause previous video
+      const prevVid = videoEls.current.get(activeImgId.current);
+      if (prevVid) { prevVid.pause(); prevVid.currentTime = 0; }
+    }
+    const next = imgEls.current.get(id);
+    if (next) next.style.visibility = "visible";
+    // Play next video if exists
+    const nextVid = videoEls.current.get(id);
+    if (nextVid) nextVid.play().catch(() => {});
+    activeImgId.current = id;
+  }, []);
 
   return (
     <section
@@ -301,7 +352,7 @@ export function Projects() {
                     {activeId === 3 && (
                       <ImageWithFallback
                         src={getThumbnail(3)}
-                        alt="Digital Entropy"
+                        alt="Co-Act"
                         className="w-full h-full object-cover"
                         loading="eager"
                       />
@@ -535,93 +586,70 @@ export function Projects() {
           {/* Desktop: Minimal title list with hover image reveal */}
           <div
             className="hidden md:block relative pl-2 md:pl-3"
-            onMouseMove={(e) => {
-              const rect =
-                e.currentTarget.getBoundingClientRect();
-              e.currentTarget.style.setProperty(
-                "--preview-x",
-                `${e.clientX - rect.left + 24}px`,
-              );
-              e.currentTarget.style.setProperty(
-                "--preview-y",
-                `${e.clientY - rect.top - 80}px`,
-              );
-            }}
-            onMouseLeave={() => setHoveredPlayground(null)}
+            onMouseMove={onContainerMouseMove}
+            onMouseLeave={onContainerMouseLeave}
           >
-            {/* Floating preview — each project gets its own ImageWithFallback */}
-            <AnimatePresence>
-              {hoveredPlayground != null && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.92 }}
-                  transition={{
-                    duration: 0.25,
-                    ease: [0.16, 1, 0.3, 1],
+            {/*
+              Floating preview — always in the DOM, never unmounts.
+              Position:  driven by transform via direct DOM ref.
+              Visibility: driven by opacity via direct DOM ref.
+              Image swap: driven by per-image opacity via imgEls Map.
+              Zero React state → zero re-renders on hover.
+            */}
+            <div
+              ref={previewRef}
+              className="pointer-events-none absolute top-0 left-0 z-50 w-[260px] aspect-[4/3] overflow-hidden border border-foreground/10 shadow-xl"
+              style={{
+                opacity: 0,
+                transform: "translate(0px, 0px)",
+                transition: "opacity 0.15s ease",
+                willChange: "transform, opacity",
+              }}
+            >
+              {sideProjects.map((project) => (
+                <div
+                  key={project.id}
+                  ref={(el) => {
+                    if (el) imgEls.current.set(project.id, el);
+                    else imgEls.current.delete(project.id);
                   }}
-                  className="pointer-events-none absolute z-50 w-[280px] aspect-[4/3] overflow-hidden border border-foreground/10 shadow-2xl"
+                  className="absolute inset-0 w-full h-full"
                   style={{
-                    left: "var(--preview-x, 0px)",
-                    top: "var(--preview-y, 0px)",
+                    visibility: "hidden",
                   }}
                 >
-                  {hoveredPlayground === 6 && (
+                  {getPlaygroundVideo(project.id) ? (
+                    <video
+                      ref={(el) => {
+                        if (el) videoEls.current.set(project.id, el);
+                        else videoEls.current.delete(project.id);
+                      }}
+                      src={getPlaygroundVideo(project.id)}
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
                     <ImageWithFallback
-                      src={getThumbnail(6)}
-                      alt="Glyph Studies"
+                      src={getPlaygroundPreview(project.id)}
+                      alt={project.title}
                       className="w-full h-full object-cover"
                       loading="eager"
                     />
                   )}
-                  {hoveredPlayground === 7 && (
-                    <ImageWithFallback
-                      src={getThumbnail(7)}
-                      alt="Flora Generative"
-                      className="w-full h-full object-cover"
-                      loading="eager"
-                    />
-                  )}
-                  {hoveredPlayground === 8 && (
-                    <ImageWithFallback
-                      src={getThumbnail(8)}
-                      alt="Echo Chamber"
-                      className="w-full h-full object-cover"
-                      loading="eager"
-                    />
-                  )}
-                  {hoveredPlayground === 9 && (
-                    <ImageWithFallback
-                      src={getThumbnail(9)}
-                      alt="Raw Material"
-                      className="w-full h-full object-cover"
-                      loading="eager"
-                    />
-                  )}
-                  {/* Subtle animated overlay */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent"
-                    animate={{
-                      opacity: [0.3, 0.6, 0.3],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+                </div>
+              ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
+            </div>
 
             {sideProjects.map((project, index) => (
               <Link
                 key={project.id}
                 to={`/project/${project.id}`}
                 className="group cursor-pointer block border-b border-foreground/10 first:border-t first:border-foreground/10"
-                onMouseEnter={() =>
-                  setHoveredPlayground(project.id)
-                }
+                onMouseEnter={() => onRowMouseEnter(project.id)}
               >
                 <div className="flex items-center justify-between py-5 px-3 transition-colors duration-300 bg-transparent hover:bg-foreground hover:text-background backdrop-blur-sm">
                   <div className="flex items-center gap-8">
