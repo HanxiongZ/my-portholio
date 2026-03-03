@@ -3,7 +3,11 @@ import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { getThumbnail, getPlaygroundPreview, getPlaygroundVideo } from "./projectImages";
+import {
+  getThumbnail,
+  getPlaygroundPreview,
+  getPlaygroundVideo,
+} from "./projectImages";
 
 export interface Project {
   id: number;
@@ -65,14 +69,15 @@ export const mainProjects: Project[] = [
   {
     id: 3,
     title: "Co-Act",
-    category: "Graphic User Interface",
+    category: "GUI Design",
     year: "2023",
     image: getThumbnail(3),
     description:
       "A collaborative GUI that empowers service mechanics to navigate machine complexity in forestry.",
     content:
-      "We live in an age of data saturation. Digital Entropy is an interactive web experiment that visualizes the overwhelming flow of information we encounter daily. Using generative algorithms, the system takes structured data inputs and subjects them to simulated 'entropy', breaking them down into abstract visual patterns. Users can interact with the decay process, observing how order dissolves into beautiful chaos.",
-    toc: ["Overview", "Algorithm", "Gallery"],
+      "Envisioning the forestry service in 5 years, CO-ACT is a collaborative GUI that facilitates the exchange of tacit knowledge in a shared digital space. The system uses AI to augment human judgement rather than replace it, supporting safe, precise and efficient operations.\n\n\nTeam up with: Anjuli Acharya, Dide Sevinçok, Lin Wang",
+
+    toc: ["Background", "Algorithm", "Gallery"],
     tags: ["GUI", "Tacit knowledge"],
   },
   {
@@ -175,7 +180,9 @@ export function Projects() {
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!previewRef.current) return;
       previewRef.current.style.transform = `translate(${
-        e.clientX - e.currentTarget.getBoundingClientRect().left + 24
+        e.clientX -
+        e.currentTarget.getBoundingClientRect().left +
+        24
       }px, ${e.clientY - e.currentTarget.getBoundingClientRect().top - 90}px)`;
     },
     [],
@@ -190,7 +197,10 @@ export function Projects() {
       const el = imgEls.current.get(activeImgId.current);
       if (el) el.style.visibility = "hidden";
       const vid = videoEls.current.get(activeImgId.current);
-      if (vid) { vid.pause(); vid.currentTime = 0; }
+      if (vid) {
+        vid.pause();
+        vid.currentTime = 0;
+      }
       activeImgId.current = null;
     }
   }, []);
@@ -216,7 +226,10 @@ export function Projects() {
       if (prev) prev.style.visibility = "hidden";
       // Pause previous video
       const prevVid = videoEls.current.get(activeImgId.current);
-      if (prevVid) { prevVid.pause(); prevVid.currentTime = 0; }
+      if (prevVid) {
+        prevVid.pause();
+        prevVid.currentTime = 0;
+      }
     }
     const next = imgEls.current.get(id);
     if (next) next.style.visibility = "visible";
@@ -621,8 +634,10 @@ export function Projects() {
                   {getPlaygroundVideo(project.id) ? (
                     <video
                       ref={(el) => {
-                        if (el) videoEls.current.set(project.id, el);
-                        else videoEls.current.delete(project.id);
+                        if (el)
+                          videoEls.current.set(project.id, el);
+                        else
+                          videoEls.current.delete(project.id);
                       }}
                       src={getPlaygroundVideo(project.id)}
                       muted

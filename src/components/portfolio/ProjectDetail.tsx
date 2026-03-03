@@ -218,7 +218,7 @@ export function ProjectDetail() {
                 <span className="block text-[10px] font-mono uppercase text-foreground/40 mb-3 tracking-widest">
                   Description
                 </span>
-                <p className="leading-relaxed text-foreground/80 font-normal text-pretty text-[12px] text-left">
+                <p className="leading-relaxed text-foreground/80 font-normal text-pretty text-[12px] text-left whitespace-pre-line">
                   {project.content}
                 </p>
               </div>

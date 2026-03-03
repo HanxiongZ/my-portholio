@@ -17,6 +17,7 @@
 import image_Thesis_TN from "figma:asset/4ead9f2c0d38f2409fbfa5938ab918c3abfd6ecf.png";
 import image_BeyondClicks_TN_sm from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd8f48e20844.png";
 import image_Coact_TN from "figma:asset/9b5361a5bb51f315ff390d2a3a392efc986f156f.png";
+import image_coact_Hero from "figma:asset/667dd29c6938bb7bf6fc70283db47ce7fe648940.png";
 
 // ─────────────────────────────────────────────────────────────────
 // TYPE
@@ -82,7 +83,7 @@ const registry: Record<number, ProjectImages> = {
   3: {
     thumbnail: image_Coact_TN,
     content: {
-      hero: "REPLACE_P3_HERO",
+      hero: image_coact_Hero,
       fig01: "REPLACE_P3_FIG01",
       fig02: "REPLACE_P3_FIG02",
       fig03: "REPLACE_P3_FIG03",

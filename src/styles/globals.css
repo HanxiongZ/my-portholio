@@ -195,4 +195,6 @@
 
 html {
   font-size: var(--font-size);
+  overscroll-behavior: none;
+  background-color: var(--background);
 }

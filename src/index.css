@@ -2247,6 +2247,10 @@
     white-space: nowrap;
   }
 
+  .whitespace-pre-line {
+    white-space: pre-line;
+  }
+
   .text-background {
     color: var(--background);
   }
@@ -3542,6 +3546,8 @@
 
 html {
   font-size: var(--font-size);
+  overscroll-behavior: none;
+  background-color: var(--background);
 }
 
 @property --tw-translate-x {
