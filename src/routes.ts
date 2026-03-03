@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createHashRouter } from "react-router";
 import React from "react";
 import { Layout } from "./components/portfolio/Layout";
 
@@ -14,7 +14,7 @@ const ProjectDetail = React.lazy(() =>
   }))
 );
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
     Component: Layout,
