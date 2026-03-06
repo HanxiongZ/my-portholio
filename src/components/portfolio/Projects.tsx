@@ -77,7 +77,7 @@ export const mainProjects: Project[] = [
     content:
       "Envisioning the forestry service in 5 years, CO-ACT is a collaborative GUI that facilitates the exchange of tacit knowledge in a shared digital space. The system uses AI to augment human judgement rather than replace it, supporting safe, precise and efficient operations.\n\n\nTeam up with: Anjuli Acharya, Dide Sevinçok, Lin Wang",
 
-    toc: ["Background", "Ethnography", "Gallery"],
+    toc: ["Background", "Ethnography", "Design Strategy", "Gallery"],
     tags: ["GUI", "Tacit knowledge"],
   },
   {
@@ -433,155 +433,40 @@ export function Projects() {
             </div>
           </div>
 
-          {/* ────────────────────────────────────────────────────
-               MOBILE VIEW — Each card is written separately
-               so point-and-edit targets each image independently
-             ──────────────────────────────────────────────────── */}
+          {/* MOBILE VIEW */}
           <div className="md:hidden col-span-1 mt-8 space-y-16">
-            {/* Mobile Card — Project 1 */}
-            <Link
-              to="/project/1"
-              className="group block border-b border-foreground/10 pb-12 backdrop-blur-sm cursor-pointer"
-            >
-              <div className="aspect-[3/2] bg-foreground/5 mb-6 overflow-hidden border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(1)}
-                  alt="From Novelity to Normality"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <div className="flex justify-between items-start mb-3">
-                <h3 className="text-lg font-bold uppercase tracking-wide">
-                  {mainProjects[0].title}
-                </h3>
-                <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
-                  {mainProjects[0].year}
+            {mainProjects.map((project, index) => (
+              <Link
+                key={project.id}
+                to={`/project/${project.id}`}
+                className={`group block pb-12 backdrop-blur-sm cursor-pointer ${
+                  index < mainProjects.length - 1 ? "border-b border-foreground/10" : ""
+                }`}
+              >
+                <div className="aspect-[3/2] bg-foreground/5 mb-6 overflow-hidden border border-foreground/10">
+                  <ImageWithFallback
+                    src={getThumbnail(project.id)}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                </div>
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="text-lg font-bold uppercase tracking-wide">
+                    {project.title}
+                  </h3>
+                  <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
+                    {project.year}
+                  </span>
+                </div>
+                <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
+                  {project.description}
+                </p>
+                <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
+                  View Case
                 </span>
-              </div>
-              <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
-                {mainProjects[0].description}
-              </p>
-              <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
-                View Case
-              </span>
-            </Link>
-
-            {/* Mobile Card — Project 2 */}
-            <Link
-              to="/project/2"
-              className="group block border-b border-foreground/10 pb-12 backdrop-blur-sm cursor-pointer"
-            >
-              <div className="aspect-[3/2] bg-foreground/5 mb-6 overflow-hidden border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(2)}
-                  alt="Beyond the Clicks"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <div className="flex justify-between items-start mb-3">
-                <h3 className="text-lg font-bold uppercase tracking-wide">
-                  {mainProjects[1].title}
-                </h3>
-                <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
-                  {mainProjects[1].year}
-                </span>
-              </div>
-              <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
-                {mainProjects[1].description}
-              </p>
-              <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
-                View Case
-              </span>
-            </Link>
-
-            {/* Mobile Card — Project 3 */}
-            <Link
-              to="/project/3"
-              className="group block border-b border-foreground/10 pb-12 backdrop-blur-sm cursor-pointer"
-            >
-              <div className="aspect-[3/2] bg-foreground/5 mb-6 overflow-hidden border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(3)}
-                  alt="Digital Entropy"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <div className="flex justify-between items-start mb-3">
-                <h3 className="text-lg font-bold uppercase tracking-wide">
-                  {mainProjects[2].title}
-                </h3>
-                <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
-                  {mainProjects[2].year}
-                </span>
-              </div>
-              <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
-                {mainProjects[2].description}
-              </p>
-              <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
-                View Case
-              </span>
-            </Link>
-
-            {/* Mobile Card — Project 4 */}
-            <Link
-              to="/project/4"
-              className="group block border-b border-foreground/10 pb-12 backdrop-blur-sm cursor-pointer"
-            >
-              <div className="aspect-[3/2] bg-foreground/5 mb-6 overflow-hidden border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(4)}
-                  alt="Chronos"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <div className="flex justify-between items-start mb-3">
-                <h3 className="text-lg font-bold uppercase tracking-wide">
-                  {mainProjects[3].title}
-                </h3>
-                <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
-                  {mainProjects[3].year}
-                </span>
-              </div>
-              <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
-                {mainProjects[3].description}
-              </p>
-              <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
-                View Case
-              </span>
-            </Link>
-
-            {/* Mobile Card — Project 5 */}
-            <Link
-              to="/project/5"
-              className="group block border-b-0 pb-12 backdrop-blur-sm cursor-pointer"
-            >
-              <div className="aspect-[3/2] bg-foreground/5 mb-6 overflow-hidden border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(5)}
-                  alt="Silent Form"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <div className="flex justify-between items-start mb-3">
-                <h3 className="text-lg font-bold uppercase tracking-wide">
-                  {mainProjects[4].title}
-                </h3>
-                <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
-                  {mainProjects[4].year}
-                </span>
-              </div>
-              <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
-                {mainProjects[4].description}
-              </p>
-              <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
-                View Case
-              </span>
-            </Link>
+              </Link>
+            ))}
           </div>
         </div>
 

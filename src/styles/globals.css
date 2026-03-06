@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600&display=swap');
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
   --font-sans: "Manrope", sans-serif;
   --font-size: 16px;
   --background: #ffffff;
+  --page-bg: #f9f8f6;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
   --card-foreground: oklch(0.145 0 0);
@@ -46,6 +45,7 @@
 
 .dark {
   --background: oklch(0.145 0 0);
+  --page-bg: #10171e;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -197,4 +197,63 @@ html {
   font-size: var(--font-size);
   overscroll-behavior: none;
   background-color: var(--background);
+}
+
+/* ── Illustration adaptive tint ── */
+.img-adaptive {
+  filter: none;
+}
+.dark .img-adaptive {
+  filter: brightness(0) invert(0.7);
+}
+
+/* ── Project 3 responsive ── */
+@media (max-width: 767px) {
+  .bg-staggered-container {
+    position: static !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px;
+  }
+  .bg-staggered-image {
+    position: static !important;
+    width: 100% !important;
+    height: 220px !important;
+    order: 2;
+  }
+  .bg-staggered-poem {
+    position: static !important;
+    width: 100% !important;
+    order: 1;
+  }
+  .ethnography-row {
+    flex-direction: row !important;
+    height: 250px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .ethnography-row::-webkit-scrollbar {
+    display: none;
+  }
+  .ethnography-col {
+    flex-shrink: 0 !important;
+    width: 82vw !important;
+    height: 250px !important;
+    scroll-snap-align: start;
+  }
+  .ethnography-video-box {
+    width: 82vw !important;
+    height: 250px !important;
+  }
+  .ethnography-blue-card {
+    width: 250px !important;
+    height: 250px !important;
+    flex: none !important;
+  }
 }

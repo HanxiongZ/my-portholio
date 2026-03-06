@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from "react";
-import { useLocation, Outlet } from "react-router";
+import { Outlet } from "react-router";
 import { Header } from "./Header";
 import { StarField } from "./StarField";
 
@@ -8,33 +8,7 @@ export interface OutletContextType {
 }
 
 export function Layout() {
-  const [mousePosition, setMousePosition] = useState({
-    x: 0,
-    y: 0,
-  });
   const [isDark, setIsDark] = useState(true);
-
-  // Google Analytics (GA4)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (document.getElementById("ga-script-tag")) return;
-
-    const gaScript = document.createElement("script");
-    gaScript.async = true;
-    gaScript.src =
-      "https://www.googletagmanager.com/gtag/js?id=G-ZDYLBLE4LF";
-    gaScript.id = "ga-script-tag";
-    document.head.appendChild(gaScript);
-
-    const inlineScript = document.createElement("script");
-    inlineScript.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-ZDYLBLE4LF');
-    `;
-    document.head.appendChild(inlineScript);
-  }, []);
 
   // Initialize theme based on local time
   useEffect(() => {
@@ -44,17 +18,6 @@ export function Layout() {
     } else {
       setIsDark(true);
     }
-  }, []);
-
-  // Update mouse position
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () =>
-      window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
@@ -77,15 +40,6 @@ export function Layout() {
         }
       >
         <StarField isDark={isDark} />
-
-        {/* Custom cursor - hidden during development, restore when done */}
-        {/* <div
-          className="fixed w-8 h-8 border border-foreground/30 rounded-full pointer-events-none z-50 hidden md:block transition-transform duration-75 ease-out -translate-x-1/2 -translate-y-1/2"
-          style={{
-            left: mousePosition.x,
-            top: mousePosition.y,
-          }}
-        /> */}
 
         <div className="relative z-10">
           <Header isDark={isDark} setIsDark={setIsDark} />
