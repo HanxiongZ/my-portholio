@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "motion/react";
+import { Play, Pause, Volume2, VolumeX, Maximize } from "lucide-react";
 import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { Project } from "../Projects";
-import { getContentImage } from "../projectImages";
+import { getContentImage, getContentVideo } from "../projectImages";
 import imgForestryMachine from "figma:asset/imgForestryMachine.jpg";
 import imgDriver1 from "figma:asset/Driver1.png";
 import imgMechanic1 from "figma:asset/Mechanic1.png";
@@ -10,6 +11,10 @@ import imgMechanic2 from "figma:asset/Mechanic2.png";
 import imgResearchBoard from "figma:asset/coact_researchboard.jpeg";
 import coActLogo from "figma:asset/co_actlogo.svg";
 import imgCoactMockup from "figma:asset/coact_mockup.png";
+import imgCoactOperatorHome from "figma:asset/coact_operatorhome.png";
+import imgCoactHome from "figma:asset/coact_home.png";
+import imgCoactDashboard from "figma:asset/coact_dashboard.png";
+import imgCoactSmartAI from "figma:asset/coact_smartai.png";
 
 interface Props {
   project: Project;
@@ -93,6 +98,70 @@ export function Project3_DigitalEntropy({
     return () => observer.disconnect();
   }, []);
 
+  // Concept video player
+  const conceptVideoRef = useRef<HTMLVideoElement>(null);
+  const [cvPlaying, setCvPlaying] = useState(false);
+  const [cvMuted, setCvMuted] = useState(true);
+  const [cvProgress, setCvProgress] = useState(0);
+  const [cvShowControls, setCvShowControls] = useState(true);
+  const cvHideTimer = useRef<ReturnType<typeof setTimeout>>();
+
+  const cvTogglePlay = () => {
+    if (!conceptVideoRef.current) return;
+    if (conceptVideoRef.current.paused) {
+      conceptVideoRef.current.play().catch(() => {});
+    } else {
+      conceptVideoRef.current.pause();
+    }
+  };
+  const cvToggleMute = () => {
+    if (!conceptVideoRef.current) return;
+    conceptVideoRef.current.muted = !conceptVideoRef.current.muted;
+    setCvMuted(conceptVideoRef.current.muted);
+  };
+  const cvHandleTimeUpdate = () => {
+    if (!conceptVideoRef.current) return;
+    const pct = (conceptVideoRef.current.currentTime / conceptVideoRef.current.duration) * 100;
+    setCvProgress(isNaN(pct) ? 0 : pct);
+  };
+  const cvHandleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!conceptVideoRef.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    conceptVideoRef.current.currentTime = ((e.clientX - rect.left) / rect.width) * conceptVideoRef.current.duration;
+  };
+  const cvHandleFullscreen = () => {
+    conceptVideoRef.current?.requestFullscreen?.();
+  };
+  const cvHandleMouseMove = () => {
+    setCvShowControls(true);
+    if (cvHideTimer.current) clearTimeout(cvHideTimer.current);
+    cvHideTimer.current = setTimeout(() => { if (cvPlaying) setCvShowControls(false); }, 2500);
+  };
+
+  // Feature cards drag-to-scroll
+  const cardsScrollRef = useRef<HTMLDivElement>(null);
+  const cardsDragging = useRef(false);
+  const cardsStartX = useRef(0);
+  const cardsScrollLeft = useRef(0);
+
+  const handleCardsDragStart = (e: React.MouseEvent) => {
+    cardsDragging.current = true;
+    cardsStartX.current = e.pageX - (cardsScrollRef.current?.offsetLeft ?? 0);
+    cardsScrollLeft.current = cardsScrollRef.current?.scrollLeft ?? 0;
+    if (cardsScrollRef.current) cardsScrollRef.current.style.cursor = "grabbing";
+  };
+  const handleCardsDragMove = (e: React.MouseEvent) => {
+    if (!cardsDragging.current) return;
+    e.preventDefault();
+    const x = e.pageX - (cardsScrollRef.current?.offsetLeft ?? 0);
+    const walk = (x - cardsStartX.current) * 1.2;
+    if (cardsScrollRef.current) cardsScrollRef.current.scrollLeft = cardsScrollLeft.current - walk;
+  };
+  const handleCardsDragEnd = () => {
+    cardsDragging.current = false;
+    if (cardsScrollRef.current) cardsScrollRef.current.style.cursor = "grab";
+  };
+
   // Image blur on scroll
   const insightsWrapperRef = useRef<HTMLDivElement>(null);
   const [imageBlur, setImageBlur] = useState(0);
@@ -120,6 +189,8 @@ export function Project3_DigitalEntropy({
   const handleRowLeave = (ref: React.RefObject<HTMLVideoElement | null>) => {
     ref.current?.pause();
   };
+
+  const conceptVideoSrc = getContentVideo(3);
 
   const img = {
     hero: getContentImage(3, "hero"),
@@ -735,7 +806,7 @@ export function Project3_DigitalEntropy({
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
           />
         </div>
-        <span style={{ fontSize: "32px", fontWeight: 300, lineHeight: "1.2", color: "var(--foreground)" }}>
+        <span style={{ fontSize: "24px", fontWeight: 300, lineHeight: "1.2", color: "var(--foreground)" }}>
           Co-Act
         </span>
       </div>
@@ -751,42 +822,253 @@ export function Project3_DigitalEntropy({
 
       {/* Tagline — large, centered */}
       <p style={{
-        fontWeight: 300,
-        fontSize: "clamp(20px, 2.4vw, 28px)",
+        fontWeight: 350,
+        fontSize: "clamp(20px, 2.4vw, 24px)",
         lineHeight: "1.4",
         opacity: 0.8,
         textAlign: "center",
         maxWidth: "640px",
-        margin: "0 auto 80px auto",
+        margin: "40px auto 80px auto",
       }}>
-        A collaborative interface designed for field maintenance and troubleshooting.
+        Bringing machine data, diagnostics, and collaboration into one workspace.
       </p>
 
-      {/* Section 5: Gallery */}
+      {/* ── Feature cards horizontal scroll ── */}
+      <div style={{ marginBottom: "80px" }}>
+        <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, marginBottom: "16px" }}>
+          Take care of the machines together
+        </p>
+
+        {/* Scrollable strip */}
+        <div
+          ref={cardsScrollRef}
+          onMouseDown={handleCardsDragStart}
+          onMouseMove={handleCardsDragMove}
+          onMouseUp={handleCardsDragEnd}
+          onMouseLeave={handleCardsDragEnd}
+          className="no-scrollbar"
+          style={{
+            display: "flex",
+            gap: "24px",
+            overflowX: "auto",
+            scrollbarWidth: "none",
+            cursor: "grab",
+            userSelect: "none",
+            height: "526px",
+          }}
+        >
+
+          {/* Card 1 — Operator's view */}
+          <div style={{
+            flexShrink: 0,
+            height: "526px",
+            background: "var(--coact-card-bg)",
+            borderRadius: "24px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "30px",
+            padding: "0 32px",
+            overflow: "hidden",
+          }}>
+            {/* Text */}
+            <div style={{ flexShrink: 0, width: "212px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0 }}>
+                Stay connected with your machine
+              </p>
+              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0 }}>
+                Operator's view
+              </p>
+            </div>
+            {/* Phone image */}
+            <div style={{ flexShrink: 0, width: "240px", height: "526px", overflow: "hidden", position: "relative" }}>
+              <div style={{ position: "absolute", left: "8.82px", top: "33.84px", width: "222px", height: "458px" }}>
+                <img
+                  src={imgCoactOperatorHome}
+                  alt="Operator home"
+                  style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "223px", height: "459px", objectFit: "cover", pointerEvents: "none" }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2 — Mechanic's view */}
+          <div style={{
+            flexShrink: 0,
+            width: "724px",
+            height: "526px",
+            background: "var(--coact-card-bg)",
+            borderRadius: "24px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "30px",
+            paddingLeft: "32px",
+            overflow: "hidden",
+          }}>
+            {/* Text */}
+            <div style={{ flexShrink: 0, width: "212px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0 }}>
+                Synced information for the jobs
+              </p>
+              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0 }}>
+                Mechanic's view
+              </p>
+            </div>
+            {/* Image wrapper — fills remaining width, vertically centers 627×450 image */}
+            <div style={{ flex: 1, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start" }}>
+              <div style={{ flexShrink: 0, width: "627px", height: "450px", position: "relative" }}>
+                <img
+                  src={imgCoactHome}
+                  alt="Mechanic home"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3 — Proactive diagnosis */}
+          <div style={{
+            flexShrink: 0,
+            width: "580px",
+            height: "526px",
+            background: "var(--coact-card-bg)",
+            borderRadius: "24px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "30px",
+            paddingLeft: "48px",
+            paddingTop: "32px",
+            paddingBottom: "0",
+            overflow: "hidden",
+          }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0, width: "212px" }}>
+                Support a more proactive diagnosis
+              </p>
+              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0 }}>
+                Gather more information
+              </p>
+            </div>
+            {/* Dashboard image — 586×421 */}
+            <div style={{ flexShrink: 0, width: "586px", height: "421px", overflow: "hidden", position: "relative" }}>
+              <img
+                src={imgCoactDashboard}
+                alt="Dashboard"
+                style={{ position: "absolute", inset: 0, width: "586px", height: "421px", objectFit: "cover", pointerEvents: "none" }}
+              />
+            </div>
+          </div>
+
+          {/* Card 4 — Explainable AI */}
+          <div style={{
+            flexShrink: 0,
+            width: "682px",
+            height: "526px",
+            background: "var(--coact-card-bg)",
+            borderRadius: "24px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "30px",
+            padding: "32px 48px 0 48px",
+            overflow: "hidden",
+          }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", alignItems: "center", width: "212px" }}>
+              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0, textAlign: "center" }}>
+                Explainable AI for troubleshooting
+              </p>
+              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0, textAlign: "center", whiteSpace: "nowrap" }}>
+                Trust human experience
+              </p>
+            </div>
+            {/* SmartAI image — 586×421 */}
+            <div style={{ flexShrink: 0, width: "586px", height: "421px", overflow: "hidden", position: "relative" }}>
+              <img
+                src={imgCoactSmartAI}
+                alt="Smart AI"
+                style={{ position: "absolute", inset: 0, width: "586px", height: "421px", objectFit: "cover", pointerEvents: "none" }}
+              />
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Section 5: Concept Video */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-16 md:mb-24">
         {/* Left 4 cols: Section title */}
         <div
-          id={slugify("Gallery")}
+          id={slugify("Concept Video")}
           className="col-span-1 md:col-span-4 border-t border-foreground/10 pt-6 mb-4 md:mb-0 scroll-mt-32"
         >
           <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
-            05 — Gallery
+            05 — Concept Video
           </span>
         </div>
 
-        {/* Right 8 cols: Content */}
+        {/* Right 8 cols: Video player */}
         <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 md:border-t-0 md:pt-6">
-          <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
-            Additional visual explorations.
-          </p>
-          {img.fig03 && (
-            <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden mt-8">
-              <ImageWithFallback
-                src={img.fig03}
-                alt="Gallery"
+          {conceptVideoSrc ? (
+            <div
+              className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden relative group cursor-pointer"
+              onMouseMove={cvHandleMouseMove}
+              onMouseLeave={() => { if (cvPlaying) setCvShowControls(false); }}
+              onClick={cvTogglePlay}
+            >
+              <video
+                ref={conceptVideoRef}
+                src={conceptVideoSrc}
+                muted={cvMuted}
+                loop
+                playsInline
+                preload="auto"
+                onTimeUpdate={cvHandleTimeUpdate}
+                onPlay={() => setCvPlaying(true)}
+                onPause={() => setCvPlaying(false)}
                 className="w-full h-full object-cover"
-                loading="eager"
               />
+
+              {/* Centre play button — only when paused */}
+              {!cvPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-foreground/10 backdrop-blur-[2px]">
+                  <div className="w-16 h-16 rounded-full border border-foreground/30 flex items-center justify-center bg-background/60 backdrop-blur-sm">
+                    <Play className="w-6 h-6 text-foreground ml-0.5" />
+                  </div>
+                </div>
+              )}
+
+              {/* Bottom control bar */}
+              <div
+                className={`absolute bottom-0 left-0 right-0 px-4 pb-3 pt-8 bg-gradient-to-t from-background/80 via-background/30 to-transparent transition-opacity duration-300 ${cvShowControls || !cvPlaying ? "opacity-100" : "opacity-0"}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="w-full h-1 bg-foreground/20 mb-3 cursor-pointer group/progress" onClick={cvHandleSeek}>
+                  <div className="h-full bg-foreground/70 transition-[width] duration-100 relative" style={{ width: `${cvProgress}%` }}>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-foreground opacity-0 group-hover/progress:opacity-100 transition-opacity" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <button onClick={cvTogglePlay} className="p-1.5 hover:bg-foreground/10 transition-colors rounded-sm cursor-pointer">
+                      {cvPlaying ? <Pause className="w-3.5 h-3.5 text-foreground/80" /> : <Play className="w-3.5 h-3.5 text-foreground/80 ml-0.5" />}
+                    </button>
+                    <button onClick={cvToggleMute} className="p-1.5 hover:bg-foreground/10 transition-colors rounded-sm cursor-pointer">
+                      {cvMuted ? <VolumeX className="w-3.5 h-3.5 text-foreground/80" /> : <Volume2 className="w-3.5 h-3.5 text-foreground/80" />}
+                    </button>
+                    <span className="text-[10px] font-mono text-foreground/50 uppercase tracking-widest">
+                      Co-Act — Concept Video
+                    </span>
+                  </div>
+                  <button onClick={cvHandleFullscreen} className="p-1.5 hover:bg-foreground/10 transition-colors rounded-sm cursor-pointer">
+                    <Maximize className="w-3.5 h-3.5 text-foreground/80" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 flex items-center justify-center">
+              <span className="text-xs font-mono text-foreground/30 uppercase tracking-widest">Video coming soon</span>
             </div>
           )}
         </div>
