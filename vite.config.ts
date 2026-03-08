@@ -27,6 +27,8 @@
         'figma:asset/Mechanic2.png': path.resolve(__dirname, './src/assets/Mechanic2.png'),
         'figma:asset/imgForestryMachine.jpg': path.resolve(__dirname, './src/assets/imgForestryMachine.jpg'),
         'figma:asset/coact_researchboard.jpeg': path.resolve(__dirname, './src/assets/coact_researchboard.jpeg'),
+        'figma:asset/co_actlogo.svg': path.resolve(__dirname, './src/assets/co_actlogo.svg'),
+        'figma:asset/coact_mockup.png': path.resolve(__dirname, './src/assets/coact_mockup.png'),
         'figma:asset/imgillustration1.png': path.resolve(__dirname, './src/assets/imgillustration1.png'),
         'figma:asset/149fafe8475e730ee9ea4e600054b26cbf00bbb3.png': path.resolve(__dirname, './src/assets/149fafe8475e730ee9ea4e600054b26cbf00bbb3.png'),
         'embla-carousel-react@8.6.0': 'embla-carousel-react',

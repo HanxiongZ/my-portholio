@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { Project } from "../Projects";
 import { getContentImage } from "../projectImages";
@@ -7,6 +8,8 @@ import imgDriver1 from "figma:asset/Driver1.png";
 import imgMechanic1 from "figma:asset/Mechanic1.png";
 import imgMechanic2 from "figma:asset/Mechanic2.png";
 import imgResearchBoard from "figma:asset/coact_researchboard.jpeg";
+import coActLogo from "figma:asset/co_actlogo.svg";
+import imgCoactMockup from "figma:asset/coact_mockup.png";
 
 interface Props {
   project: Project;
@@ -701,7 +704,65 @@ export function Project3_DigitalEntropy({
         </div>
       </div>
 
-      {/* Section 4: Gallery */}
+      {/* ── 04 COLLABORATIVE ACTIONS ── */}
+      <div
+        id={slugify("Collaborative Actions")}
+        className="border-t border-foreground/10 pt-6 mb-8 scroll-mt-32"
+      >
+        <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
+          04 — Collaborative Actions
+        </span>
+      </div>
+
+      {/* Logo + title */}
+      <div className="flex flex-col items-center" style={{ gap: "16px", marginBottom: "40px" }}>
+        <div style={{
+          width: "64px", height: "64px",
+          background: "#3559C7",
+          borderRadius: "14px",
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <motion.img
+            src={coActLogo}
+            alt="Co-Act gear"
+            style={{
+              width: "37px",
+              height: "38px",
+              display: "block",
+              transformOrigin: "50% 45%",
+            }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
+        <span style={{ fontSize: "32px", fontWeight: 300, lineHeight: "1.2", color: "var(--foreground)" }}>
+          Co-Act
+        </span>
+      </div>
+
+      {/* Device mockup — 9/12 columns, centered */}
+      <div style={{ width: "75%", margin: "0 auto 40px auto" }}>
+        <img
+          src={imgCoactMockup}
+          alt="Co-Act — device mockup"
+          style={{ width: "100%", display: "block", objectFit: "contain", filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.4))" }}
+        />
+      </div>
+
+      {/* Tagline — large, centered */}
+      <p style={{
+        fontWeight: 300,
+        fontSize: "clamp(20px, 2.4vw, 28px)",
+        lineHeight: "1.4",
+        opacity: 0.8,
+        textAlign: "center",
+        maxWidth: "640px",
+        margin: "0 auto 80px auto",
+      }}>
+        A collaborative interface designed for field maintenance and troubleshooting.
+      </p>
+
+      {/* Section 5: Gallery */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-16 md:mb-24">
         {/* Left 4 cols: Section title */}
         <div
@@ -709,7 +770,7 @@ export function Project3_DigitalEntropy({
           className="col-span-1 md:col-span-4 border-t border-foreground/10 pt-6 mb-4 md:mb-0 scroll-mt-32"
         >
           <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
-            04 — Gallery
+            05 — Gallery
           </span>
         </div>
 

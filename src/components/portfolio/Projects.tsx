@@ -77,7 +77,7 @@ export const mainProjects: Project[] = [
     content:
       "Envisioning the forestry service in 5 years, CO-ACT is a collaborative GUI that facilitates the exchange of tacit knowledge in a shared digital space. The system uses AI to augment human judgement rather than replace it, supporting safe, precise and efficient operations.\n\n\nTeam up with: Anjuli Acharya, Dide Sevinçok, Lin Wang",
 
-    toc: ["Background", "Ethnography", "Design Strategy", "Gallery"],
+    toc: ["Background", "Ethnography", "Design Strategy", "Collaborative Actions", "Gallery"],
     tags: ["GUI", "Tacit knowledge"],
   },
   {
