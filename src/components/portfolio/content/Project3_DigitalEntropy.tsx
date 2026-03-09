@@ -3,13 +3,17 @@ import { motion } from "motion/react";
 import { Play, Pause, Volume2, VolumeX, Maximize } from "lucide-react";
 import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { Project } from "../Projects";
-import { getContentImage, getContentVideo } from "../projectImages";
+import { getContentImage } from "../projectImages";
 import imgForestryMachine from "figma:asset/imgForestryMachine.jpg";
 import imgDriver1 from "figma:asset/Driver1.png";
 import imgMechanic1 from "figma:asset/Mechanic1.png";
 import imgMechanic2 from "figma:asset/Mechanic2.png";
 import imgResearchBoard from "figma:asset/coact_researchboard.jpeg";
 import coActLogo from "figma:asset/co_actlogo.svg";
+import imgIPhone15Pro from "figma:asset/iPhone15pro.png";
+import imgIPadPro11 from "figma:asset/iPadpro11.png";
+import imgCoactOfficeView from "figma:asset/coact_officeview.jpg";
+import imgCoactCollabView from "figma:asset/coact_collabview.jpg";
 import imgCoactMockup from "figma:asset/coact_mockup.png";
 import imgCoactOperatorHome from "figma:asset/coact_operatorhome.png";
 import imgCoactHome from "figma:asset/coact_home.png";
@@ -98,39 +102,76 @@ export function Project3_DigitalEntropy({
     return () => observer.disconnect();
   }, []);
 
-  // Concept video player
-  const conceptVideoRef = useRef<HTMLVideoElement>(null);
+  // Concept video — YouTube IFrame API
+  const ytContainerRef = useRef<HTMLDivElement>(null);
+  const ytPlayer = useRef<any>(null);
   const [cvPlaying, setCvPlaying] = useState(false);
   const [cvMuted, setCvMuted] = useState(true);
   const [cvProgress, setCvProgress] = useState(0);
   const [cvShowControls, setCvShowControls] = useState(true);
   const cvHideTimer = useRef<ReturnType<typeof setTimeout>>();
+  const cvProgressTimer = useRef<ReturnType<typeof setInterval>>();
+
+  useEffect(() => {
+    const initPlayer = () => {
+      if (!ytContainerRef.current) return;
+      ytPlayer.current = new (window as any).YT.Player(ytContainerRef.current, {
+        videoId: "KNZilN_i7OM",
+        playerVars: { controls: 0, disablekb: 1, modestbranding: 1, rel: 0, playsinline: 1 },
+        events: {
+          onStateChange: (e: any) => {
+            const playing = e.data === (window as any).YT.PlayerState.PLAYING;
+            setCvPlaying(playing);
+          },
+        },
+      });
+    };
+
+    if ((window as any).YT?.Player) {
+      initPlayer();
+    } else {
+      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+      }
+      (window as any).onYouTubeIframeAPIReady = initPlayer;
+    }
+
+    return () => { ytPlayer.current?.destroy?.(); };
+  }, []);
+
+  useEffect(() => {
+    if (cvProgressTimer.current) clearInterval(cvProgressTimer.current);
+    if (cvPlaying) {
+      cvProgressTimer.current = setInterval(() => {
+        const p = ytPlayer.current;
+        if (p?.getCurrentTime && p?.getDuration) {
+          const dur = p.getDuration();
+          if (dur > 0) setCvProgress((p.getCurrentTime() / dur) * 100);
+        }
+      }, 250);
+    }
+    return () => { if (cvProgressTimer.current) clearInterval(cvProgressTimer.current); };
+  }, [cvPlaying]);
 
   const cvTogglePlay = () => {
-    if (!conceptVideoRef.current) return;
-    if (conceptVideoRef.current.paused) {
-      conceptVideoRef.current.play().catch(() => {});
-    } else {
-      conceptVideoRef.current.pause();
-    }
+    if (!ytPlayer.current) return;
+    cvPlaying ? ytPlayer.current.pauseVideo() : ytPlayer.current.playVideo();
   };
   const cvToggleMute = () => {
-    if (!conceptVideoRef.current) return;
-    conceptVideoRef.current.muted = !conceptVideoRef.current.muted;
-    setCvMuted(conceptVideoRef.current.muted);
-  };
-  const cvHandleTimeUpdate = () => {
-    if (!conceptVideoRef.current) return;
-    const pct = (conceptVideoRef.current.currentTime / conceptVideoRef.current.duration) * 100;
-    setCvProgress(isNaN(pct) ? 0 : pct);
+    if (!ytPlayer.current) return;
+    if (cvMuted) { ytPlayer.current.unMute(); setCvMuted(false); }
+    else { ytPlayer.current.mute(); setCvMuted(true); }
   };
   const cvHandleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!conceptVideoRef.current) return;
+    if (!ytPlayer.current) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    conceptVideoRef.current.currentTime = ((e.clientX - rect.left) / rect.width) * conceptVideoRef.current.duration;
+    ytPlayer.current.seekTo(((e.clientX - rect.left) / rect.width) * ytPlayer.current.getDuration(), true);
   };
   const cvHandleFullscreen = () => {
-    conceptVideoRef.current?.requestFullscreen?.();
+    const iframe = ytContainerRef.current?.querySelector("iframe");
+    iframe?.requestFullscreen?.();
   };
   const cvHandleMouseMove = () => {
     setCvShowControls(true);
@@ -189,8 +230,6 @@ export function Project3_DigitalEntropy({
   const handleRowLeave = (ref: React.RefObject<HTMLVideoElement | null>) => {
     ref.current?.pause();
   };
-
-  const conceptVideoSrc = getContentVideo(3);
 
   const img = {
     hero: getContentImage(3, "hero"),
@@ -995,6 +1034,156 @@ export function Project3_DigitalEntropy({
         </div>
       </div>
 
+      {/* ── Phone feature block ── */}
+      <div style={{ marginBottom: "80px" }}>
+        {/* Header */} <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", letterSpacing: "-0.48px", opacity: 0.8, paddingTop: "40px", paddingBottom: "40px", margin: 0, width: "677px", maxWidth: "100%" }}> Stay communicating with each other about the machine issues </p>
+      
+
+        {/* Two-col: left card + right text */}
+        <div className="phone-feature-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "24px" }}>
+
+          {/* Left: phone mockup card */}
+          <div
+            className="phone-feature-card"
+            style={{
+              flexShrink: 0,
+              width: "526px",
+              height: "526px",
+              background: "var(--coact-card-bg)",
+              borderRadius: "24px",
+              overflow: "hidden",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              contain: "paint",
+            }}
+          >
+            {/* Scene container — scales with card height, phone overflows bottom (clipped by overflow:hidden) */}
+            <div style={{ position: "relative", width: "368.315px", height: "807.224px", flexShrink: 0 }}>
+
+              {/* iPhone frame — behind the video */}
+              <img
+                src={imgIPhone15Pro}
+                alt="iPhone 15 Pro frame"
+                style={{
+                  position: "absolute",
+                  left: "13.53px",
+                  top: "51.53px",
+                  width: "340.736px",
+                  height: "702.133px",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Video — on top, fills screen with matching border-radius */}
+              <video
+                src="https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/coact_operatereport.mp4"
+                muted
+                loop
+                playsInline
+                autoPlay
+                style={{
+                  position: "absolute",
+                  left: "27.62px",
+                  top: "64.05px",
+                  width: "311.777px",
+                  height: "674.717px",
+                  objectFit: "cover",
+                  borderRadius: "26.089px",
+                  pointerEvents: "none",
+                }}
+              />
+
+            </div>
+          </div>
+
+          {/* Right: description text */}
+          <div className="phone-feature-text" style={{ flex: 1 }}>
+            <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "377px", color: "var(--foreground)" }}>
+              <span style={{ fontWeight: 500 }}>Report issues in seconds. </span>
+              <span style={{ fontWeight: 300, opacity: 0.8 }}>Operators can create a service ticket by simple clicks, share machine data and recent activity with the mechanics.</span>
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+{/* ── Collaborative interface feature blocks ── */}
+      <div style={{ marginBottom: "80px", display: "flex", flexDirection: "column", gap: "12px" }}>
+
+        {/* Sub-header */}
+        <p className="text-foreground/80" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", letterSpacing: "-0.32px", paddingTop: "12px", margin: 0, width: "677px", maxWidth: "100%" }}>
+          Optimise mechanics' workflow with a collaborative interface
+        </p>
+
+        {/* Block 1: iPad + prognosis video */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div style={{ height: "550px", width: "100%", background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
+            <div style={{ position: "relative", width: "100%", maxWidth: "683px", aspectRatio: "683 / 490" }}>
+              {/* Clip container — matches iPad screen area: 634×442px */}
+              <div style={{ position: "absolute", left: "3.59%", top: "5.02%", width: "92.83%", height: "90.20%", overflow: "hidden" }}>
+                {/* Video oversized & offset for zoom crop effect: 721×502 at -45,-28.59 */}
+                <div style={{ position: "absolute", left: "-7.10%", top: "-6.47%", width: "113.72%", height: "113.57%", borderRadius: "11px", overflow: "hidden" }}>
+                  <video
+                    src="https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/coact_prognosis.mp4"
+                    muted loop playsInline autoPlay
+                    style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
+                  />
+                </div>
+              </div>
+              <img src={imgIPadPro11} alt="iPad Pro 11" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }} />
+            </div>
+          </div>
+          <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "645px", color: "var(--foreground)" }}>
+            <span style={{ fontWeight: 500 }}>Run a proactive diagnosis. </span>
+            <span style={{ fontWeight: 300, opacity: 0.8 }}>Component-level visualisation helps mechanics quickly identify where issues might occur. The goal is to get more accurate troubleshooting before go into the field.</span>
+          </p>
+        </div>
+
+        {/* Block 2: iPad + smartai video */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div style={{ height: "550px", width: "100%", background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
+            <div style={{ position: "relative", width: "100%", maxWidth: "683px", aspectRatio: "683 / 490" }}>
+              <div style={{ position: "absolute", left: "3.59%", top: "5.02%", width: "92.83%", height: "90.20%", borderRadius: "11px", overflow: "hidden" }}>
+                <video
+                  src="https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/coact_smartai.mp4"
+                  muted loop playsInline autoPlay
+                  style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
+                />
+              </div>
+              <img src={imgIPadPro11} alt="iPad Pro 11" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }} />
+            </div>
+          </div>
+          <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "645px", color: "var(--foreground)" }}>
+            <span style={{ fontWeight: 500 }}>AI-assisted troubleshooting. </span>
+            <span style={{ fontWeight: 300, opacity: 0.8 }}>Instead of presenting a single AI-generated answer, Co-Act reveals the reasoning process behind potential causes. Signals, inspection records, and historical faults are connected through a visual network that helps mechanics understand how different factors relate to each other.</span>
+          </p>
+        </div>
+
+        {/* Block 3: two photo cards side by side */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div style={{ display: "flex", gap: "24px" }}>
+            {/* Left: office view */}
+            <div style={{ flex: 1, background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px" }}>
+              <div style={{ position: "relative", width: "729px", height: "400px", flexShrink: 0 }}>
+                <img src={imgCoactOfficeView} alt="Co-Act office view" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
+              </div>
+            </div>
+            {/* Right: collab view */}
+            <div style={{ flex: 1, background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px" }}>
+              <div style={{ position: "relative", width: "669px", height: "400px", flexShrink: 0, overflow: "hidden" }}>
+                <img src={imgCoactCollabView} alt="Co-Act collab view" style={{ position: "absolute", height: "100.00%", left: "-2.18%", top: "1%", width: "111.05%", pointerEvents: "none" }} />
+              </div>
+            </div>
+          </div>
+          <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "645px", color: "var(--foreground)" }}>
+            <span style={{ fontWeight: 500 }}>Supporting expert judgement. </span>
+            <span style={{ fontWeight: 300, opacity: 0.8 }}>Co-Act facilitates scenarios for mobile work locations and open discussions. Technology assists the process — it does not replace experience.</span>
+          </p>
+        </div>
+
+      </div>
+
       {/* Section 5: Concept Video */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-16 md:mb-24">
         {/* Left 4 cols: Section title */}
@@ -1009,30 +1198,19 @@ export function Project3_DigitalEntropy({
 
         {/* Right 8 cols: Video player */}
         <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 md:border-t-0 md:pt-6">
-          {conceptVideoSrc ? (
-            <div
+          <div
               className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden relative group cursor-pointer"
               onMouseMove={cvHandleMouseMove}
               onMouseLeave={() => { if (cvPlaying) setCvShowControls(false); }}
               onClick={cvTogglePlay}
             >
-              <video
-                ref={conceptVideoRef}
-                src={conceptVideoSrc}
-                muted={cvMuted}
-                loop
-                playsInline
-                preload="auto"
-                onTimeUpdate={cvHandleTimeUpdate}
-                onPlay={() => setCvPlaying(true)}
-                onPause={() => setCvPlaying(false)}
-                className="w-full h-full object-cover"
-              />
+              {/* YouTube IFrame API mounts here */}
+              <div ref={ytContainerRef} className="w-full h-full pointer-events-none" />
 
               {/* Centre play button — only when paused */}
               {!cvPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center bg-foreground/10 backdrop-blur-[2px]">
-                  <div className="w-16 h-16 rounded-full border border-foreground/30 flex items-center justify-center bg-background/60 backdrop-blur-sm">
+                <div className="absolute inset-0 flex items-center justify-center bg-foreground/15">
+                  <div className="w-16 h-16 rounded-full border border-foreground/30 flex items-center justify-center bg-background/70">
                     <Play className="w-6 h-6 text-foreground ml-0.5" />
                   </div>
                 </div>
@@ -1066,11 +1244,6 @@ export function Project3_DigitalEntropy({
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 flex items-center justify-center">
-              <span className="text-xs font-mono text-foreground/30 uppercase tracking-widest">Video coming soon</span>
-            </div>
-          )}
         </div>
       </div>
     </>

@@ -155,17 +155,33 @@ export function ProjectDetail() {
       exit={{ opacity: 0 }}
       className="relative w-full min-h-screen pt-32 pb-12 md:pt-40 md:pb-0"
     >
-      {/* BACKGROUND GRID (Consistent with Projects.tsx) */}
-      <div className="fixed inset-0 container mx-auto px-6 md:px-12 pointer-events-none z-0">
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 h-full">
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="h-full border-l border-foreground/5 relative first:border-l-0 md:first:border-l"
-            ></div>
-          ))}
-          <div className="absolute right-6 md:right-12 top-0 bottom-0 w-px bg-foreground/5" />
-          <div className="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-foreground/5" />
+      {/* BACKGROUND GRID — full-height lines: 1, 3, 4 */}
+      <div className="absolute left-0 right-0 top-0 bottom-0 pointer-events-none z-0">
+        <div className="container mx-auto px-6 md:px-12 h-full">
+          <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 h-full">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className={`h-full ${[0, 2, 3].includes(i) ? "border-l border-foreground/5" : ""}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* BACKGROUND GRID — viewport-height lines: all others */}
+      <div className="absolute left-0 right-0 top-0 h-screen pointer-events-none z-0">
+        <div className="container mx-auto px-6 md:px-12 h-full">
+          <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 h-full">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className={`h-full ${![0, 2, 3].includes(i) ? "border-l border-foreground/5" : ""}`}
+              />
+            ))}
+            <div className="absolute right-6 md:right-12 top-0 bottom-0 w-px bg-foreground/5" />
+            <div className="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-foreground/5" />
+          </div>
         </div>
       </div>
 

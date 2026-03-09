@@ -8,6 +8,7 @@
   --font-sans: "Manrope", sans-serif;
   --font-size: 16px;
   --coact-card-bg: #e8eaf0;
+  --coact-glass-bg: rgba(232, 234, 240, 0.75);
   --background: #ffffff;
   --page-bg: #f9f8f6;
   --foreground: oklch(0.145 0 0);
@@ -52,6 +53,7 @@
   --background: oklch(0.145 0 0);
   --page-bg: #10171e;
   --coact-card-bg: #1e1e26;
+  --coact-glass-bg: rgba(30, 30, 38, 0.75);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -214,6 +216,19 @@ html {
 }
 
 /* ── Project 3 responsive ── */
+@media (max-width: 767px) {
+  .phone-feature-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .phone-feature-card {
+    width: 100% !important;
+    height: 420px !important;
+  }
+  .phone-feature-text {
+    padding: 24px 0 !important;
+  }
+}
 @media (max-width: 767px) {
   .bg-staggered-container {
     position: static !important;
