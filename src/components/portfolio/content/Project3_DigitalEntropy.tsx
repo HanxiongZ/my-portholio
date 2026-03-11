@@ -29,6 +29,25 @@ export function Project3_DigitalEntropy({
   project,
   slugify,
 }: Props) {
+  // ── Spacing system ─────────────────────────────────────────────
+  const S = {
+    section:   "64px",   // between major sections
+    block:     "40px",   // between feature blocks
+    lead:      "40px",   // below lead paragraphs
+    component: "40px",   // between sub-components within a block
+    gap:       "24px",   // standard flex/grid gap
+    inner:     "16px",   // gap within a component (card → caption)
+    tight:     "12px",   // gap within text groups
+  };
+
+  // ── Typography system ──────────────────────────────────────────
+  const T = {
+    display: { fontSize: "clamp(22px, 2.5vw, 24px)", fontWeight: 350, lineHeight: 1.35 } as React.CSSProperties,
+    body:    { fontSize: "16px", fontWeight: 300, lineHeight: "28px" } as React.CSSProperties,
+    caption: { fontSize: "14px", fontWeight: 300, lineHeight: "22px" } as React.CSSProperties,
+    label:   { fontSize: "11px", fontFamily: "monospace", fontWeight: 400, letterSpacing: "0.1em", textTransform: "uppercase" as const } as React.CSSProperties,
+  };
+
   const videoRef1 = useRef<HTMLVideoElement>(null);
   const videoRef2 = useRef<HTMLVideoElement>(null);
   const videoRef3 = useRef<HTMLVideoElement>(null);
@@ -239,16 +258,16 @@ export function Project3_DigitalEntropy({
   return (
     <>
       {/* Hero Image */}
-      <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden mb-16">
+      {/* <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden mb-16">
         <ImageWithFallback
           src={img.hero}
           alt={project.title}
           className="w-full h-full object-cover"
         />
-      </div>
+      </div> */}
 
       {/* Co-Act intro — logo, mockup, tagline */}
-      <div className="flex flex-col items-center" style={{ gap: "16px", marginBottom: "40px" }}>
+      <div className="flex flex-col items-center" style={{ gap: S.inner, marginBottom: S.lead }}>
         <div style={{
           width: "64px", height: "64px",
           background: "#3559C7",
@@ -263,7 +282,7 @@ export function Project3_DigitalEntropy({
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
           />
         </div>
-        <span style={{ fontSize: "24px", fontWeight: 300, lineHeight: "1.2", color: "var(--foreground)" }}>
+        <span style={{ ...T.display, lineHeight: "1.2", color: "var(--foreground)" }}>
           Co-Act
         </span>
       </div>
@@ -277,8 +296,7 @@ export function Project3_DigitalEntropy({
       </div>
 
       <p style={{
-        fontWeight: 350,
-        fontSize: "clamp(20px, 2.4vw, 24px)",
+        ...T.display,
         lineHeight: "1.4",
         opacity: 0.8,
         textAlign: "center",
@@ -305,8 +323,8 @@ export function Project3_DigitalEntropy({
 
       {/* Staggered layout: image bottom-left, poem top-right */}
       <div
-        className="bg-staggered-container mb-24 md:mb-32"
-        style={{ position: "relative", width: "100%", height: "570px" }}
+        className="bg-staggered-container"
+        style={{ position: "relative", width: "100%", height: "570px", marginBottom: S.section }}
       >
         {/* Image — bottom left */}
         <div
@@ -370,32 +388,32 @@ export function Project3_DigitalEntropy({
       </div>
 
       {/* Lead */}
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
+      <p style={{ ...T.body, opacity: 0.8, marginBottom: S.lead }}>
         We spent time with the mechanics to understand how the actual work unfolds in the field.
       </p>
 
       {/* Field observations — 3-column editorial grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10 mb-24 md:mb-32">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10 mb-24 md:mb-24">
 
         {/* Observation 01 — Context */}
         <div
           onMouseEnter={() => handleRowEnter(videoRef1)}
           onMouseLeave={() => handleRowLeave(videoRef1)}
         >
-          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: "16px" }}>
+          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: S.inner }}>
             {img.fig_navigate && img.fig_navigate !== "REPLACE_P3_FIG_NAVIGATE" ? (
               <video ref={videoRef1} src={img.fig_navigate} muted loop playsInline
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             ) : (
-              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>Video</div>
+              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, ...T.label }}>Video</div>
             )}
           </div>
           <div className="border-t border-foreground/10" style={{ paddingTop: "14px" }}>
             
-            <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "1.4", margin: "0 0 10px 0" }}>
+            <p style={{ ...T.display, margin: "0 0 10px 0" }}>
               Mechanics work across locations
             </p>
-            <p style={{ fontSize: "14px", fontWeight: 300, lineHeight: "22px", opacity: 0.6, margin: "0 0 14px 0" }}>
+            <p style={{ ...T.caption, opacity: 0.6, margin: "0 0 14px 0" }}>
               Jobs take them from home to workshop to deep forest. Tools and information rarely follow.
             </p>
             
@@ -407,20 +425,20 @@ export function Project3_DigitalEntropy({
           onMouseEnter={() => handleRowEnter(videoRef2)}
           onMouseLeave={() => handleRowLeave(videoRef2)}
         >
-          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: "16px" }}>
+          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: S.inner }}>
             {img.fig_inspection && img.fig_inspection !== "REPLACE_P3_FIG_INSPECTION" ? (
               <video ref={videoRef2} src={img.fig_inspection} muted loop playsInline
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             ) : (
-              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>Video</div>
+              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, ...T.label }}>Video</div>
             )}
           </div>
           <div className="border-t border-foreground/10" style={{ paddingTop: "14px" }}>
            
-            <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "1.4", margin: "0 0 10px 0" }}>
+            <p style={{ ...T.display, margin: "0 0 10px 0" }}>
               Work happens in demanding conditions
             </p>
-            <p style={{ fontSize: "14px", fontWeight: 300, lineHeight: "22px", opacity: 0.6, margin: 0 }}>
+            <p style={{ ...T.caption, opacity: 0.6, margin: 0 }}>
               Digital tools must compete with gloves, grease, snow, and unstable surfaces — far from any desk or controlled environment.
             </p>
           </div>
@@ -431,20 +449,20 @@ export function Project3_DigitalEntropy({
           onMouseEnter={() => handleRowEnter(videoRef3)}
           onMouseLeave={() => handleRowLeave(videoRef3)}
         >
-          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: "16px" }}>
+          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: S.inner }}>
             {img.video_ethnography && img.video_ethnography !== "REPLACE_P3_VIDEO_ETHNOGRAPHY" ? (
               <video ref={videoRef3} src={img.video_ethnography} muted loop playsInline
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             ) : (
-              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>Video</div>
+              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, ...T.label }}>Video</div>
             )}
           </div>
           <div className="border-t border-foreground/10" style={{ paddingTop: "14px" }}>
          
-            <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "1.4", margin: "0 0 10px 0" }}>
+            <p style={{ ...T.display, margin: "0 0 10px 0" }}>
               Machine has a "body"
             </p>
-            <p style={{ fontSize: "14px", fontWeight: 300, lineHeight: "22px", opacity: 0.6, margin: 0 }}>
+            <p style={{ ...T.caption, opacity: 0.6, margin: 0 }}>
               Past failures, temporary fixes, and environment all shape each machine — yet this knowledge is rarely captured or shared.
             </p>
           </div>
@@ -453,7 +471,7 @@ export function Project3_DigitalEntropy({
       </div>
 
       {/* ── Verbal conversations ── */}
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
+      <p style={{ ...T.body, opacity: 0.8, marginBottom: S.lead }}>
         More value insights from the verbal conversations
       </p>
 
@@ -465,14 +483,14 @@ export function Project3_DigitalEntropy({
             { img: imgMechanic2, quote: '"When I was new to here, I didn\'t experience the hard time. The customers here, they know that it takes time to learn cause they\'ve seen new mechanics learn before so..."' },
             { img: imgDriver1, quote: '"This driver who helped alongside, he knows a lot about his machine, while the younger generations are often less involved in the mechanical aspects of machines."' },
           ].map(({ img, quote }, i) => (
-            <div key={i} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+            <div key={i} style={{ display: "flex", gap: S.inner, alignItems: "flex-start" }}>
               <img src={img} alt="" style={{ width: "72px", height: "88px", objectFit: "cover", flexShrink: 0 }} />
-              <p style={{ fontSize: "15px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>{quote}</p>
+              <p style={{ ...T.body, opacity: 0.8, margin: 0 }}>{quote}</p>
             </div>
           ))}
         </div>
       ) : (
-        <div ref={quotesContainerRef} className="mb-24 md:mb-32" style={{ position: "relative", width: "100%", overflow: "hidden", height: `${512 * quotesScale}px` }}>
+        <div ref={quotesContainerRef} style={{ position: "relative", width: "100%", overflow: "hidden", height: `${512 * quotesScale}px`, marginBottom: S.section }}>
         <div style={{ position: "absolute", top: 0, left: 0, width: "960px", height: "512px", transform: `scale(${quotesScale})`, transformOrigin: "top left" }}>
 
           {/* SVG curves — tacit knowledge connections */}
@@ -529,7 +547,7 @@ export function Project3_DigitalEntropy({
           </svg>
 
           {/* Quote 1 — top left */}
-          <p style={{ position: "absolute", left: "109px", top: 0, width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
+          <p style={{ position: "absolute", left: "109px", top: 0, width: "401px", ...T.body, opacity: 0.8, margin: 0 }}>
             "I need to order another spare part for the oil leak, we tried to have more parts with us before we came. But there are always back and forth."
           </p>
           <img
@@ -540,7 +558,7 @@ export function Project3_DigitalEntropy({
           />
 
           {/* Quote 2 — middle right */}
-          <p style={{ position: "absolute", left: "464px", top: "136px", width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
+          <p style={{ position: "absolute", left: "464px", top: "136px", width: "401px", ...T.body, opacity: 0.8, margin: 0 }}>
             "When I was new to here, I didn't experience the hard time. The customers here, they know that it takes time to learn cause they've seen new mechanics learn before so..."
           </p>
           <img
@@ -557,7 +575,7 @@ export function Project3_DigitalEntropy({
             alt=""
             style={{ position: "absolute", left: "133px", top: "370px", width: "163px", height: "142px", objectFit: "cover", display: "block" }}
           />
-          <p style={{ position: "absolute", left: "271px", top: "334px", width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
+          <p style={{ position: "absolute", left: "271px", top: "334px", width: "401px", ...T.body, opacity: 0.8, margin: 0 }}>
             This driver who helped alongside, he knows a lot about his machine, while the younger generations are often less involved in the mechanical aspects of machines"
           </p>
 
@@ -566,11 +584,11 @@ export function Project3_DigitalEntropy({
       )}
 
       {/* ── Research insights ── */}
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
+      <p style={{ ...T.body, opacity: 0.8, marginBottom: S.lead }}>
         From where we got a clear overview of the challenges and opportunities
       </p>
 
-      <div className="mb-24 md:mb-32">
+      <div className="mb-24 md:mb-24">
         {/* Research board image */}
         <div style={{ width: "100%", height: "50vh", overflow: "hidden", marginBottom: "0" }}>
           <img
@@ -599,13 +617,13 @@ export function Project3_DigitalEntropy({
               alignItems: "start",
             }}
           >
-            <span style={{ fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--brand-blue)", paddingTop: isMobile ? 0 : "4px" }}>
+            <span style={{ ...T.label, color: "var(--brand-blue)", paddingTop: isMobile ? 0 : "4px" }}>
               0{i + 1}
             </span>
-            <p style={{ fontSize: isMobile ? "18px" : "clamp(18px, 2vw, 28px)", fontWeight: 300, lineHeight: 1.3, margin: 0 }}>
+            <p style={{ ...T.display, margin: 0 }}>
               {insight.title}
             </p>
-            <p style={{ fontSize: "15px", fontWeight: 300, lineHeight: "26px", opacity: 0.6, margin: 0 }}>
+            <p style={{ ...T.body, opacity: 0.6, margin: 0 }}>
               {insight.body}
             </p>
           </div>
@@ -622,7 +640,7 @@ export function Project3_DigitalEntropy({
         </span>
       </div>
 
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
+      <p style={{ ...T.body, opacity: 0.8, marginBottom: S.lead }}>
         These insights raised new questions about how could we frame a new landscape for the maintenance work.
       </p>
 
@@ -663,10 +681,10 @@ export function Project3_DigitalEntropy({
               ),
             },
           ].map(({ question, pills, icon }, i) => (
-            <div key={i} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div key={i} style={{ display: "flex", flexDirection: "column", gap: S.tight }}>
               {/* HMW box */}
-              <div style={{ border: "1px solid var(--brand-blue)", borderRadius: "8px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "16px" }}>
-                <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "24px", margin: 0 }}>
+              <div style={{ border: "1px solid var(--brand-blue)", borderRadius: "8px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: S.inner }}>
+                <p style={{ ...T.display, margin: 0 }}>
                   <span style={{ opacity: 0.33 }}>How might we </span>{question}
                 </p>
                 {icon}
@@ -676,7 +694,7 @@ export function Project3_DigitalEntropy({
                 {pills.map((pill) => (
                   <div key={pill} style={{ display: "inline-flex", gap: "10px", alignItems: "center", background: "var(--brand-blue)", borderRadius: "40px", padding: "8px 20px 8px 8px", alignSelf: "flex-start" }}>
                     <div style={{ width: "20px", height: "24px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-                    <span style={{ fontSize: "14px", fontWeight: 400, lineHeight: "24px", color: "var(--foreground)", opacity: 0.8 }}>{pill}</span>
+                    <span style={{ ...T.caption, color: "var(--foreground)", opacity: 0.8 }}>{pill}</span>
                   </div>
                 ))}
               </div>
@@ -684,7 +702,7 @@ export function Project3_DigitalEntropy({
           ))}
         </div>
       ) : (
-      <div ref={hmwContainerRef} className="mb-24 md:mb-32" style={{ position: "relative", width: "100%", overflow: "hidden" }}>
+      <div ref={hmwContainerRef} style={{ position: "relative", width: "100%", overflow: "hidden", marginBottom: S.section }}>
         {/* height-keeper: collapses to the scaled height so layout flow is correct */}
         <div style={{ position: "relative", width: "100%", height: `${843 * hmwScale}px` }}>
         {/* 960px canvas scaled to fit the available width */}
@@ -699,7 +717,7 @@ export function Project3_DigitalEntropy({
             display: "flex", flexDirection: "column", justifyContent: "space-between",
             overflow: "hidden",
           }}>
-            <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "26px", margin: 0, color: "var(--foreground)" }}>
+            <p style={{ ...T.display, margin: 0, color: "var(--foreground)" }}>
               <span style={{ opacity: 0.33 }}>How might we</span>
               {` support maintenance work that happens across locations?`}
             </p>
@@ -719,7 +737,7 @@ export function Project3_DigitalEntropy({
             display: "flex", flexDirection: "column", justifyContent: "space-between",
             overflow: "hidden",
           }}>
-            <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "26px", margin: 0, color: "var(--foreground)" }}>
+            <p style={{ ...T.display, margin: 0, color: "var(--foreground)" }}>
               <span style={{ opacity: 0.33 }}>How might we</span>
               {` improve for more accurate troubleshooting?`}
             </p>
@@ -739,7 +757,7 @@ export function Project3_DigitalEntropy({
             display: "flex", flexDirection: "column", justifyContent: "space-between",
             overflow: "hidden",
           }}>
-            <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "26px", margin: 0, color: "var(--foreground)" }}>
+            <p style={{ ...T.display, margin: 0, color: "var(--foreground)" }}>
               <span style={{ opacity: 0.33 }}>How might we</span>
               {` facilitate the exchanging the tacit knowledge?`}
             </p>
@@ -818,7 +836,7 @@ export function Project3_DigitalEntropy({
             padding: "12px 24px 12px 12px",
           }}>
             <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ fontSize: "16px", fontWeight: 400, lineHeight: "28px", color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
+            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
               Strengthen communication
             </span>
           </div>
@@ -831,7 +849,7 @@ export function Project3_DigitalEntropy({
             padding: "12px 24px 12px 12px",
           }}>
             <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ fontSize: "16px", fontWeight: 400, lineHeight: "28px", color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
+            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
               Mobility friendly
             </span>
           </div>
@@ -844,7 +862,7 @@ export function Project3_DigitalEntropy({
             padding: "12px 24px 12px 12px",
           }}>
             <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ fontSize: "16px", fontWeight: 400, lineHeight: "28px", color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
+            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
               Design for collaboration
             </span>
           </div>
@@ -857,7 +875,7 @@ export function Project3_DigitalEntropy({
             padding: "12px 24px 12px 12px",
           }}>
             <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ fontSize: "16px", fontWeight: 400, lineHeight: "28px", color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
+            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
               Diagnose proactively
             </span>
           </div>
@@ -870,7 +888,7 @@ export function Project3_DigitalEntropy({
             padding: "12px 24px 12px 12px",
           }}>
             <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ fontSize: "16px", fontWeight: 400, lineHeight: "28px", color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
+            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
               Support troubleshooting with AI
             </span>
           </div>
@@ -883,7 +901,7 @@ export function Project3_DigitalEntropy({
             padding: "12px 24px 12px 12px",
           }}>
             <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ fontSize: "16px", fontWeight: 400, lineHeight: "28px", color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
+            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
               Respect human expertise
             </span>
           </div>
@@ -906,19 +924,19 @@ export function Project3_DigitalEntropy({
       {/* ── Feature cards — scroll-driven horizontal ── */}
       <div
         ref={cardsWrapperRef}
-        style={{ height: isMobile ? "auto" : `calc(100vh + ${cardsScrollDist}px)`, marginBottom: "80px" }}
+        style={{ height: isMobile ? "auto" : `calc(100vh + ${cardsScrollDist}px)`, marginBottom: S.block }}
       >
         <div style={{
           position: isMobile ? "relative" as const : "sticky" as const,
           top: 0,
-          height: isMobile ? "auto" : "100vh",
+          height: isMobile ? "auto" : "70vh",
           overflow: isMobile ? "visible" : "hidden",
           display: "flex",
           flexDirection: "column" as const,
           justifyContent: isMobile ? "flex-start" : "center",
-          gap: "24px",
+          gap: S.gap,
         }}>
-          <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8 }}>
+          <p style={{ ...T.body, opacity: 0.8 }}>
             Take care of the machines together
           </p>
           <div
@@ -926,7 +944,7 @@ export function Project3_DigitalEntropy({
             className={isMobile ? "no-scrollbar" : undefined}
             style={{
               display: "flex",
-              gap: "24px",
+              gap: S.gap,
               overflowX: isMobile ? "auto" : "visible",
               scrollbarWidth: isMobile ? "none" as const : undefined,
               height: "526px",
@@ -951,11 +969,11 @@ export function Project3_DigitalEntropy({
             overflow: "hidden",
           }}>
             {/* Text */}
-            <div style={{ flexShrink: 0, width: "212px", display: "flex", flexDirection: "column", gap: "12px" }}>
-              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0 }}>
+            <div style={{ flexShrink: 0, width: "212px", display: "flex", flexDirection: "column", gap: S.tight }}>
+              <p style={{ ...T.display, color: "var(--foreground)", margin: 0 }}>
                 Stay connected with your machine
               </p>
-              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0 }}>
+              <p style={{ ...T.body, color: "var(--foreground)", margin: 0 }}>
                 Operator's view
               </p>
             </div>
@@ -986,11 +1004,11 @@ export function Project3_DigitalEntropy({
             overflow: "hidden",
           }}>
             {/* Text */}
-            <div style={{ flexShrink: 0, width: "212px", display: "flex", flexDirection: "column", gap: "12px" }}>
-              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0 }}>
+            <div style={{ flexShrink: 0, width: "212px", display: "flex", flexDirection: "column", gap: S.tight }}>
+              <p style={{ ...T.display, color: "var(--foreground)", margin: 0 }}>
                 Synced information for the jobs
               </p>
-              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0 }}>
+              <p style={{ ...T.body, color: "var(--foreground)", margin: 0 }}>
                 Mechanic's view
               </p>
             </div>
@@ -1021,11 +1039,11 @@ export function Project3_DigitalEntropy({
             paddingBottom: "0",
             overflow: "hidden",
           }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0, width: "212px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: S.tight }}>
+              <p style={{ ...T.display, color: "var(--foreground)", margin: 0, width: "212px" }}>
                 Support a more proactive diagnosis
               </p>
-              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0 }}>
+              <p style={{ ...T.body, color: "var(--foreground)", margin: 0 }}>
                 Gather more information
               </p>
             </div>
@@ -1053,11 +1071,11 @@ export function Project3_DigitalEntropy({
             padding: "32px 48px 0 48px",
             overflow: "hidden",
           }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", alignItems: "center", width: "212px" }}>
-              <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", color: "var(--foreground)", margin: 0, textAlign: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: S.tight, alignItems: "center", width: "212px" }}>
+              <p style={{ ...T.display, color: "var(--foreground)", margin: 0, textAlign: "center" }}>
                 Explainable AI for troubleshooting
               </p>
-              <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "22px", color: "var(--foreground)", margin: 0, textAlign: "center", whiteSpace: "nowrap" }}>
+              <p style={{ ...T.body, color: "var(--foreground)", margin: 0, textAlign: "center", whiteSpace: "nowrap" }}>
                 Trust human experience
               </p>
             </div>
@@ -1076,14 +1094,14 @@ export function Project3_DigitalEntropy({
       </div>{/* end wrapper */}
 
       {/* ── Phone feature block ── */}
-      <div style={{ marginBottom: "80px", paddingTop: "48px" }}>
-        <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, marginBottom: "32px", maxWidth: "640px" }}>
+      <div style={{ marginBottom: S.block, paddingTop: "48px" }}>
+        <p style={{ ...T.body, opacity: 0.8, marginBottom: "0px", maxWidth: "640px" }}>
           Stay communicating with each other about the machine issues
         </p>
       
 
         {/* Two-col: left card + right text */}
-        <div className="phone-feature-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "24px" }}>
+        <div className="phone-feature-row" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: S.gap }}>
 
           {/* Left: phone mockup card */}
           <div
@@ -1099,6 +1117,7 @@ export function Project3_DigitalEntropy({
               justifyContent: "center",
               alignItems: "flex-start",
               contain: "paint",
+              marginBottom:"40px",
             }}
           >
             {/* Scene container — scales with card height, phone overflows bottom (clipped by overflow:hidden) */}
@@ -1142,7 +1161,7 @@ export function Project3_DigitalEntropy({
 
           {/* Right: description text */}
           <div className="phone-feature-text" style={{ flex: 1 }}>
-            <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "480px", color: "var(--foreground)" }}>
+            <p style={{ ...T.body, margin: 0, maxWidth: "480px", color: "var(--foreground)" }}>
               <span style={{ fontWeight: 500 }}>Report issues in seconds. </span>
               <span style={{ fontWeight: 300, opacity: 0.8 }}>Operators can create a service ticket by simple clicks, share machine data and recent activity with the mechanics.</span>
             </p>
@@ -1152,20 +1171,19 @@ export function Project3_DigitalEntropy({
       </div>
 
 {/* ── Collaborative interface feature blocks ── */}
-      <div style={{ marginBottom: "80px", display: "flex", flexDirection: "column", gap: "56px" }}>
+      <div style={{ marginBottom: S.block, display: "flex", flexDirection: "column", gap: S.component }}>
 
         {/* Sub-header */}
-        <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, margin: 0, maxWidth: "640px" }}>
+        <p style={{ ...T.body, opacity: 0.8, margin: 0, maxWidth: "640px" }}>
           Optimise mechanics' workflow with a collaborative interface
         </p>
 
         {/* Block 1: iPad + prognosis video */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <div style={{ height: "550px", width: "100%",  borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
-            <div style={{ position: "relative", width: "100%", maxWidth: "683px", aspectRatio: "683 / 490" }}>
-              {/* Clip container — matches iPad screen area: 634×442px */}
+        <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: isMobile ? 0 : "0 32px" }}>
+          <div style={{ width: "100%", maxWidth: isMobile ? undefined : "683px", display: "flex", flexDirection: "column", gap: S.inner }}>
+            <div style={{ borderRadius: "24px", overflow: "hidden", contain: "paint", aspectRatio: "683 / 490", position: "relative" }}>
+              {/* Clip container — matches iPad screen area */}
               <div style={{ position: "absolute", left: "3.59%", top: "5.02%", width: "92.83%", height: "90.20%", overflow: "hidden" }}>
-                {/* Video oversized & offset for zoom crop effect: 721×502 at -45,-28.59 */}
                 <div style={{ position: "absolute", left: "-7.10%", top: "-6.47%", width: "113.72%", height: "113.57%", borderRadius: "11px", overflow: "hidden" }}>
                   <video
                     src="https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/coact_prognosis.mp4"
@@ -1176,17 +1194,17 @@ export function Project3_DigitalEntropy({
               </div>
               <img src={imgIPadPro11} alt="iPad Pro 11" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }} />
             </div>
+            <p style={{ ...T.body, margin: 0, color: "var(--foreground)" }}>
+              <span style={{ fontWeight: 500 }}>Run a proactive diagnosis. </span>
+              <span style={{ fontWeight: 300, opacity: 0.8 }}>Component-level visualisation helps mechanics quickly identify where issues might occur. The goal is to get more accurate troubleshooting before go into the field.</span>
+            </p>
           </div>
-          <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "600px", color: "var(--foreground)" }}>
-            <span style={{ fontWeight: 500 }}>Run a proactive diagnosis. </span>
-            <span style={{ fontWeight: 300, opacity: 0.8 }}>Component-level visualisation helps mechanics quickly identify where issues might occur. The goal is to get more accurate troubleshooting before go into the field.</span>
-          </p>
         </div>
 
         {/* Block 2: iPad + smartai video */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <div style={{ height: "550px", width: "100%",  borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
-            <div style={{ position: "relative", width: "100%", maxWidth: "683px", aspectRatio: "683 / 490" }}>
+        <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: isMobile ? 0 : "0 32px" }}>
+          <div style={{ width: "100%", maxWidth: isMobile ? undefined : "683px", display: "flex", flexDirection: "column", gap: S.inner }}>
+            <div style={{ borderRadius: "24px", overflow: "hidden", contain: "paint", aspectRatio: "683 / 490", position: "relative" }}>
               <div style={{ position: "absolute", left: "3.59%", top: "5.02%", width: "92.83%", height: "90.20%", borderRadius: "11px", overflow: "hidden" }}>
                 <video
                   src="https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/coact_smartai.mp4"
@@ -1196,16 +1214,16 @@ export function Project3_DigitalEntropy({
               </div>
               <img src={imgIPadPro11} alt="iPad Pro 11" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }} />
             </div>
+            <p style={{ ...T.body, margin: 0, color: "var(--foreground)" }}>
+              <span style={{ fontWeight: 500 }}>AI-assisted troubleshooting. </span>
+              <span style={{ fontWeight: 300, opacity: 0.8 }}>Instead of presenting a single AI-generated answer, Co-Act reveals the reasoning process behind potential causes. Signals, inspection records, and historical faults are connected through a visual network that helps mechanics understand how different factors relate to each other.</span>
+            </p>
           </div>
-          <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "600px", color: "var(--foreground)" }}>
-            <span style={{ fontWeight: 500 }}>AI-assisted troubleshooting. </span>
-            <span style={{ fontWeight: 300, opacity: 0.8 }}>Instead of presenting a single AI-generated answer, Co-Act reveals the reasoning process behind potential causes. Signals, inspection records, and historical faults are connected through a visual network that helps mechanics understand how different factors relate to each other.</span>
-          </p>
         </div>
 
         {/* Block 3: two photo cards side by side */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "24px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: S.inner }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: S.gap }}>
             {/* Left: office view */}
             <div style={{ flex: 1,  borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 0 : "0 32px", minHeight: isMobile ? "220px" : undefined }}>
               <div style={{ position: "relative", width: isMobile ? "100%" : "729px", height: isMobile ? "100%" : "400px", flexShrink: 0, minHeight: isMobile ? "220px" : undefined }}>
@@ -1219,7 +1237,7 @@ export function Project3_DigitalEntropy({
               </div>
             </div>
           </div>
-          <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "600px", color: "var(--foreground)" }}>
+          <p style={{ ...T.body, margin: 0, maxWidth: "600px", paddingLeft: "32px", color: "var(--foreground)" }}>
             <span style={{ fontWeight: 500 }}>Supporting expert judgement. </span>
             <span style={{ fontWeight: 300, opacity: 0.8 }}>Co-Act facilitates scenarios for mobile work locations and open discussions. Technology assists the process — it does not replace experience.</span>
           </p>
