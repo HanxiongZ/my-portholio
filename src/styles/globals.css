@@ -248,33 +248,4 @@ html {
     width: 100% !important;
     order: 1;
   }
-  .ethnography-row {
-    flex-direction: row !important;
-    height: 250px !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 12px !important;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .ethnography-row::-webkit-scrollbar {
-    display: none;
-  }
-  .ethnography-col {
-    flex-shrink: 0 !important;
-    width: 82vw !important;
-    height: 250px !important;
-    scroll-snap-align: start;
-  }
-  .ethnography-video-box {
-    width: 82vw !important;
-    height: 250px !important;
-  }
-  .ethnography-blue-card {
-    width: 250px !important;
-    height: 250px !important;
-    flex: none !important;
-  }
 }

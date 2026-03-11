@@ -40,6 +40,7 @@ export function Project3_DigitalEntropy({
   const curveRef3 = useRef<SVGPathElement>(null);
   const [curvesDrawn, setCurvesDrawn] = useState(false);
   const [curveLengths, setCurveLengths] = useState([1100, 520, 1200]);
+  const [quotesScale, setQuotesScale] = useState(1);
 
   useEffect(() => {
     const l1 = curveRef1.current?.getTotalLength();
@@ -60,33 +61,22 @@ export function Project3_DigitalEntropy({
     return () => observer.disconnect();
   }, []);
 
-  // Insights scroll reveal
-  const insightRef1 = useRef<HTMLDivElement>(null);
-  const insightRef2 = useRef<HTMLDivElement>(null);
-  const insightRef3 = useRef<HTMLDivElement>(null);
-  const [insightsRevealed, setInsightsRevealed] = useState([false, false, false]);
-
   useEffect(() => {
-    const insightRefs = [insightRef1, insightRef2, insightRef3];
-    const observers = insightRefs.map((ref, i) => {
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setInsightsRevealed(prev => prev.map((v, j) => j === i ? true : v));
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.2 }
-      );
-      if (ref.current) obs.observe(ref.current);
-      return obs;
-    });
-    return () => observers.forEach(o => o.disconnect());
+    const update = () => {
+      if (quotesContainerRef.current) {
+        setQuotesScale(Math.min(1, quotesContainerRef.current.offsetWidth / 960));
+      }
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
 
-  // HMW diagram scroll draw
+
+  // HMW diagram scroll draw + scale
   const hmwContainerRef = useRef<HTMLDivElement>(null);
   const [hmwDrawn, setHmwDrawn] = useState(false);
+  const [hmwScale, setHmwScale] = useState(1);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -100,6 +90,17 @@ export function Project3_DigitalEntropy({
     );
     if (hmwContainerRef.current) observer.observe(hmwContainerRef.current);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const update = () => {
+      if (hmwContainerRef.current) {
+        setHmwScale(Math.min(1, hmwContainerRef.current.offsetWidth / 960));
+      }
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
 
   // Concept video — YouTube IFrame API
@@ -203,25 +204,15 @@ export function Project3_DigitalEntropy({
     if (cardsScrollRef.current) cardsScrollRef.current.style.cursor = "grab";
   };
 
-  // Image blur on scroll
-  const insightsWrapperRef = useRef<HTMLDivElement>(null);
-  const [imageBlur, setImageBlur] = useState(0);
-  const [overlayOpacity, setOverlayOpacity] = useState(0);
-
+  // Mobile detection
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   useEffect(() => {
-    const handleScroll = () => {
-      if (!insightsWrapperRef.current) return;
-      const rect = insightsWrapperRef.current.getBoundingClientRect();
-      // Start when insights top enters viewport at 60%, full effect at -30vh
-      const start = window.innerHeight * 0.6;
-      const end = -window.innerHeight * 0.3;
-      const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
-      setImageBlur(progress * 8);
-      setOverlayOpacity(progress);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const mq = window.matchMedia('(max-width: 767px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
+
 
 
   const handleRowEnter = (ref: React.RefObject<HTMLVideoElement | null>) => {
@@ -334,100 +325,84 @@ export function Project3_DigitalEntropy({
       </div>
 
       {/* Lead */}
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "64px" }}>
-        We spent time with the mechanics to understand how the actual work<br/>
-        unfolds in the field.
+      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
+        We spent time with the mechanics to understand how the actual work unfolds in the field.
       </p>
 
-      {/* Three rows of ethnography content */}
-      <div className="mb-24 md:mb-24" style={{ display: "flex", flexDirection: "column", gap: "80px" }}>
+      {/* Field observations — 3-column editorial grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10 mb-24 md:mb-32">
 
-        {/* Row 1: Time + phone image + location grid */}
+        {/* Observation 01 — Context */}
         <div
-          className="ethnography-row"
-          style={{ display: "flex", gap: "30px", height: "250px", alignItems: "center" }}
           onMouseEnter={() => handleRowEnter(videoRef1)}
           onMouseLeave={() => handleRowLeave(videoRef1)}
         >
-          <div className="hidden md:flex" style={{ width: "250px", flexShrink: 0, flexDirection: "column", gap: "20px", alignItems: "flex-end" }}>
-            <p style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", margin: 0 }}></p>
-            <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, margin: 0, textAlign: "right" }}></p>
-          </div>
-          <div className="ethnography-col ethnography-video-box" style={{ width: "250px", height: "250px", flexShrink: 0, overflow: "hidden", background: "rgba(250,250,250,0.05)", position: "relative" }}>
+          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: "16px" }}>
             {img.fig_navigate && img.fig_navigate !== "REPLACE_P3_FIG_NAVIGATE" ? (
-              <video ref={videoRef1} src={img.fig_navigate} muted loop playsInline style={{ position: "absolute", top: "-48px", left: 0, width: "100%", height: "auto", display: "block" }} />
+              <video ref={videoRef1} src={img.fig_navigate} muted loop playsInline
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             ) : (
               <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>Video</div>
             )}
           </div>
-          <div className="ethnography-col ethnography-blue-card" style={{ flex: 1, height: "250px", background: "var(--brand-blue)", padding: "8px", overflow: "hidden", display: "flex", flexDirection: "column", gap: "20px" }}>
-            <p className="text-foreground" style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>
-              Mechanics (Service engineer) work across locations.
+          <div className="border-t border-foreground/10" style={{ paddingTop: "14px" }}>
+            
+            <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "1.4", margin: "0 0 10px 0" }}>
+              Mechanics work across locations
             </p>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <p className="text-foreground" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>HOME</p>
-              <p className="text-foreground" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>WORKSHOP</p>
-              <p className="text-foreground" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>FOREST</p>
-              <p className="text-foreground" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>CAR</p>
-              <p className="text-foreground" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>...</p>
-            </div>
+            <p style={{ fontSize: "14px", fontWeight: 300, lineHeight: "22px", opacity: 0.6, margin: "0 0 14px 0" }}>
+              Jobs take them from home to workshop to deep forest. Tools and information rarely follow.
+            </p>
+            
           </div>
         </div>
 
-        {/* Row 2: Blue card + inspection video + description text */}
+        {/* Observation 02 — Environment */}
         <div
-          className="ethnography-row"
-          style={{ display: "flex", gap: "30px", height: "250px", alignItems: "center" }}
           onMouseEnter={() => handleRowEnter(videoRef2)}
           onMouseLeave={() => handleRowLeave(videoRef2)}
         >
-          <div className="ethnography-col ethnography-blue-card" style={{ flex: 1, height: "250px", background: "var(--brand-blue)", padding: "8px", overflow: "hidden", display: "flex", alignItems: "flex-start" }}>
-            <p className="text-foreground" style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>
-              Work Happens in Harsh Conditions
-            </p>
-          </div>
-          <div className="ethnography-col ethnography-video-box" style={{ width: "400px", flexShrink: 0, height: "250px", overflow: "hidden", background: "rgba(250,250,250,0.05)" }}>
+          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: "16px" }}>
             {img.fig_inspection && img.fig_inspection !== "REPLACE_P3_FIG_INSPECTION" ? (
-              <video ref={videoRef2} src={img.fig_inspection} muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <video ref={videoRef2} src={img.fig_inspection} muted loop playsInline
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             ) : (
               <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>Video</div>
             )}
           </div>
-          <div className="ethnography-col" style={{ width: "250px", flexShrink: 0, height: "250px", overflow: "hidden", display: "flex", alignItems: "center" }}>
-            <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, margin: 0 }}>
-              Mechanics operate outdoors, often surrounded by heavy equipment and limited infrastructure. Digital tools must compete with gloves, grease, snow, and unstable surfaces.
+          <div className="border-t border-foreground/10" style={{ paddingTop: "14px" }}>
+           
+            <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "1.4", margin: "0 0 10px 0" }}>
+              Work happens in demanding conditions
+            </p>
+            <p style={{ fontSize: "14px", fontWeight: 300, lineHeight: "22px", opacity: 0.6, margin: 0 }}>
+              Digital tools must compete with gloves, grease, snow, and unstable surfaces — far from any desk or controlled environment.
             </p>
           </div>
         </div>
 
-        {/* Row 3: Quote + oil leak video + Machine Has Body */}
+        {/* Observation 03 — Expertise */}
         <div
-          className="ethnography-row"
-          style={{ display: "flex", gap: "30px", height: "250px", alignItems: "center" }}
           onMouseEnter={() => handleRowEnter(videoRef3)}
           onMouseLeave={() => handleRowLeave(videoRef3)}
         >
-          <div className="ethnography-col" style={{ width: "250px", flexShrink: 0, padding: "0 0 4px 0", overflow: "hidden", display: "flex", alignItems: "center" }}>
-            <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, margin: 0 }}>
-              {/* "Oil Leak again, I need a new spare part." */}
-            </p>
-          </div>
-                    <div className="ethnography-col ethnography-blue-card" style={{ flex: 1, height: "250px", background: "var(--brand-blue)", padding: "8px", overflow: "hidden", display: "flex", flexDirection: "column", gap: "20px" }}>
-            <p className="text-foreground" style={{ fontSize: "24px", fontWeight: 300, lineHeight: "28px", margin: 0 }}>
-              Machine Has a "Body"
-            </p>
-            <p className="text-foreground" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, margin: 0 }}>
-              Previous failures, temporary fixes, and working environment all influence the machines. Yet this information is not always visible.
-            </p>
-          </div>
-          <div className="ethnography-col ethnography-video-box" style={{ width: "400px", height: "250px", flexShrink: 0, overflow: "hidden", background: "rgba(250,250,250,0.05)" }}>
+          <div style={{ height: "240px", overflow: "hidden", background: "rgba(128,128,128,0.08)", marginBottom: "16px" }}>
             {img.video_ethnography && img.video_ethnography !== "REPLACE_P3_VIDEO_ETHNOGRAPHY" ? (
-              <video ref={videoRef3} src={img.video_ethnography} muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <video ref={videoRef3} src={img.video_ethnography} muted loop playsInline
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             ) : (
               <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.2, fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>Video</div>
             )}
           </div>
-
+          <div className="border-t border-foreground/10" style={{ paddingTop: "14px" }}>
+         
+            <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "1.4", margin: "0 0 10px 0" }}>
+              Machine has a "body"
+            </p>
+            <p style={{ fontSize: "14px", fontWeight: 300, lineHeight: "22px", opacity: 0.6, margin: 0 }}>
+              Past failures, temporary fixes, and environment all shape each machine — yet this knowledge is rarely captured or shared.
+            </p>
+          </div>
         </div>
 
       </div>
@@ -438,161 +413,158 @@ export function Project3_DigitalEntropy({
       </p>
 
       {/* Staggered quotes + illustrations */}
-      <div ref={quotesContainerRef} className="mb-24 md:mb-32" style={{ position: "relative", width: "100%", height: "512px", overflow: "visible" }}>
+      {isMobile ? (
+        <div className="mb-24 flex flex-col gap-10">
+          {[
+            { img: imgMechanic1, quote: '"I need to order another spare part for the oil leak, we tried to have more parts with us before we came. But there are always back and forth."' },
+            { img: imgMechanic2, quote: '"When I was new to here, I didn\'t experience the hard time. The customers here, they know that it takes time to learn cause they\'ve seen new mechanics learn before so..."' },
+            { img: imgDriver1, quote: '"This driver who helped alongside, he knows a lot about his machine, while the younger generations are often less involved in the mechanical aspects of machines."' },
+          ].map(({ img, quote }, i) => (
+            <div key={i} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+              <img src={img} alt="" style={{ width: "72px", height: "88px", objectFit: "cover", flexShrink: 0 }} />
+              <p style={{ fontSize: "15px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>{quote}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div ref={quotesContainerRef} className="mb-24 md:mb-32" style={{ position: "relative", width: "100%", overflow: "hidden", height: `${512 * quotesScale}px` }}>
+        <div style={{ position: "absolute", top: 0, left: 0, width: "960px", height: "512px", transform: `scale(${quotesScale})`, transformOrigin: "top left" }}>
 
-        {/* SVG curves — tacit knowledge connections */}
-        <svg
-          viewBox="0 0 960 512"
-          preserveAspectRatio="xMinYMin meet"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "512px", overflow: "visible", pointerEvents: "none" }}
-        >
-          <defs>
-            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M 0 0 L 6 3 L 0 6" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.5" />
-            </marker>
-          </defs>
+          {/* SVG curves — tacit knowledge connections */}
+          <svg
+            viewBox="0 0 960 512"
+            preserveAspectRatio="xMinYMin meet"
+            style={{ position: "absolute", inset: 0, width: "100%", height: "512px", overflow: "visible", pointerEvents: "none" }}
+          >
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M 0 0 L 6 3 L 0 6" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.5" />
+              </marker>
+            </defs>
 
-          {/* Mechanic1 → Mechanic2: arch over the top */}
-          <path
-            ref={curveRef1}
-            d="M 100 58 C 100 -90 900 -90 900 108"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            strokeOpacity="0.25"
-            markerEnd="url(#arrow)"
-            strokeDasharray={curveLengths[0]}
-            strokeDashoffset={curvesDrawn ? 0 : curveLengths[0]}
-            style={{ transition: "stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0s" }}
+            {/* Mechanic1 → Mechanic2: arch over the top */}
+            <path
+              ref={curveRef1}
+              d="M 100 58 C 100 -90 900 -90 900 108"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeOpacity="0.25"
+              markerEnd="url(#arrow)"
+              strokeDasharray={curveLengths[0]}
+              strokeDashoffset={curvesDrawn ? 0 : curveLengths[0]}
+              style={{ transition: "stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0s" }}
+            />
+            {/* Mechanic1 → Driver: arc down the left side */}
+            <path
+              ref={curveRef2}
+              d="M 66 215 C -90 295 -90 400 214 370"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeOpacity="0.25"
+              markerEnd="url(#arrow)"
+              strokeDasharray={curveLengths[1]}
+              strokeDashoffset={curvesDrawn ? 0 : curveLengths[1]}
+              style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.4s" }}
+            />
+            {/* Mechanic2 → Driver: arc down the right side */}
+            <path
+              ref={curveRef3}
+              d="M 902 186 C 1080 320 1080 500 296 441"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeOpacity="0.25"
+              markerEnd="url(#arrow)"
+              strokeDasharray={curveLengths[2]}
+              strokeDashoffset={curvesDrawn ? 0 : curveLengths[2]}
+              style={{ transition: "stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.7s" }}
+            />
+          </svg>
+
+          {/* Quote 1 — top left */}
+          <p style={{ position: "absolute", left: "109px", top: 0, width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
+            "I need to order another spare part for the oil leak, we tried to have more parts with us before we came. But there are always back and forth."
+          </p>
+          <img
+            className="img-adaptive"
+            src={imgMechanic1}
+            alt=""
+            style={{ position: "absolute", left: 0, top: "58px", width: "133px", height: "157px", objectFit: "cover", display: "block" }}
           />
-          {/* Mechanic1 → Driver: arc down the left side */}
-          <path
-            ref={curveRef2}
-            d="M 66 215 C -90 295 -90 400 214 370"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            strokeOpacity="0.25"
-            markerEnd="url(#arrow)"
-            strokeDasharray={curveLengths[1]}
-            strokeDashoffset={curvesDrawn ? 0 : curveLengths[1]}
-            style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.4s" }}
+
+          {/* Quote 2 — middle right */}
+          <p style={{ position: "absolute", left: "464px", top: "136px", width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
+            "When I was new to here, I didn't experience the hard time. The customers here, they know that it takes time to learn cause they've seen new mechanics learn before so..."
+          </p>
+          <img
+            className="img-adaptive"
+            src={imgMechanic2}
+            alt=""
+            style={{ position: "absolute", left: "845px", top: "108px", width: "115px", height: "157px", objectFit: "cover", display: "block" }}
           />
-          {/* Mechanic2 → Driver: arc down the right side */}
-          <path
-            ref={curveRef3}
-            d="M 902 186 C 1080 320 1080 500 296 441"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            strokeOpacity="0.25"
-            markerEnd="url(#arrow)"
-            strokeDasharray={curveLengths[2]}
-            strokeDashoffset={curvesDrawn ? 0 : curveLengths[2]}
-            style={{ transition: "stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.7s" }}
+
+          {/* Quote 3 — bottom center */}
+          <img
+            className="img-adaptive"
+            src={imgDriver1}
+            alt=""
+            style={{ position: "absolute", left: "133px", top: "370px", width: "163px", height: "142px", objectFit: "cover", display: "block" }}
           />
-        </svg>
+          <p style={{ position: "absolute", left: "271px", top: "334px", width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
+            This driver who helped alongside, he knows a lot about his machine, while the younger generations are often less involved in the mechanical aspects of machines"
+          </p>
 
-        {/* Quote 1 — top left */}
-        <p style={{ position: "absolute", left: "109px", top: 0, width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
-          "I need to order another spare part for the oil leak, we tried to have more parts with us before we came. But there are always back and forth."
-        </p>
-        <img
-          className="img-adaptive"
-          src={imgMechanic1}
-          alt=""
-          style={{ position: "absolute", left: 0, top: "58px", width: "133px", height: "157px", objectFit: "cover", display: "block" }}
-        />
-
-        {/* Quote 2 — middle right */}
-        <p style={{ position: "absolute", left: "464px", top: "136px", width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
-          "When I was new to here, I didn't experience the hard time. The customers here, they know that it takes time to learn cause they've seen new mechanics learn before so..."
-        </p>
-        <img
-          className="img-adaptive"
-          src={imgMechanic2}
-          alt=""
-          style={{ position: "absolute", left: "845px", top: "108px", width: "115px", height: "157px", objectFit: "cover", display: "block" }}
-        />
-
-        {/* Quote 3 — bottom center */}
-        <img
-          className="img-adaptive"
-          src={imgDriver1}
-          alt=""
-          style={{ position: "absolute", left: "133px", top: "370px", width: "163px", height: "142px", objectFit: "cover", display: "block" }}
-        />
-        <p style={{ position: "absolute", left: "271px", top: "334px", width: "401px", fontSize: "16px", fontWeight: 300, lineHeight: "24px", opacity: 0.8, margin: 0 }}>
-          This driver who helped alongside, he knows a lot about his machine, while the younger generations are often less involved in the mechanical aspects of machines"
-        </p>
-
-      </div>
+        </div>
+        </div>
+      )}
 
       {/* ── Research insights ── */}
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "32px" }}>
+      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "24px" }}>
         From where we got a clear overview of the challenges and opportunities
       </p>
 
-      <div className="mb-24 md:mb-32" style={{ position: "relative" }}>
-
-        {/* Sticky blurring image */}
-        <div style={{ position: "sticky", top: "15vh", height: "70vh", overflow: "hidden", zIndex: 0 }}>
+      <div className="mb-24 md:mb-32">
+        {/* Research board image */}
+        <div style={{ width: "100%", height: "50vh", overflow: "hidden", marginBottom: "0" }}>
           <img
             src={imgResearchBoard}
             alt="Research board"
-            style={{
-              width: "100%", height: "100%", objectFit: "cover", display: "block",
-              filter: `blur(${imageBlur}px)`,
-              transform: "scale(1.06)",
-              transition: "filter 0.1s linear",
-            }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
-          {/* Gradient: background color pushes up as insights scroll over */}
-          <div style={{
-            position: "absolute", inset: 0,
-            background: `linear-gradient(to bottom, transparent 0%, var(--page-bg) ${Math.max(20, 88 - overlayOpacity * 68)}%)`,
-          }} />
         </div>
 
-        {/* Insights — pulled up to overlap the faded image */}
-        <div ref={insightsWrapperRef} style={{ position: "relative", zIndex: 1, marginTop: "-20vh" }}>
-          {([
-            { title: "Mobile Ways of Working", body: "Maintenance happens across locations, but tools and information do not." },
-            { title: "Harsh Conditions for Field Work", body: "Field conditions demand tools that work beyond desks and controlled environments." },
-            { title: "Knowledge is Tacit and Distributed", body: "Machine knowledge is scattered across systems, documents, and human experience." },
-          ] as const).map((insight, i) => {
-            const ref = [insightRef1, insightRef2, insightRef3][i];
-            const revealed = insightsRevealed[i];
-            return (
-              <div
-                key={insight.title}
-                ref={ref}
-                style={{
-                  borderTop: "1px solid rgba(255,255,255,0.1)",
-                  paddingTop: "40px",
-                  paddingBottom: "40px",
-                  display: "grid",
-                  gridTemplateColumns: "56px 1fr 1fr",
-                  gap: "40px",
-                  alignItems: "start",
-                  transform: revealed ? "translateY(0px)" : "translateY(24px)",
-                  opacity: revealed ? 1 : 0,
-                  transition: "all 600ms ease",
-                }}
-              >
-                <span style={{ fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--brand-blue)", paddingTop: "6px" }}>
-                  0{i + 1}
-                </span>
-                <p style={{ fontSize: "clamp(20px, 2.4vw, 32px)", fontWeight: 300, lineHeight: 1.25, margin: 0, textShadow: "0 1px 12px rgba(0,0,0,0.5)" }}>
-                  {insight.title}
-                </p>
-                <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.75, margin: 0, textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
-                  {insight.body}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+        {/* Key findings */}
+        {([
+          { title: "Mobile Ways of Working", body: "Maintenance happens across locations, but tools and information do not." },
+          { title: "Harsh Conditions for Field Work", body: "Field conditions demand tools that work beyond desks and controlled environments." },
+          { title: "Knowledge is Tacit and Distributed", body: "Machine knowledge is scattered across systems, documents, and human experience." },
+        ] as const).map((insight, i) => (
+          <div
+            key={insight.title}
+            className="border-t border-foreground/10"
+            style={{
+              paddingTop: "32px",
+              paddingBottom: "32px",
+              display: isMobile ? "flex" : "grid",
+              flexDirection: isMobile ? "column" as const : undefined,
+              gridTemplateColumns: isMobile ? undefined : "56px 1fr 1fr",
+              gap: isMobile ? "8px" : "40px",
+              alignItems: "start",
+            }}
+          >
+            <span style={{ fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--brand-blue)", paddingTop: isMobile ? 0 : "4px" }}>
+              0{i + 1}
+            </span>
+            <p style={{ fontSize: isMobile ? "18px" : "clamp(18px, 2vw, 28px)", fontWeight: 300, lineHeight: 1.3, margin: 0 }}>
+              {insight.title}
+            </p>
+            <p style={{ fontSize: "15px", fontWeight: 300, lineHeight: "26px", opacity: 0.6, margin: 0 }}>
+              {insight.body}
+            </p>
+          </div>
+        ))}
       </div>
 
       {/* ── 03 DESIGN STRATEGY ── */}
@@ -610,8 +582,68 @@ export function Project3_DigitalEntropy({
       </p>
 
       {/* HMW diagram */}
-      <div ref={hmwContainerRef} className="mb-24 md:mb-32" style={{ position: "relative", width: "100%", overflowX: "hidden" }}>
-        <div style={{ position: "relative", width: "100%", maxWidth: "960px", height: "843px" }}>
+      {isMobile ? (
+        <div className="mb-24 flex flex-col gap-6">
+          {[
+            {
+              question: "support maintenance work that happens across locations?",
+              pills: ["Strengthen communication", "Mobility friendly"],
+              icon: (
+                <svg width="40" height="40" viewBox="0 0 49 48" fill="none">
+                  <circle cx="17" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+                  <circle cx="32" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+                  <circle cx="24.5" cy="16" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+                </svg>
+              ),
+            },
+            {
+              question: "improve for more accurate troubleshooting?",
+              pills: ["Diagnose proactively", "Support troubleshooting with AI"],
+              icon: (
+                <svg width="40" height="40" viewBox="0 0 49 49" fill="none">
+                  <path d="M6 24.5L24.5 15L43 24.5L24.5 34L6 24.5Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+                  <path d="M6 31L24.5 40.5L43 31" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+                  <path d="M6 18L24.5 8.5L43 18" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+                </svg>
+              ),
+            },
+            {
+              question: "facilitate the exchanging the tacit knowledge?",
+              pills: ["Design for collaboration", "Respect human expertise"],
+              icon: (
+                <svg width="40" height="40" viewBox="0 0 48 49" fill="none">
+                  <path d="M24 4L26 20L40 24L26 28L24 44L22 28L8 24L22 20L24 4Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
+                  <path d="M24 14L25.5 22L33 24L25.5 26L24 34L22.5 26L15 24L22.5 22L24 14Z" stroke="currentColor" strokeWidth="1" strokeOpacity="0.4" fill="none" />
+                </svg>
+              ),
+            },
+          ].map(({ question, pills, icon }, i) => (
+            <div key={i} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {/* HMW box */}
+              <div style={{ border: "1px solid var(--brand-blue)", borderRadius: "8px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "16px" }}>
+                <p style={{ fontSize: "18px", fontWeight: 300, lineHeight: "24px", margin: 0 }}>
+                  <span style={{ opacity: 0.33 }}>How might we </span>{question}
+                </p>
+                {icon}
+              </div>
+              {/* Pills */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px", paddingLeft: "16px" }}>
+                {pills.map((pill) => (
+                  <div key={pill} style={{ display: "inline-flex", gap: "10px", alignItems: "center", background: "var(--brand-blue)", borderRadius: "40px", padding: "8px 20px 8px 8px", alignSelf: "flex-start" }}>
+                    <div style={{ width: "20px", height: "24px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
+                    <span style={{ fontSize: "14px", fontWeight: 400, lineHeight: "24px", color: "var(--foreground)", opacity: 0.8 }}>{pill}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+      <div ref={hmwContainerRef} className="mb-24 md:mb-32" style={{ position: "relative", width: "100%", overflow: "hidden" }}>
+        {/* height-keeper: collapses to the scaled height so layout flow is correct */}
+        <div style={{ position: "relative", width: "100%", height: `${843 * hmwScale}px` }}>
+        {/* 960px canvas scaled to fit the available width */}
+        <div style={{ position: "absolute", top: 0, left: 0, width: "960px", height: "843px", transform: `scale(${hmwScale})`, transformOrigin: "top left" }}>
 
           {/* HMW Box 1 */}
           <div style={{
@@ -812,7 +844,9 @@ export function Project3_DigitalEntropy({
           </div>
 
         </div>
+        </div>
       </div>
+      )}
 
       {/* ── 04 COLLABORATIVE ACTIONS ── */}
       <div
@@ -1162,17 +1196,17 @@ export function Project3_DigitalEntropy({
 
         {/* Block 3: two photo cards side by side */}
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          <div style={{ display: "flex", gap: "24px" }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "24px" }}>
             {/* Left: office view */}
-            <div style={{ flex: 1, background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px" }}>
-              <div style={{ position: "relative", width: "729px", height: "400px", flexShrink: 0 }}>
+            <div style={{ flex: 1, background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 0 : "0 32px", minHeight: isMobile ? "220px" : undefined }}>
+              <div style={{ position: "relative", width: isMobile ? "100%" : "729px", height: isMobile ? "100%" : "400px", flexShrink: 0, minHeight: isMobile ? "220px" : undefined }}>
                 <img src={imgCoactOfficeView} alt="Co-Act office view" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
               </div>
             </div>
             {/* Right: collab view */}
-            <div style={{ flex: 1, background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px" }}>
-              <div style={{ position: "relative", width: "669px", height: "400px", flexShrink: 0, overflow: "hidden" }}>
-                <img src={imgCoactCollabView} alt="Co-Act collab view" style={{ position: "absolute", height: "100.00%", left: "-2.18%", top: "1%", width: "111.05%", pointerEvents: "none" }} />
+            <div style={{ flex: 1, background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 0 : "0 32px", minHeight: isMobile ? "220px" : undefined }}>
+              <div style={{ position: "relative", width: isMobile ? "100%" : "669px", height: isMobile ? "100%" : "400px", flexShrink: 0, overflow: "hidden", minHeight: isMobile ? "220px" : undefined }}>
+                <img src={imgCoactCollabView} alt="Co-Act collab view" style={{ position: "absolute", height: "100%", left: isMobile ? 0 : "-2.18%", top: "1%", width: isMobile ? "100%" : "111.05%", objectFit: "cover", pointerEvents: "none" }} />
               </div>
             </div>
           </div>
