@@ -180,29 +180,33 @@ export function Project3_DigitalEntropy({
     cvHideTimer.current = setTimeout(() => { if (cvPlaying) setCvShowControls(false); }, 2500);
   };
 
-  // Feature cards drag-to-scroll
-  const cardsScrollRef = useRef<HTMLDivElement>(null);
-  const cardsDragging = useRef(false);
-  const cardsStartX = useRef(0);
-  const cardsScrollLeft = useRef(0);
+  // Feature cards — scroll-driven horizontal slide
+  const cardsWrapperRef = useRef<HTMLDivElement>(null);
+  const cardsStripRef = useRef<HTMLDivElement>(null);
+  const [cardsTranslateX, setCardsTranslateX] = useState(0);
+  const [cardsScrollDist, setCardsScrollDist] = useState(1800);
 
-  const handleCardsDragStart = (e: React.MouseEvent) => {
-    cardsDragging.current = true;
-    cardsStartX.current = e.pageX - (cardsScrollRef.current?.offsetLeft ?? 0);
-    cardsScrollLeft.current = cardsScrollRef.current?.scrollLeft ?? 0;
-    if (cardsScrollRef.current) cardsScrollRef.current.style.cursor = "grabbing";
-  };
-  const handleCardsDragMove = (e: React.MouseEvent) => {
-    if (!cardsDragging.current) return;
-    e.preventDefault();
-    const x = e.pageX - (cardsScrollRef.current?.offsetLeft ?? 0);
-    const walk = (x - cardsStartX.current) * 1.2;
-    if (cardsScrollRef.current) cardsScrollRef.current.scrollLeft = cardsScrollLeft.current - walk;
-  };
-  const handleCardsDragEnd = () => {
-    cardsDragging.current = false;
-    if (cardsScrollRef.current) cardsScrollRef.current.style.cursor = "grab";
-  };
+  useEffect(() => {
+    const measure = () => {
+      if (cardsStripRef.current && cardsWrapperRef.current) {
+        setCardsScrollDist(Math.max(0, cardsStripRef.current.scrollWidth - cardsWrapperRef.current.offsetWidth));
+      }
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!cardsWrapperRef.current || !cardsStripRef.current) return;
+      const rect = cardsWrapperRef.current.getBoundingClientRect();
+      const dist = cardsStripRef.current.scrollWidth - cardsWrapperRef.current.offsetWidth;
+      setCardsTranslateX(Math.max(-dist, Math.min(0, rect.top)));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Mobile detection
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
@@ -243,10 +247,51 @@ export function Project3_DigitalEntropy({
         />
       </div>
 
+      {/* Co-Act intro — logo, mockup, tagline */}
+      <div className="flex flex-col items-center" style={{ gap: "16px", marginBottom: "40px" }}>
+        <div style={{
+          width: "64px", height: "64px",
+          background: "#3559C7",
+          borderRadius: "14px",
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <motion.img
+            src={coActLogo}
+            alt="Co-Act gear"
+            style={{ width: "37px", height: "38px", display: "block", transformOrigin: "50% 45%" }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
+        <span style={{ fontSize: "24px", fontWeight: 300, lineHeight: "1.2", color: "var(--foreground)" }}>
+          Co-Act
+        </span>
+      </div>
+
+      <div style={{ width: "75%", margin: "0 auto 40px auto" }}>
+        <img
+          src={imgCoactMockup}
+          alt="Co-Act — device mockup"
+          style={{ width: "100%", display: "block", objectFit: "contain", filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.4))" }}
+        />
+      </div>
+
+      <p style={{
+        fontWeight: 350,
+        fontSize: "clamp(20px, 2.4vw, 24px)",
+        lineHeight: "1.4",
+        opacity: 0.8,
+        textAlign: "center",
+        maxWidth: "640px",
+        margin: "0 auto 80px auto",
+      }}>
+        Bringing machine data, diagnostics, and collaboration into one workspace.
+      </p>
+
       {/* ── 01 BACKGROUND ── */}
       <div
         id={slugify("Background")}
-        className="border-t border-foreground/10 pt-6 mb-10 scroll-mt-32"
+        className="border-t border-foreground/10 pt-6 mb-8 scroll-mt-32"
       >
         <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
           01 — Background
@@ -254,7 +299,7 @@ export function Project3_DigitalEntropy({
       </div>
 
       {/* Lead sentence */}
-      <p className="text-base font-light text-foreground/80 mb-8">
+      <p className="text-base font-light text-foreground/80 mb-10">
         This is a story about human, machines, and knowledge...
       </p>
 
@@ -408,7 +453,7 @@ export function Project3_DigitalEntropy({
       </div>
 
       {/* ── Verbal conversations ── */}
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "50px" }}>
+      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
         More value insights from the verbal conversations
       </p>
 
@@ -521,7 +566,7 @@ export function Project3_DigitalEntropy({
       )}
 
       {/* ── Research insights ── */}
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "24px" }}>
+      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
         From where we got a clear overview of the challenges and opportunities
       </p>
 
@@ -577,7 +622,7 @@ export function Project3_DigitalEntropy({
         </span>
       </div>
 
-      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "50px" }}>
+      <p style={{ fontWeight: 300, fontSize: "16px", lineHeight: "28px", opacity: 0.8, marginBottom: "40px" }}>
         These insights raised new questions about how could we frame a new landscape for the maintenance work.
       </p>
 
@@ -858,78 +903,39 @@ export function Project3_DigitalEntropy({
         </span>
       </div>
 
-      {/* Logo + title */}
-      <div className="flex flex-col items-center" style={{ gap: "16px", marginBottom: "40px" }}>
+      {/* ── Feature cards — scroll-driven horizontal ── */}
+      <div
+        ref={cardsWrapperRef}
+        style={{ height: isMobile ? "auto" : `calc(100vh + ${cardsScrollDist}px)`, marginBottom: "80px" }}
+      >
         <div style={{
-          width: "64px", height: "64px",
-          background: "#3559C7",
-          borderRadius: "14px",
-          display: "flex", alignItems: "center", justifyContent: "center",
+          position: isMobile ? "relative" as const : "sticky" as const,
+          top: 0,
+          height: isMobile ? "auto" : "100vh",
+          overflow: isMobile ? "visible" : "hidden",
+          display: "flex",
+          flexDirection: "column" as const,
+          justifyContent: isMobile ? "flex-start" : "center",
+          gap: "24px",
         }}>
-          <motion.img
-            src={coActLogo}
-            alt="Co-Act gear"
+          <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8 }}>
+            Take care of the machines together
+          </p>
+          <div
+            ref={cardsStripRef}
+            className={isMobile ? "no-scrollbar" : undefined}
             style={{
-              width: "37px",
-              height: "38px",
-              display: "block",
-              transformOrigin: "50% 45%",
+              display: "flex",
+              gap: "24px",
+              overflowX: isMobile ? "auto" : "visible",
+              scrollbarWidth: isMobile ? "none" as const : undefined,
+              height: "526px",
+              transform: isMobile ? undefined : `translateX(${cardsTranslateX}px)`,
+              willChange: isMobile ? undefined : "transform",
+              transition: isMobile ? undefined : "transform 0.08s linear",
             }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
-        <span style={{ fontSize: "24px", fontWeight: 300, lineHeight: "1.2", color: "var(--foreground)" }}>
-          Co-Act
-        </span>
-      </div>
+          >
 
-      {/* Device mockup — 9/12 columns, centered */}
-      <div style={{ width: "75%", margin: "0 auto 40px auto" }}>
-        <img
-          src={imgCoactMockup}
-          alt="Co-Act — device mockup"
-          style={{ width: "100%", display: "block", objectFit: "contain", filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.4))" }}
-        />
-      </div>
-
-      {/* Tagline — large, centered */}
-      <p style={{
-        fontWeight: 350,
-        fontSize: "clamp(20px, 2.4vw, 24px)",
-        lineHeight: "1.4",
-        opacity: 0.8,
-        textAlign: "center",
-        maxWidth: "640px",
-        margin: "40px auto 80px auto",
-      }}>
-        Bringing machine data, diagnostics, and collaboration into one workspace.
-      </p>
-
-      {/* ── Feature cards horizontal scroll ── */}
-      <div style={{ marginBottom: "80px" }}>
-        <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, marginBottom: "16px" }}>
-          Take care of the machines together
-        </p>
-
-        {/* Scrollable strip */}
-        <div
-          ref={cardsScrollRef}
-          onMouseDown={handleCardsDragStart}
-          onMouseMove={handleCardsDragMove}
-          onMouseUp={handleCardsDragEnd}
-          onMouseLeave={handleCardsDragEnd}
-          className="no-scrollbar"
-          style={{
-            display: "flex",
-            gap: "24px",
-            overflowX: "auto",
-            scrollbarWidth: "none",
-            cursor: "grab",
-            userSelect: "none",
-            height: "526px",
-          }}
-        >
 
           {/* Card 1 — Operator's view */}
           <div style={{
@@ -1065,12 +1071,15 @@ export function Project3_DigitalEntropy({
             </div>
           </div>
 
-        </div>
-      </div>
+          </div>{/* end strip */}
+        </div>{/* end sticky inner */}
+      </div>{/* end wrapper */}
 
       {/* ── Phone feature block ── */}
-      <div style={{ marginBottom: "80px" }}>
-        {/* Header */} <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", letterSpacing: "-0.48px", opacity: 0.8, paddingTop: "40px", paddingBottom: "40px", margin: 0, width: "677px", maxWidth: "100%" }}> Stay communicating with each other about the machine issues </p>
+      <div style={{ marginBottom: "80px", paddingTop: "48px" }}>
+        <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, marginBottom: "32px", maxWidth: "640px" }}>
+          Stay communicating with each other about the machine issues
+        </p>
       
 
         {/* Two-col: left card + right text */}
@@ -1083,7 +1092,7 @@ export function Project3_DigitalEntropy({
               flexShrink: 0,
               width: "526px",
               height: "526px",
-              background: "var(--coact-card-bg)",
+              //background: "var(--coact-card-bg)",
               borderRadius: "24px",
               overflow: "hidden",
               display: "flex",
@@ -1133,7 +1142,7 @@ export function Project3_DigitalEntropy({
 
           {/* Right: description text */}
           <div className="phone-feature-text" style={{ flex: 1 }}>
-            <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "377px", color: "var(--foreground)" }}>
+            <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "480px", color: "var(--foreground)" }}>
               <span style={{ fontWeight: 500 }}>Report issues in seconds. </span>
               <span style={{ fontWeight: 300, opacity: 0.8 }}>Operators can create a service ticket by simple clicks, share machine data and recent activity with the mechanics.</span>
             </p>
@@ -1143,16 +1152,16 @@ export function Project3_DigitalEntropy({
       </div>
 
 {/* ── Collaborative interface feature blocks ── */}
-      <div style={{ marginBottom: "80px", display: "flex", flexDirection: "column", gap: "12px" }}>
+      <div style={{ marginBottom: "80px", display: "flex", flexDirection: "column", gap: "56px" }}>
 
         {/* Sub-header */}
-        <p className="text-foreground/80" style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", letterSpacing: "-0.32px", paddingTop: "12px", margin: 0, width: "677px", maxWidth: "100%" }}>
+        <p style={{ fontSize: "16px", fontWeight: 300, lineHeight: "28px", opacity: 0.8, margin: 0, maxWidth: "640px" }}>
           Optimise mechanics' workflow with a collaborative interface
         </p>
 
         {/* Block 1: iPad + prognosis video */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          <div style={{ height: "550px", width: "100%", background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div style={{ height: "550px", width: "100%",  borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
             <div style={{ position: "relative", width: "100%", maxWidth: "683px", aspectRatio: "683 / 490" }}>
               {/* Clip container — matches iPad screen area: 634×442px */}
               <div style={{ position: "absolute", left: "3.59%", top: "5.02%", width: "92.83%", height: "90.20%", overflow: "hidden" }}>
@@ -1168,15 +1177,15 @@ export function Project3_DigitalEntropy({
               <img src={imgIPadPro11} alt="iPad Pro 11" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }} />
             </div>
           </div>
-          <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "645px", color: "var(--foreground)" }}>
+          <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "600px", color: "var(--foreground)" }}>
             <span style={{ fontWeight: 500 }}>Run a proactive diagnosis. </span>
             <span style={{ fontWeight: 300, opacity: 0.8 }}>Component-level visualisation helps mechanics quickly identify where issues might occur. The goal is to get more accurate troubleshooting before go into the field.</span>
           </p>
         </div>
 
         {/* Block 2: iPad + smartai video */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          <div style={{ height: "550px", width: "100%", background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div style={{ height: "550px", width: "100%",  borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 32px", contain: "paint" }}>
             <div style={{ position: "relative", width: "100%", maxWidth: "683px", aspectRatio: "683 / 490" }}>
               <div style={{ position: "absolute", left: "3.59%", top: "5.02%", width: "92.83%", height: "90.20%", borderRadius: "11px", overflow: "hidden" }}>
                 <video
@@ -1188,17 +1197,17 @@ export function Project3_DigitalEntropy({
               <img src={imgIPadPro11} alt="iPad Pro 11" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", pointerEvents: "none" }} />
             </div>
           </div>
-          <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "645px", color: "var(--foreground)" }}>
+          <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "600px", color: "var(--foreground)" }}>
             <span style={{ fontWeight: 500 }}>AI-assisted troubleshooting. </span>
             <span style={{ fontWeight: 300, opacity: 0.8 }}>Instead of presenting a single AI-generated answer, Co-Act reveals the reasoning process behind potential causes. Signals, inspection records, and historical faults are connected through a visual network that helps mechanics understand how different factors relate to each other.</span>
           </p>
         </div>
 
         {/* Block 3: two photo cards side by side */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "24px" }}>
             {/* Left: office view */}
-            <div style={{ flex: 1, background: "var(--coact-card-bg)", borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 0 : "0 32px", minHeight: isMobile ? "220px" : undefined }}>
+            <div style={{ flex: 1,  borderRadius: "24px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? 0 : "0 32px", minHeight: isMobile ? "220px" : undefined }}>
               <div style={{ position: "relative", width: isMobile ? "100%" : "729px", height: isMobile ? "100%" : "400px", flexShrink: 0, minHeight: isMobile ? "220px" : undefined }}>
                 <img src={imgCoactOfficeView} alt="Co-Act office view" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
               </div>
@@ -1210,7 +1219,7 @@ export function Project3_DigitalEntropy({
               </div>
             </div>
           </div>
-          <p style={{ fontSize: "16px", lineHeight: "24px", margin: 0, maxWidth: "645px", color: "var(--foreground)" }}>
+          <p style={{ fontSize: "15px", lineHeight: "26px", margin: 0, maxWidth: "600px", color: "var(--foreground)" }}>
             <span style={{ fontWeight: 500 }}>Supporting expert judgement. </span>
             <span style={{ fontWeight: 300, opacity: 0.8 }}>Co-Act facilitates scenarios for mobile work locations and open discussions. Technology assists the process — it does not replace experience.</span>
           </p>
