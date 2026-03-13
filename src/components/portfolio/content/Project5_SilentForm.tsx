@@ -2,6 +2,7 @@ import React from "react";
 import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { Project } from "../Projects";
 import { getContentImage } from "../projectImages";
+import { AudioDome } from "./AudioDome";
 
 interface Props {
   project: Project;
@@ -19,12 +20,8 @@ export function Project5_SilentForm({ project, slugify }: Props) {
 
   return (
     <>
-      <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden mb-16">
-        <ImageWithFallback
-          src={img.hero}
-          alt={project.title}
-          className="w-full h-full object-cover"
-        />
+      <div className="mb-16">
+        <AudioDome />
       </div>
 
       {project.toc?.map((section, index) => (

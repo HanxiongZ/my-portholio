@@ -93,34 +93,6 @@ export function Project3_DigitalEntropy({
 
 
   // HMW diagram scroll draw + scale
-  const hmwContainerRef = useRef<HTMLDivElement>(null);
-  const [hmwDrawn, setHmwDrawn] = useState(false);
-  const [hmwScale, setHmwScale] = useState(1);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setHmwDrawn(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (hmwContainerRef.current) observer.observe(hmwContainerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const update = () => {
-      if (hmwContainerRef.current) {
-        setHmwScale(Math.min(1, hmwContainerRef.current.offsetWidth / 960));
-      }
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
 
   // Concept video — YouTube IFrame API
   const ytContainerRef = useRef<HTMLDivElement>(null);
@@ -645,271 +617,83 @@ export function Project3_DigitalEntropy({
       </p>
 
       {/* HMW diagram */}
-      {isMobile ? (
-        <div className="mb-24 flex flex-col gap-6">
-          {[
-            {
-              question: "support maintenance work that happens across locations?",
-              pills: ["Strengthen communication", "Mobility friendly"],
-              icon: (
-                <svg width="40" height="40" viewBox="0 0 49 48" fill="none">
-                  <circle cx="17" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-                  <circle cx="32" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-                  <circle cx="24.5" cy="16" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-                </svg>
-              ),
-            },
-            {
-              question: "improve for more accurate troubleshooting?",
-              pills: ["Diagnose proactively", "Support troubleshooting with AI"],
-              icon: (
-                <svg width="40" height="40" viewBox="0 0 49 49" fill="none">
-                  <path d="M6 24.5L24.5 15L43 24.5L24.5 34L6 24.5Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-                  <path d="M6 31L24.5 40.5L43 31" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-                  <path d="M6 18L24.5 8.5L43 18" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-                </svg>
-              ),
-            },
-            {
-              question: "facilitate the exchanging the tacit knowledge?",
-              pills: ["Design for collaboration", "Respect human expertise"],
-              icon: (
-                <svg width="40" height="40" viewBox="0 0 48 49" fill="none">
-                  <path d="M24 4L26 20L40 24L26 28L24 44L22 28L8 24L22 20L24 4Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-                  <path d="M24 14L25.5 22L33 24L25.5 26L24 34L22.5 26L15 24L22.5 22L24 14Z" stroke="currentColor" strokeWidth="1" strokeOpacity="0.4" fill="none" />
-                </svg>
-              ),
-            },
-          ].map(({ question, pills, icon }, i) => (
-            <div key={i} style={{ display: "flex", flexDirection: "column", gap: S.tight }}>
-              {/* HMW box */}
-              <div style={{ border: "1px solid var(--brand-blue)", borderRadius: "8px", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: S.inner }}>
-                <p style={{ ...T.display, margin: 0 }}>
-                  <span style={{ opacity: 0.33 }}>How might we </span>{question}
-                </p>
-                {icon}
-              </div>
-              {/* Pills */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px", paddingLeft: "16px" }}>
-                {pills.map((pill) => (
-                  <div key={pill} style={{ display: "inline-flex", gap: "10px", alignItems: "center", background: "var(--brand-blue)", borderRadius: "40px", padding: "8px 20px 8px 8px", alignSelf: "flex-start" }}>
-                    <div style={{ width: "20px", height: "24px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-                    <span style={{ ...T.caption, color: "var(--foreground)", opacity: 0.8 }}>{pill}</span>
-                  </div>
-                ))}
-              </div>
+      <div style={{ marginBottom: S.section }}>
+        {[
+          {
+            question: "support maintenance work that happens across locations?",
+            pills: ["Strengthen communication", "Mobility friendly"],
+            icon: (
+              <svg width="32" height="32" viewBox="0 0 49 48" fill="none">
+                <circle cx="17" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.6" fill="none" />
+                <circle cx="32" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.6" fill="none" />
+                <circle cx="24.5" cy="16" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.6" fill="none" />
+              </svg>
+            ),
+          },
+          {
+            question: "improve for more accurate troubleshooting?",
+            pills: ["Diagnose proactively", "Support troubleshooting with AI"],
+            icon: (
+              <svg width="32" height="32" viewBox="0 0 49 49" fill="none">
+                <path d="M6 24.5L24.5 15L43 24.5L24.5 34L6 24.5Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.6" fill="none" />
+                <path d="M6 31L24.5 40.5L43 31" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.6" fill="none" />
+                <path d="M6 18L24.5 8.5L43 18" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.6" fill="none" />
+              </svg>
+            ),
+          },
+          {
+            question: "facilitate the exchanging the tacit knowledge?",
+            pills: ["Design for collaboration", "Respect human expertise"],
+            icon: (
+              <svg width="32" height="32" viewBox="0 0 48 49" fill="none">
+                <path d="M24 4L26 20L40 24L26 28L24 44L22 28L8 24L22 20L24 4Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.6" fill="none" />
+                <path d="M24 14L25.5 22L33 24L25.5 26L24 34L22.5 26L15 24L22.5 22L24 14Z" stroke="currentColor" strokeWidth="1" strokeOpacity="0.3" fill="none" />
+              </svg>
+            ),
+          },
+        ].map(({ question, pills, icon }, i) => (
+          <div key={i} style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            gap: isMobile ? S.tight : "48px",
+            alignItems: "center",
+            borderTop: "1px solid rgba(128,128,128,0.15)",
+            paddingTop: "28px",
+            paddingBottom: "28px",
+          }}>
+            {/* Left: HMW question */}
+            <div style={{
+              border: "1px solid var(--brand-blue)",
+              borderRadius: "10px",
+              padding: "20px",
+              display: "flex",
+              flexDirection: isMobile ? "row" : "column",
+              justifyContent: "space-between",
+              alignItems: isMobile ? "center" : "flex-start",
+              gap: "16px",
+              minHeight: isMobile ? undefined : "140px",
+            }}>
+              <p style={{ ...T.body, margin: 0, color: "var(--foreground)" }}>
+                <span style={{ opacity: 0.35 }}>How might we </span>{question}
+              </p>
+              {icon}
             </div>
-          ))}
-        </div>
-      ) : (
-      <div ref={hmwContainerRef} style={{ position: "relative", width: "100%", overflow: "hidden", marginBottom: S.section }}>
-        {/* height-keeper: collapses to the scaled height so layout flow is correct */}
-        <div style={{ position: "relative", width: "100%", height: `${843 * hmwScale}px` }}>
-        {/* 960px canvas scaled to fit the available width */}
-        <div style={{ position: "absolute", top: 0, left: 0, width: "960px", height: "843px", transform: `scale(${hmwScale})`, transformOrigin: "top left" }}>
-
-          {/* HMW Box 1 */}
-          <div style={{
-            position: "absolute", left: 0, top: "29px",
-            width: "250px", height: "250px",
-            border: "1px solid var(--brand-blue)", borderRadius: "8px",
-            padding: "16px",
-            display: "flex", flexDirection: "column", justifyContent: "space-between",
-            overflow: "hidden",
-          }}>
-            <p style={{ ...T.display, margin: 0, color: "var(--foreground)" }}>
-              <span style={{ opacity: 0.33 }}>How might we</span>
-              {` support maintenance work that happens across locations?`}
-            </p>
-            <svg width="49" height="48" viewBox="0 0 49 48" fill="none">
-              <circle cx="17" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-              <circle cx="32" cy="28" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-              <circle cx="24.5" cy="16" r="12" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-            </svg>
+            {/* Right: pills */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {pills.map((pill) => (
+                <div key={pill} style={{
+                  display: "inline-flex", gap: "10px", alignItems: "center",
+                  background: "var(--brand-blue)", borderRadius: "40px",
+                  padding: "8px 20px 8px 8px", alignSelf: "flex-start",
+                }}>
+                  <div style={{ width: "20px", height: "20px", background: "var(--background)", borderRadius: "50%", flexShrink: 0 }} />
+                  <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.9 }}>{pill}</span>
+                </div>
+              ))}
+            </div>
           </div>
-
-          {/* HMW Box 2 */}
-          <div style={{
-            position: "absolute", left: 0, top: "307px",
-            width: "250px", height: "250px",
-            border: "1px solid var(--brand-blue)", borderRadius: "8px",
-            padding: "16px",
-            display: "flex", flexDirection: "column", justifyContent: "space-between",
-            overflow: "hidden",
-          }}>
-            <p style={{ ...T.display, margin: 0, color: "var(--foreground)" }}>
-              <span style={{ opacity: 0.33 }}>How might we</span>
-              {` improve for more accurate troubleshooting?`}
-            </p>
-            <svg width="49" height="49" viewBox="0 0 49 49" fill="none">
-              <path d="M6 24.5L24.5 15L43 24.5L24.5 34L6 24.5Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-              <path d="M6 31L24.5 40.5L43 31" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-              <path d="M6 18L24.5 8.5L43 18" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-            </svg>
-          </div>
-
-          {/* HMW Box 3 */}
-          <div style={{
-            position: "absolute", left: 0, top: "585px",
-            width: "250px", height: "250px",
-            border: "1px solid var(--brand-blue)", borderRadius: "8px",
-            padding: "16px",
-            display: "flex", flexDirection: "column", justifyContent: "space-between",
-            overflow: "hidden",
-          }}>
-            <p style={{ ...T.display, margin: 0, color: "var(--foreground)" }}>
-              <span style={{ opacity: 0.33 }}>How might we</span>
-              {` facilitate the exchanging the tacit knowledge?`}
-            </p>
-            <svg width="48" height="49" viewBox="0 0 48 49" fill="none">
-              <path d="M24 4L26 20L40 24L26 28L24 44L22 28L8 24L22 20L24 4Z" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.8" fill="none" />
-              <path d="M24 14L25.5 22L33 24L25.5 26L24 34L22.5 26L15 24L22.5 22L24 14Z" stroke="currentColor" strokeWidth="1" strokeOpacity="0.4" fill="none" />
-            </svg>
-          </div>
-
-          {/* SVG connecting lines — two-layer scroll reveal:
-               bottom = final dashed line (static),
-               top = solid page-bg cover that retreats left/downward to expose the dashes */}
-          <svg
-            viewBox="0 0 960 843"
-            preserveAspectRatio="xMinYMin meet"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "843px", pointerEvents: "none", overflow: "visible" }}
-          >
-            {/* ── Left vertical upper: y 86→258, length=172 ── */}
-            <line x1="318" y1="86" x2="318" y2="258"
-              stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5"
-              strokeLinecap="round" strokeDasharray="12 12" />
-            <line x1="318" y1="86" x2="318" y2="258"
-              stroke="var(--page-bg)" strokeWidth="3" strokeLinecap="square"
-              strokeDasharray="172"
-              strokeDashoffset={hmwDrawn ? 172 : 0}
-              style={{ transition: "stroke-dashoffset 0.7s cubic-bezier(0.4,0,0.2,1) 0s" }} />
-
-            {/* ── Left vertical lower: y 287→758, length=471 ── */}
-            <line x1="318" y1="287" x2="318" y2="758"
-              stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5"
-              strokeLinecap="round" strokeDasharray="12 12" />
-            <line x1="318" y1="287" x2="318" y2="758"
-              stroke="var(--page-bg)" strokeWidth="3" strokeLinecap="square"
-              strokeDasharray="471"
-              strokeDashoffset={hmwDrawn ? 471 : 0}
-              style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1) 0.3s" }} />
-
-            {/* ── Branch with 12px rounded corners, length≈444 ── */}
-            <path d="M 318 154 L 530 154 Q 542 154 542 166 L 542 260 Q 542 272 554 272 L 655 272"
-              fill="none"
-              stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5"
-              strokeLinecap="round" strokeDasharray="12 12" />
-            <path d="M 318 154 L 530 154 Q 542 154 542 166 L 542 260 Q 542 272 554 272 L 655 272"
-              fill="none"
-              stroke="var(--page-bg)" strokeWidth="3" strokeLinecap="square"
-              strokeDasharray="444"
-              strokeDashoffset={hmwDrawn ? 444 : 0}
-              style={{ transition: "stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1) 0.15s" }} />
-
-            {/* ── Right vertical 1: y 302→444, length=142 ── */}
-            <line x1="678" y1="302" x2="678" y2="444"
-              stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5"
-              strokeLinecap="round" strokeDasharray="12 12" />
-            <line x1="678" y1="302" x2="678" y2="444"
-              stroke="var(--page-bg)" strokeWidth="3" strokeLinecap="square"
-              strokeDasharray="142"
-              strokeDashoffset={hmwDrawn ? 142 : 0}
-              style={{ transition: "stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1) 0.5s" }} />
-
-            {/* ── Right vertical 2: y 464→616, length=152 ── */}
-            <line x1="678" y1="464" x2="678" y2="616"
-              stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.5"
-              strokeLinecap="round" strokeDasharray="12 12" />
-            <line x1="678" y1="464" x2="678" y2="616"
-              stroke="var(--page-bg)" strokeWidth="3" strokeLinecap="square"
-              strokeDasharray="152"
-              strokeDashoffset={hmwDrawn ? 152 : 0}
-              style={{ transition: "stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1) 0.7s" }} />
-          </svg>
-
-          {/* Pill: Strengthen communication */}
-          <div style={{
-            position: "absolute", left: "296px", top: "56px",
-            display: "flex", gap: "10px", alignItems: "center",
-            background: "var(--brand-blue)", borderRadius: "40px",
-            padding: "12px 24px 12px 12px",
-          }}>
-            <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
-              Strengthen communication
-            </span>
-          </div>
-
-          {/* Pill: Mobility friendly */}
-          <div style={{
-            position: "absolute", left: "296px", top: "258px",
-            display: "flex", gap: "10px", alignItems: "center",
-            background: "var(--brand-blue)", borderRadius: "40px",
-            padding: "12px 24px 12px 12px",
-          }}>
-            <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
-              Mobility friendly
-            </span>
-          </div>
-
-          {/* Pill: Design for collaboration */}
-          <div style={{
-            position: "absolute", left: "296px", top: "758px",
-            display: "flex", gap: "10px", alignItems: "center",
-            background: "var(--brand-blue)", borderRadius: "40px",
-            padding: "12px 24px 12px 12px",
-          }}>
-            <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
-              Design for collaboration
-            </span>
-          </div>
-
-          {/* Pill: Diagnose proactively */}
-          <div style={{
-            position: "absolute", left: "655px", top: "272px",
-            display: "flex", gap: "10px", alignItems: "center",
-            background: "var(--brand-blue)", borderRadius: "40px",
-            padding: "12px 24px 12px 12px",
-          }}>
-            <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
-              Diagnose proactively
-            </span>
-          </div>
-
-          {/* Pill: Support troubleshooting with AI */}
-          <div style={{
-            position: "absolute", left: "655px", top: "444px",
-            display: "flex", gap: "10px", alignItems: "center",
-            background: "var(--brand-blue)", borderRadius: "40px",
-            padding: "12px 24px 12px 12px",
-          }}>
-            <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
-              Support troubleshooting with AI
-            </span>
-          </div>
-
-          {/* Pill: Respect human expertise */}
-          <div style={{
-            position: "absolute", left: "655px", top: "616px",
-            display: "flex", gap: "10px", alignItems: "center",
-            background: "var(--brand-blue)", borderRadius: "40px",
-            padding: "12px 24px 12px 12px",
-          }}>
-            <div style={{ width: "24px", height: "30px", background: "var(--background)", borderRadius: "29px", flexShrink: 0 }} />
-            <span style={{ ...T.body, color: "var(--foreground)", opacity: 0.8, whiteSpace: "nowrap" }}>
-              Respect human expertise
-            </span>
-          </div>
-
-        </div>
-        </div>
+        ))}
       </div>
-      )}
 
       {/* ── 04 COLLABORATIVE ACTIONS ── */}
       <div
@@ -1237,7 +1021,7 @@ export function Project3_DigitalEntropy({
               </div>
             </div>
           </div>
-          <p style={{ ...T.body, margin: 0, maxWidth: "600px", paddingLeft: "32px", color: "var(--foreground)" }}>
+          <p style={{ ...T.body, margin: 0, maxWidth: "600px", color: "var(--foreground)" }}>
             <span style={{ fontWeight: 500 }}>Supporting expert judgement. </span>
             <span style={{ fontWeight: 300, opacity: 0.8 }}>Co-Act facilitates scenarios for mobile work locations and open discussions. Technology assists the process — it does not replace experience.</span>
           </p>
