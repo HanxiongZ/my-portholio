@@ -14,13 +14,13 @@ export function AudioDome() {
     scene.fog = new THREE.Fog(BG, 12, 28);
 
     const camera = new THREE.PerspectiveCamera(
-      50,
+      62,
       container.clientWidth / container.clientHeight,
       0.1,
       1000
     );
-    camera.position.set(-10, 7, 18);
-    camera.lookAt(0, 2, 0);
+    camera.position.set(-7, 5, 14);
+    camera.lookAt(0, 1.5, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setClearColor(BG);
@@ -98,11 +98,11 @@ export function AudioDome() {
     // Audio source node — dark dot + soft gray halo
     const sourceGroup = new THREE.Group();
     const dot = new THREE.Mesh(
-      new THREE.SphereGeometry(0.3, 16, 16),
+      new THREE.SphereGeometry(0.18, 16, 16),
       new THREE.MeshBasicMaterial({ color: INK })
     );
     const halo = new THREE.Mesh(
-      new THREE.SphereGeometry(0.5, 16, 16),
+      new THREE.SphereGeometry(0.32, 16, 16),
       new THREE.MeshBasicMaterial({
         color: INK,
         transparent: true,
@@ -122,31 +122,37 @@ export function AudioDome() {
     let visualScale = 1.0;
     let isDragging = false;
     let dragStartPos = { x: 0, y: 0 };
+    let lastPointerX = 0;
+    let lastPointerY = 0;
     let initialTrackIndex = 0;
-    let initialAngle = 0;
     let dragMode: "horizontal" | "vertical" | null = null;
 
     const onPointerDown = (e: PointerEvent) => {
       isDragging = true;
       dragStartPos = { x: e.clientX, y: e.clientY };
+      lastPointerX = e.clientX;
+      lastPointerY = e.clientY;
       initialTrackIndex = targetTrackIndex;
-      initialAngle = targetAngle;
       dragMode = null;
     };
 
     const onPointerMove = (e: PointerEvent) => {
       if (!isDragging) return;
+
+      // Cumulative displacement — for direction detection & horizontal track stepping
       const dx = e.clientX - dragStartPos.x;
       const dy = e.clientY - dragStartPos.y;
 
+      // Per-frame delta — for smooth 1:1 vertical tracking
+      const deltaY = e.clientY - lastPointerY;
+      lastPointerX = e.clientX;
+      lastPointerY = e.clientY;
+
+      // Direction lock — 8px threshold, clean 45° split, no dead zone
       if (!dragMode) {
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > 20) {
-          // Angle from horizontal axis (0° = right, 90° = down)
-          const angle = Math.abs(Math.atan2(dy, dx)) * (180 / Math.PI);
-          if (angle < 30 || angle > 150) dragMode = "horizontal";       // within 30° of horizontal
-          else if (angle > 60 && angle < 120) dragMode = "vertical";    // within 30° of vertical
-          // 30–60° / 120–150° diagonal zone: keep waiting
+        if (dist > 8) {
+          dragMode = Math.abs(dy) > Math.abs(dx) ? "vertical" : "horizontal";
         }
       }
 
@@ -154,10 +160,10 @@ export function AudioDome() {
         const shift = Math.round(dx / 35);
         targetTrackIndex = Math.max(0, Math.min(sliceTracks.length - 1, initialTrackIndex + shift));
       } else if (dragMode === "vertical") {
-        // When source starts behind the top (cos < 0), screen-up maps to arc going
-        // back toward top, so invert the drag direction to match visual expectation
-        const sign = Math.cos(initialAngle) >= 0 ? 1 : -1;
-        targetAngle = Math.max(0, Math.min(Math.PI, initialAngle - (dy / 100) * sign));
+        // Use visualAngle (lagged/smoothed) for the sign check — it never oscillates
+        // at the π/2 boundary the way targetAngle does, providing natural hysteresis.
+        const sign = Math.cos(visualAngle) >= 0 ? 1 : -1;
+        targetAngle = Math.max(0, Math.min(Math.PI, targetAngle - (deltaY / 120) * sign));
       }
     };
 
@@ -199,8 +205,9 @@ export function AudioDome() {
       }
 
       // Position lerp
-      visualPhi += (sliceTracks[targetTrackIndex].phi - visualPhi) * 0.15;
-      visualAngle += (targetAngle - visualAngle) * 0.15;
+      const lerpFactor = 0.12;
+      visualPhi += (sliceTracks[targetTrackIndex].phi - visualPhi) * lerpFactor;
+      visualAngle += (targetAngle - visualAngle) * lerpFactor;
 
       const sx = R * Math.sin(visualPhi);
       const sr = R * Math.cos(visualPhi);
@@ -227,12 +234,13 @@ export function AudioDome() {
 
   return (
     <div style={{
-      position: "relative", width: "100%", borderRadius: "16px", overflow: "hidden",
+      position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
+      borderRadius: "16px", overflow: "hidden",
       background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)",
     }}>
       <div
         ref={containerRef}
-        style={{ width: "100%", aspectRatio: "4 / 3", touchAction: "none", display: "block" }}
+        style={{ width: "100%", aspectRatio: "3 / 4", touchAction: "none", display: "block" }}
       />
       {/* Overlay hint */}
       <div style={{
