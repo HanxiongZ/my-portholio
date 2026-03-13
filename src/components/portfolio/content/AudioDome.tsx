@@ -2,16 +2,24 @@ import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 export function AudioDome() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const wrapperRef    = useRef<HTMLDivElement>(null);
+  const angleThumbRef = useRef<HTMLDivElement>(null);
+  const trackThumbRef = useRef<HTMLDivElement>(null);
+  const elevStripRef  = useRef<HTMLDivElement>(null);
+  const trackStripRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const container  = containerRef.current;
+    const wrapper    = wrapperRef.current;
+    const elevStrip  = elevStripRef.current;
+    const trackStrip = trackStripRef.current;
+    if (!container || !wrapper || !elevStrip || !trackStrip) return;
 
     // ── Scene ──────────────────────────────────────────────────────
     const BG = 0xf2f2f4;
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(BG, 12, 28);
+    scene.fog = new THREE.Fog(BG, 14, 32);
 
     const camera = new THREE.PerspectiveCamera(
       62,
@@ -47,14 +55,10 @@ export function AudioDome() {
 
     const INK = 0x1a1a1a;
     const baseLineMaterial = new THREE.LineBasicMaterial({
-      color: INK,
-      transparent: true,
-      opacity: 0.15,
-      depthWrite: false,
-      blending: THREE.NormalBlending,
+      color: INK, transparent: true, opacity: 0.15,
+      depthWrite: false, blending: THREE.NormalBlending,
     });
 
-    // Boundary circle
     const boundaryGeo = new THREE.BufferGeometry().setFromPoints(
       new THREE.EllipseCurve(0, 0, R, R, 0, Math.PI * 2, false, 0).getPoints(128)
     );
@@ -62,7 +66,6 @@ export function AudioDome() {
     boundaryLine.rotation.x = -Math.PI / 2;
     sphereGroup.add(boundaryLine);
 
-    // Vertical arc tracks
     const numSlices = 11;
     const sliceTracks: { phi: number; mesh: THREE.Line }[] = [];
 
@@ -80,7 +83,6 @@ export function AudioDome() {
       }
     }
 
-    // Simple wireframe avatar
     const avatarGroup = new THREE.Group();
     const head = new THREE.Mesh(
       new THREE.SphereGeometry(0.7, 16, 16),
@@ -95,7 +97,6 @@ export function AudioDome() {
     avatarGroup.add(head, body);
     sphereGroup.add(avatarGroup);
 
-    // Audio source node — dark dot + soft gray halo
     const sourceGroup = new THREE.Group();
     const dot = new THREE.Mesh(
       new THREE.SphereGeometry(0.18, 16, 16),
@@ -104,93 +105,101 @@ export function AudioDome() {
     const halo = new THREE.Mesh(
       new THREE.SphereGeometry(0.32, 16, 16),
       new THREE.MeshBasicMaterial({
-        color: INK,
-        transparent: true,
-        opacity: 0.15,
-        blending: THREE.NormalBlending,
-        depthWrite: false,
+        color: INK, transparent: true, opacity: 0.15,
+        blending: THREE.NormalBlending, depthWrite: false,
       })
     );
     sourceGroup.add(dot, halo);
     sphereGroup.add(sourceGroup);
 
     // ── Interaction state ──────────────────────────────────────────
-    let targetTrackIndex = Math.floor(sliceTracks.length / 2);
-    let targetAngle = Math.PI / 2;
-    let visualPhi = sliceTracks[targetTrackIndex].phi;
-    let visualAngle = targetAngle;
-    let visualScale = 1.0;
-    let isDragging = false;
-    let dragStartPos = { x: 0, y: 0 };
-    let lastPointerX = 0;
-    let lastPointerY = 0;
+    let targetTrackIndex  = Math.floor(sliceTracks.length / 2);
+    let targetAngle       = Math.PI / 2 - 0.3;
+    let visualPhi         = sliceTracks[targetTrackIndex].phi;
+    let visualAngle       = targetAngle;
+    let visualScale       = 1.0;
+    let isDragging        = false;
+    let dragStartPos      = { x: 0, y: 0 };
+    let lastPointerY      = 0;
+    let lastPointerX      = 0;
     let initialTrackIndex = 0;
-    let dragMode: "horizontal" | "vertical" | null = null;
+    let lockedAxis: "horizontal" | "vertical" | null = null;
+
+    // Horizontal sensitivity weight relative to vertical.
+    // Derived from camera geometry: camera is offset ~26° from the Z axis,
+    // so world-Z changes project to ~sin(26°) ≈ 0.44 of screen-X per unit.
+    const C = 0.75;
 
     const onPointerDown = (e: PointerEvent) => {
-      isDragging = true;
-      dragStartPos = { x: e.clientX, y: e.clientY };
-      lastPointerX = e.clientX;
-      lastPointerY = e.clientY;
+      isDragging        = true;
+      lockedAxis        = null;
+      dragStartPos      = { x: e.clientX, y: e.clientY };
+      lastPointerY      = e.clientY;
+      lastPointerX      = e.clientX;
       initialTrackIndex = targetTrackIndex;
-      dragMode = null;
     };
 
     const onPointerMove = (e: PointerEvent) => {
       if (!isDragging) return;
 
-      // Cumulative displacement — for direction detection & horizontal track stepping
-      const dx = e.clientX - dragStartPos.x;
-      const dy = e.clientY - dragStartPos.y;
-
-      // Per-frame delta — for smooth 1:1 vertical tracking
+      const dx     = e.clientX - dragStartPos.x;
+      const dy     = e.clientY - dragStartPos.y;
       const deltaY = e.clientY - lastPointerY;
-      lastPointerX = e.clientX;
+      const deltaX = e.clientX - lastPointerX;
       lastPointerY = e.clientY;
+      lastPointerX = e.clientX;
 
-      // Direction lock — 8px threshold, clean 45° split, no dead zone
-      if (!dragMode) {
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > 25) {
-          dragMode = Math.abs(dy) > Math.abs(dx) ? "vertical" : "horizontal";
+      if (!lockedAxis) {
+        if (Math.sqrt(dx * dx + dy * dy) < 14) return;
+        lockedAxis = Math.abs(dx) > Math.abs(dy) ? "horizontal" : "vertical";
+      }
+
+      const cosA   = Math.cos(targetAngle);
+      const sinA   = Math.sin(targetAngle);
+      // sin(θ) > 0.5 means within ~30° of the top — horizontal gesture zone.
+      const nearTop = sinA > 0.5;
+
+      // ── Elevation: tangent-following formula ──────────────────────
+      // dAngle = (−deltaY·cos θ − deltaX·C·sin θ) / sens
+      //
+      // This projects the gesture onto the arc tangent at the current angle:
+      //   - Near front/back (cos≈1, sin≈0): only vertical drives the angle
+      //   - Near top       (cos≈0, sin≈1): only horizontal drives the angle
+      //   - cos(θ) changes sign at π/2 by itself → no onBackSide flip needed
+      //   - Smooth blend in between
+      //
+      // Active when: locked vertical anywhere, OR locked horizontal near top.
+      if (lockedAxis === "vertical" || (lockedAxis === "horizontal" && nearTop)) {
+        const dAngle = (-deltaY * cosA - deltaX * C * sinA) / 120;
+        const prev   = targetAngle;
+        targetAngle  = Math.max(0, Math.min(Math.PI, targetAngle + dAngle));
+
+        // Snap-through: if the gesture crossed π/2 with enough velocity,
+        // push it a little past so the dot doesn't hover at the exact peak.
+        const SNAP = 0.12;
+        if ((prev - Math.PI / 2) * (targetAngle - Math.PI / 2) < 0 && Math.abs(dAngle) > 0.004) {
+          targetAngle = Math.PI / 2 + Math.sign(targetAngle - Math.PI / 2) * SNAP;
         }
       }
 
-      if (dragMode === "horizontal") {
-        const shift = Math.round(dx / 35);
+      // ── Track: only when clearly horizontal and away from top ─────
+      if (lockedAxis === "horizontal" && !nearTop) {
+        const shift = Math.round(dx / 40);
         targetTrackIndex = Math.max(0, Math.min(sliceTracks.length - 1, initialTrackIndex + shift));
-      } else if (dragMode === "vertical") {
-        // Use visualAngle (lagged/smoothed) for the sign check — it never oscillates
-        // at the π/2 boundary the way targetAngle does, providing natural hysteresis.
-        const sign = Math.cos(visualAngle) >= 0 ? 1 : -1;
-        let next = Math.max(0, Math.min(Math.PI, targetAngle - (deltaY / 120) * sign));
-
-        // Forbidden zone around the peak — dot always snaps to front or back side
-        const PEAK_GAP = 0.22; // ~13° either side of the top
-        const lo = Math.PI / 2 - PEAK_GAP;
-        const hi = Math.PI / 2 + PEAK_GAP;
-        if (next > lo && next < hi) {
-          // Snap to the far edge (jump through) based on which side we came from
-          next = targetAngle <= lo ? hi : lo;
-        }
-        targetAngle = next;
       }
     };
 
-    const onPointerUp = () => {
-      isDragging = false;
-      dragMode = null;
-    };
+    const onPointerUp = () => { isDragging = false; lockedAxis = null; };
+
+    wrapper.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove",  onPointerMove);
+    window.addEventListener("pointerup",    onPointerUp);
 
     const onResize = () => {
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
     };
-
-    container.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("resize", onResize);
 
     // ── Animation loop ─────────────────────────────────────────────
@@ -199,73 +208,147 @@ export function AudioDome() {
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
-      // Track highlight lerp
       sliceTracks.forEach((track, i) => {
         const mat = track.mesh.material as THREE.LineBasicMaterial;
-        const target = i === targetTrackIndex ? 0.85 : 0.12;
-        mat.opacity += (target - mat.opacity) * 0.1;
+        mat.opacity += ((i === targetTrackIndex ? 0.85 : 0.12) - mat.opacity) * 0.1;
       });
 
-      // Source scale
       const targetS = isDragging ? 1.4 : 1.0;
       visualScale += (targetS - visualScale) * 0.15;
       sourceGroup.scale.setScalar(visualScale);
-      if (!isDragging) {
-        halo.scale.setScalar(1.0 + Math.sin(Date.now() * 0.005) * 0.1);
-      }
+      if (!isDragging) halo.scale.setScalar(1.0 + Math.sin(Date.now() * 0.005) * 0.1);
 
-      // Position lerp
-      const lerpFactor = 0.12;
-      visualPhi += (sliceTracks[targetTrackIndex].phi - visualPhi) * lerpFactor;
-      visualAngle += (targetAngle - visualAngle) * lerpFactor;
+      visualPhi   += (sliceTracks[targetTrackIndex].phi - visualPhi)   * 0.12;
+      visualAngle += (targetAngle - visualAngle) * 0.12;
 
       const sx = R * Math.sin(visualPhi);
       const sr = R * Math.cos(visualPhi);
       sourceGroup.position.set(sx, sr * Math.sin(visualAngle), sr * Math.cos(visualAngle));
 
       renderer.render(scene, camera);
+
+      // ── Right strip: thumb traces an arc in 2D ─────────────────
+      // X within strip: cos(angle) maps front(left) → top(center) → back(right)
+      // Y within strip: sin(angle) maps floor(bottom) → overhead(top)
+      if (angleThumbRef.current) {
+        const hw  = elevStrip.clientWidth;
+        const hh  = elevStrip.clientHeight;
+        const padX = 12, padY = 20;
+        const tx = padX + (1 - Math.cos(visualAngle)) / 2 * (hw - padX * 2);
+        const ty = padY + (1 - Math.sin(visualAngle))      * (hh - padY * 2);
+        angleThumbRef.current.style.left = `${tx}px`;
+        angleThumbRef.current.style.top  = `${ty}px`;
+      }
+
+      // ── Bottom strip: thumb slides left–right ──────────────────
+      if (trackThumbRef.current) {
+        const tw   = trackStrip.clientWidth;
+        const padX = 16;
+        const norm = (visualPhi + Math.PI / 2) / Math.PI;
+        trackThumbRef.current.style.left = `${padX + norm * (tw - padX * 2)}px`;
+      }
     };
 
     animate();
 
-    // ── Cleanup ────────────────────────────────────────────────────
     return () => {
       cancelAnimationFrame(animId);
-      container.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
-      window.removeEventListener("resize", onResize);
+      wrapper.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove",  onPointerMove);
+      window.removeEventListener("pointerup",    onPointerUp);
+      window.removeEventListener("resize",       onResize);
       renderer.dispose();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
+      if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
     };
   }, []);
 
+  const N = 11;
+
   return (
-    <div style={{
-      position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
-      borderRadius: "16px", overflow: "hidden",
-      background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)",
-    }}>
+    <div
+      ref={wrapperRef}
+      style={{
+        position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
+        borderRadius: "16px", overflow: "hidden", touchAction: "none",
+        background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)",
+      }}
+    >
+      {/* 3D canvas */}
       <div
         ref={containerRef}
-        style={{ width: "100%", aspectRatio: "3 / 4", touchAction: "none", display: "block" }}
+        style={{ width: "100%", aspectRatio: "3 / 4", display: "block", pointerEvents: "none" }}
       />
-      {/* Overlay hint */}
+
+      {/* ── Right strip: subtle 2D position indicator, bottom-right ── */}
+      <div
+        ref={elevStripRef}
+        style={{
+          position: "absolute", right: 0, bottom: "68px",
+          width: "48px", height: "88px",
+          pointerEvents: "none",
+        }}
+      >
+        {/* Reference dots: front bottom-left, overhead top-center, back bottom-right */}
+        <div style={{ position: "absolute", left: "10px",  bottom: "10px", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(0,0,0,0.15)" }} />
+        <div style={{ position: "absolute", left: "50%",   top:    "10px", transform: "translateX(-50%)", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(0,0,0,0.15)" }} />
+        <div style={{ position: "absolute", right: "10px", bottom: "10px", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(0,0,0,0.15)" }} />
+        {/* Labels */}
+        <span style={{ position: "absolute", left: "4px",  bottom: "2px", fontSize: "7px", fontFamily: "monospace", color: "rgba(0,0,0,0.2)", userSelect: "none" }}>F</span>
+        <span style={{ position: "absolute", right: "4px", bottom: "2px", fontSize: "7px", fontFamily: "monospace", color: "rgba(0,0,0,0.2)", userSelect: "none" }}>B</span>
+        <span style={{ position: "absolute", left: "50%",  top:    "2px", transform: "translateX(-50%)", fontSize: "7px", fontFamily: "monospace", color: "rgba(0,0,0,0.2)", userSelect: "none" }}>↑</span>
+        {/* Moving thumb */}
+        <div
+          ref={angleThumbRef}
+          style={{
+            position: "absolute", left: "50%", top: "50%",
+            width: "5px", height: "5px", borderRadius: "50%",
+            background: "rgba(26,26,26,0.3)",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      </div>
+
+      {/* ── Bottom strip: left/right track indicator ── */}
+      <div
+        ref={trackStripRef}
+        style={{
+          position: "absolute", bottom: 0, left: 0, right: "52px", height: "60px",
+          pointerEvents: "none",
+        }}
+      >
+        <div style={{
+          position: "absolute", top: "50%", left: "16px", right: "16px",
+          transform: "translateY(-50%)",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+        }}>
+          {Array.from({ length: N }, (_, i) => (
+            <div key={i} style={{ width: "3px", height: "3px", borderRadius: "50%", background: "rgba(0,0,0,0.18)", flexShrink: 0 }} />
+          ))}
+        </div>
+        <span style={{
+          position: "absolute", bottom: "8px", left: "50%", transform: "translateX(-50%)",
+          fontSize: "8px", fontFamily: "monospace", letterSpacing: "0.08em", textTransform: "uppercase",
+          color: "rgba(0,0,0,0.22)", userSelect: "none", whiteSpace: "nowrap",
+        }}>track</span>
+        <div
+          ref={trackThumbRef}
+          style={{
+            position: "absolute", top: "50%", left: "50%",
+            width: "10px", height: "10px", borderRadius: "50%",
+            background: "rgba(26,26,26,0.65)",
+            boxShadow: "0 0 0 3px rgba(26,26,26,0.1)",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      </div>
+
+      {/* Hint pill */}
       <div style={{
-        position: "absolute",
-        top: "20px",
-        left: "50%",
-        transform: "translateX(-50%)",
-        textAlign: "center",
-        background: "rgba(255,255,255,0.7)",
-        backdropFilter: "blur(6px)",
-        padding: "8px 16px",
-        borderRadius: "20px",
+        position: "absolute", top: "20px", left: "50%", transform: "translateX(-50%)",
+        background: "rgba(255,255,255,0.7)", backdropFilter: "blur(6px)",
+        padding: "8px 16px", borderRadius: "20px",
         border: "1px solid rgba(0,0,0,0.08)",
-        pointerEvents: "none",
-        whiteSpace: "nowrap",
+        pointerEvents: "none", whiteSpace: "nowrap",
       }}>
         <p style={{ margin: 0, fontSize: "12px", color: "rgba(0,0,0,0.4)", lineHeight: 1.5 }}>
           ↔ swipe to switch track &nbsp;·&nbsp; ↕ swipe to move position
