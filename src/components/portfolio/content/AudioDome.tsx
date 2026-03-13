@@ -32,7 +32,7 @@ export function AudioDome() {
     scene.add(sphereGroup);
 
     // ── Geometry ───────────────────────────────────────────────────
-    const R = 5;
+    const R = 6.5;
 
     function createArc(
       radius: number,
@@ -151,7 +151,7 @@ export function AudioDome() {
       // Direction lock — 8px threshold, clean 45° split, no dead zone
       if (!dragMode) {
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > 8) {
+        if (dist > 25) {
           dragMode = Math.abs(dy) > Math.abs(dx) ? "vertical" : "horizontal";
         }
       }
@@ -163,7 +163,17 @@ export function AudioDome() {
         // Use visualAngle (lagged/smoothed) for the sign check — it never oscillates
         // at the π/2 boundary the way targetAngle does, providing natural hysteresis.
         const sign = Math.cos(visualAngle) >= 0 ? 1 : -1;
-        targetAngle = Math.max(0, Math.min(Math.PI, targetAngle - (deltaY / 120) * sign));
+        let next = Math.max(0, Math.min(Math.PI, targetAngle - (deltaY / 120) * sign));
+
+        // Forbidden zone around the peak — dot always snaps to front or back side
+        const PEAK_GAP = 0.22; // ~13° either side of the top
+        const lo = Math.PI / 2 - PEAK_GAP;
+        const hi = Math.PI / 2 + PEAK_GAP;
+        if (next > lo && next < hi) {
+          // Snap to the far edge (jump through) based on which side we came from
+          next = targetAngle <= lo ? hi : lo;
+        }
+        targetAngle = next;
       }
     };
 
