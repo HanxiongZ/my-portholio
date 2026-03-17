@@ -1,33 +1,11 @@
 import React from "react";
 import { Project } from "../Projects";
+import { PaperScanPrototype } from "./PaperScanPrototype";
 
 interface Props {
   project: Project;
   slugify: (text: string) => string;
 }
-
-const CHAPTERS = [
-  {
-    num: "01",
-    title: "Background & Focus",
-    note: "Rural healthcare context, AI adoption patterns, long-term use",
-  },
-  {
-    num: "02",
-    title: "Research",
-    note: "Field studies, interviews, observation sessions",
-  },
-  {
-    num: "03",
-    title: "Prototyping",
-    note: "Iterative design, concept development, co-design",
-  },
-  {
-    num: "04",
-    title: "Outcome",
-    note: "Design implications, reflections, thesis contribution",
-  },
-];
 
 export function Project1_VolvoThesis({ project }: Props) {
   return (
@@ -39,6 +17,10 @@ export function Project1_VolvoThesis({ project }: Props) {
             will come soon.
           </p>
         </div>
+      </div>
+
+      <div className="mb-24">
+        <PaperScanPrototype />
       </div>
     </>
   );

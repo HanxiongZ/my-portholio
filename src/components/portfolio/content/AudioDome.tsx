@@ -4,17 +4,15 @@ import * as THREE from "three";
 export function AudioDome() {
   const containerRef  = useRef<HTMLDivElement>(null);
   const wrapperRef    = useRef<HTMLDivElement>(null);
-  const angleThumbRef = useRef<HTMLDivElement>(null);
+  const arcDotRef     = useRef<SVGCircleElement>(null);
   const trackThumbRef = useRef<HTMLDivElement>(null);
-  const elevStripRef  = useRef<HTMLDivElement>(null);
   const trackStripRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container  = containerRef.current;
     const wrapper    = wrapperRef.current;
-    const elevStrip  = elevStripRef.current;
     const trackStrip = trackStripRef.current;
-    if (!container || !wrapper || !elevStrip || !trackStrip) return;
+    if (!container || !wrapper || !trackStrip) return;
 
     // ── Scene ──────────────────────────────────────────────────────
     const BG = 0xf2f2f4;
@@ -38,6 +36,7 @@ export function AudioDome() {
 
     const sphereGroup = new THREE.Group();
     scene.add(sphereGroup);
+
 
     // ── Geometry ───────────────────────────────────────────────────
     const R = 6.5;
@@ -83,47 +82,92 @@ export function AudioDome() {
       }
     }
 
+    // ── Avatar — line-based, matches dome visual language ──────────
     const avatarGroup = new THREE.Group();
-    const head = new THREE.Mesh(
-      new THREE.SphereGeometry(0.7, 16, 16),
-      new THREE.MeshBasicMaterial({ color: 0x444444, wireframe: true, transparent: true, opacity: 0.5 })
-    );
-    head.position.y = 1.6;
-    const body = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.8, 1.2, 1.2, 16),
-      new THREE.MeshBasicMaterial({ color: 0x666666, wireframe: true, transparent: true, opacity: 0.35 })
-    );
-    body.position.y = 0.6;
-    avatarGroup.add(head, body);
+
+    const avatarMat = new THREE.LineBasicMaterial({
+      color: INK, transparent: true, opacity: 0.22, depthWrite: false,
+    });
+
+    // Head: low-poly sphere edges — same line style as dome arcs
+    const headSphereGeo = new THREE.SphereGeometry(0.6, 9, 6);
+    const headEdgesGeo  = new THREE.EdgesGeometry(headSphereGeo, 8);
+    const head = new THREE.LineSegments(headEdgesGeo, avatarMat.clone());
+    head.scale.set(0.9, 1.12, 0.85);
+    head.position.y = 1.66;
+
+    // Shoulders: two arcs curving outward from neck
+    const shoulderCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-0.22, 1.08, 0),
+      new THREE.Vector3(-0.55, 1.0,  0),
+      new THREE.Vector3(-0.88, 0.78, 0),
+      new THREE.Vector3(-1.05, 0.5,  0),
+    ]);
+    const shoulderCurveR = new THREE.CatmullRomCurve3([
+      new THREE.Vector3( 0.22, 1.08, 0),
+      new THREE.Vector3( 0.55, 1.0,  0),
+      new THREE.Vector3( 0.88, 0.78, 0),
+      new THREE.Vector3( 1.05, 0.5,  0),
+    ]);
+    const mkLine = (curve: THREE.CatmullRomCurve3) => {
+      const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(20));
+      return new THREE.Line(geo, avatarMat.clone());
+    };
+
+    // Neck: short vertical segment
+    const neckGeo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 1.06, 0),
+      new THREE.Vector3(0, 1.28, 0),
+    ]);
+    const neckLine = new THREE.Line(neckGeo, avatarMat.clone());
+
+    avatarGroup.add(head, mkLine(shoulderCurve), mkLine(shoulderCurveR), neckLine);
     sphereGroup.add(avatarGroup);
 
-    const sourceGroup = new THREE.Group();
-    const dot = new THREE.Mesh(
-      new THREE.SphereGeometry(0.18, 16, 16),
-      new THREE.MeshBasicMaterial({ color: INK })
-    );
-    const halo = new THREE.Mesh(
-      new THREE.SphereGeometry(0.32, 16, 16),
-      new THREE.MeshBasicMaterial({
-        color: INK, transparent: true, opacity: 0.15,
-        blending: THREE.NormalBlending, depthWrite: false,
-      })
-    );
-    sourceGroup.add(dot, halo);
-    sphereGroup.add(sourceGroup);
+    // ── Three audio sources ────────────────────────────────────────
+    const sourceConfigs = [
+      { color: 0x1a1a1a, trackIdx: 5, angle: Math.PI / 2 - 0.3 },  // neutral dark
+      { color: 0x5c2a10, trackIdx: 2, angle: Math.PI / 3.5 },       // warm sienna
+      { color: 0x10284a, trackIdx: 8, angle: Math.PI * 0.68 },      // cool navy
+    ];
+
+    const sources = sourceConfigs.map(cfg => {
+      const group = new THREE.Group();
+      const dot = new THREE.Mesh(
+        new THREE.SphereGeometry(0.18, 16, 16),
+        new THREE.MeshBasicMaterial({ color: cfg.color })
+      );
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(0.32, 16, 16),
+        new THREE.MeshBasicMaterial({
+          color: cfg.color, transparent: true, opacity: 0.12,
+          blending: THREE.NormalBlending, depthWrite: false,
+        })
+      );
+      group.add(dot, halo);
+      sphereGroup.add(group);
+      return {
+        group, halo, color: cfg.color,
+        targetTrackIndex: cfg.trackIdx,
+        targetAngle:      cfg.angle,
+        visualPhi:        sliceTracks[cfg.trackIdx].phi,
+        visualAngle:      cfg.angle,
+        visualScale:      1.0,
+      };
+    });
 
     // ── Interaction state ──────────────────────────────────────────
-    let targetTrackIndex  = Math.floor(sliceTracks.length / 2);
-    let targetAngle       = Math.PI / 2 - 0.3;
-    let visualPhi         = sliceTracks[targetTrackIndex].phi;
-    let visualAngle       = targetAngle;
-    let visualScale       = 1.0;
+    let activeIdx         = 0;
     let isDragging        = false;
     let dragStartPos      = { x: 0, y: 0 };
+    let pointerDownTime   = 0;
     let lastPointerY      = 0;
     let lastPointerX      = 0;
     let initialTrackIndex = 0;
     let lockedAxis: "horizontal" | "vertical" | null = null;
+
+    // Convenience getters for the active source
+    const active = () => sources[activeIdx];
 
     // Horizontal sensitivity weight relative to vertical.
     // Derived from camera geometry: camera is offset ~26° from the Z axis,
@@ -133,10 +177,11 @@ export function AudioDome() {
     const onPointerDown = (e: PointerEvent) => {
       isDragging        = true;
       lockedAxis        = null;
+      pointerDownTime   = Date.now();
       dragStartPos      = { x: e.clientX, y: e.clientY };
       lastPointerY      = e.clientY;
       lastPointerX      = e.clientX;
-      initialTrackIndex = targetTrackIndex;
+      initialTrackIndex = active().targetTrackIndex;
     };
 
     const onPointerMove = (e: PointerEvent) => {
@@ -154,42 +199,37 @@ export function AudioDome() {
         lockedAxis = Math.abs(dx) > Math.abs(dy) ? "horizontal" : "vertical";
       }
 
-      const cosA   = Math.cos(targetAngle);
-      const sinA   = Math.sin(targetAngle);
-      // sin(θ) > 0.5 means within ~30° of the top — horizontal gesture zone.
+      const src     = active();
+      const cosA    = Math.cos(src.targetAngle);
+      const sinA    = Math.sin(src.targetAngle);
       const nearTop = sinA > 0.5;
 
-      // ── Elevation: tangent-following formula ──────────────────────
-      // dAngle = (−deltaY·cos θ − deltaX·C·sin θ) / sens
-      //
-      // This projects the gesture onto the arc tangent at the current angle:
-      //   - Near front/back (cos≈1, sin≈0): only vertical drives the angle
-      //   - Near top       (cos≈0, sin≈1): only horizontal drives the angle
-      //   - cos(θ) changes sign at π/2 by itself → no onBackSide flip needed
-      //   - Smooth blend in between
-      //
-      // Active when: locked vertical anywhere, OR locked horizontal near top.
       if (lockedAxis === "vertical" || (lockedAxis === "horizontal" && nearTop)) {
-        const dAngle = (-deltaY * cosA - deltaX * C * sinA) / 120;
-        const prev   = targetAngle;
-        targetAngle  = Math.max(0, Math.min(Math.PI, targetAngle + dAngle));
-
-        // Snap-through: if the gesture crossed π/2 with enough velocity,
-        // push it a little past so the dot doesn't hover at the exact peak.
+        const dAngle     = (-deltaY * cosA - deltaX * C * sinA) / 120;
+        const prev       = src.targetAngle;
+        src.targetAngle  = Math.max(0, Math.min(Math.PI, src.targetAngle + dAngle));
         const SNAP = 0.12;
-        if ((prev - Math.PI / 2) * (targetAngle - Math.PI / 2) < 0 && Math.abs(dAngle) > 0.004) {
-          targetAngle = Math.PI / 2 + Math.sign(targetAngle - Math.PI / 2) * SNAP;
+        if ((prev - Math.PI / 2) * (src.targetAngle - Math.PI / 2) < 0 && Math.abs(dAngle) > 0.004) {
+          src.targetAngle = Math.PI / 2 + Math.sign(src.targetAngle - Math.PI / 2) * SNAP;
         }
       }
 
-      // ── Track: only when clearly horizontal and away from top ─────
       if (lockedAxis === "horizontal" && !nearTop) {
         const shift = Math.round(dx / 40);
-        targetTrackIndex = Math.max(0, Math.min(sliceTracks.length - 1, initialTrackIndex + shift));
+        src.targetTrackIndex = Math.max(0, Math.min(sliceTracks.length - 1, initialTrackIndex + shift));
       }
     };
 
-    const onPointerUp = () => { isDragging = false; lockedAxis = null; };
+    const onPointerUp = (e: PointerEvent) => {
+      // Short tap (no drag) → cycle to next source
+      const dist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
+      if (Date.now() - pointerDownTime < 260 && dist < 8) {
+        activeIdx = (activeIdx + 1) % sources.length;
+        initialTrackIndex = active().targetTrackIndex;
+      }
+      isDragging = false;
+      lockedAxis = null;
+    };
 
     wrapper.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointermove",  onPointerMove);
@@ -208,44 +248,47 @@ export function AudioDome() {
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
+      const act = active();
+
       sliceTracks.forEach((track, i) => {
         const mat = track.mesh.material as THREE.LineBasicMaterial;
-        mat.opacity += ((i === targetTrackIndex ? 0.85 : 0.12) - mat.opacity) * 0.1;
+        mat.opacity += ((i === act.targetTrackIndex ? 0.85 : 0.12) - mat.opacity) * 0.1;
       });
 
-      const targetS = isDragging ? 1.4 : 1.0;
-      visualScale += (targetS - visualScale) * 0.15;
-      sourceGroup.scale.setScalar(visualScale);
-      if (!isDragging) halo.scale.setScalar(1.0 + Math.sin(Date.now() * 0.005) * 0.1);
-
-      visualPhi   += (sliceTracks[targetTrackIndex].phi - visualPhi)   * 0.12;
-      visualAngle += (targetAngle - visualAngle) * 0.12;
-
-      const sx = R * Math.sin(visualPhi);
-      const sr = R * Math.cos(visualPhi);
-      sourceGroup.position.set(sx, sr * Math.sin(visualAngle), sr * Math.cos(visualAngle));
+      // Update all sources
+      sources.forEach((src, i) => {
+        const isActive = i === activeIdx;
+        const targetS  = isActive ? (isDragging ? 1.4 : 1.0) : 0.72;
+        src.visualScale += (targetS - src.visualScale) * 0.15;
+        src.group.scale.setScalar(src.visualScale);
+        if (isActive && !isDragging) {
+          src.halo.scale.setScalar(1.0 + Math.sin(Date.now() * 0.005) * 0.1);
+        }
+        src.visualPhi   += (sliceTracks[src.targetTrackIndex].phi - src.visualPhi)   * 0.12;
+        src.visualAngle += (src.targetAngle - src.visualAngle) * 0.12;
+        const sx = R * Math.sin(src.visualPhi);
+        const sr = R * Math.cos(src.visualPhi);
+        src.group.position.set(sx, sr * Math.sin(src.visualAngle), sr * Math.cos(src.visualAngle));
+      });
 
       renderer.render(scene, camera);
 
-      // ── Right strip: thumb traces an arc in 2D ─────────────────
-      // X within strip: cos(angle) maps front(left) → top(center) → back(right)
-      // Y within strip: sin(angle) maps floor(bottom) → overhead(top)
-      if (angleThumbRef.current) {
-        const hw  = elevStrip.clientWidth;
-        const hh  = elevStrip.clientHeight;
-        const padX = 12, padY = 20;
-        const tx = padX + (1 - Math.cos(visualAngle)) / 2 * (hw - padX * 2);
-        const ty = padY + (1 - Math.sin(visualAngle))      * (hh - padY * 2);
-        angleThumbRef.current.style.left = `${tx}px`;
-        angleThumbRef.current.style.top  = `${ty}px`;
+      // ── Arc indicator — tracks active source ──────────────────
+      if (arcDotRef.current) {
+        const cx = 28 - 24 * Math.cos(act.visualAngle);
+        const cy = 34 - 24 * Math.sin(act.visualAngle);
+        arcDotRef.current.setAttribute("cx", String(cx.toFixed(2)));
+        arcDotRef.current.setAttribute("cy", String(cy.toFixed(2)));
+        arcDotRef.current.setAttribute("fill", `#${act.color.toString(16).padStart(6, "0")}88`);
       }
 
       // ── Bottom strip: thumb slides left–right ──────────────────
       if (trackThumbRef.current) {
         const tw   = trackStrip.clientWidth;
         const padX = 16;
-        const norm = (visualPhi + Math.PI / 2) / Math.PI;
-        trackThumbRef.current.style.left = `${padX + norm * (tw - padX * 2)}px`;
+        const norm = (act.visualPhi + Math.PI / 2) / Math.PI;
+        trackThumbRef.current.style.left      = `${padX + norm * (tw - padX * 2)}px`;
+        trackThumbRef.current.style.background = `#${act.color.toString(16).padStart(6, "0")}`;
       }
     };
 
@@ -279,40 +322,30 @@ export function AudioDome() {
         style={{ width: "100%", aspectRatio: "3 / 4", display: "block", pointerEvents: "none" }}
       />
 
-      {/* ── Right strip: subtle 2D position indicator, bottom-right ── */}
-      <div
-        ref={elevStripRef}
-        style={{
-          position: "absolute", right: 0, bottom: "68px",
-          width: "48px", height: "88px",
-          pointerEvents: "none",
-        }}
-      >
-        {/* Reference dots: front bottom-left, overhead top-center, back bottom-right */}
-        <div style={{ position: "absolute", left: "10px",  bottom: "10px", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(0,0,0,0.15)" }} />
-        <div style={{ position: "absolute", left: "50%",   top:    "10px", transform: "translateX(-50%)", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(0,0,0,0.15)" }} />
-        <div style={{ position: "absolute", right: "10px", bottom: "10px", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(0,0,0,0.15)" }} />
-        {/* Labels */}
-        <span style={{ position: "absolute", left: "4px",  bottom: "2px", fontSize: "7px", fontFamily: "monospace", color: "rgba(0,0,0,0.2)", userSelect: "none" }}>F</span>
-        <span style={{ position: "absolute", right: "4px", bottom: "2px", fontSize: "7px", fontFamily: "monospace", color: "rgba(0,0,0,0.2)", userSelect: "none" }}>B</span>
-        <span style={{ position: "absolute", left: "50%",  top:    "2px", transform: "translateX(-50%)", fontSize: "7px", fontFamily: "monospace", color: "rgba(0,0,0,0.2)", userSelect: "none" }}>↑</span>
-        {/* Moving thumb */}
-        <div
-          ref={angleThumbRef}
-          style={{
-            position: "absolute", left: "50%", top: "50%",
-            width: "5px", height: "5px", borderRadius: "50%",
-            background: "rgba(26,26,26,0.3)",
-            transform: "translate(-50%, -50%)",
-          }}
-        />
+      {/* ── Arc position indicator — SVG semicircle, bottom-right ── */}
+      <div style={{
+        position: "absolute", right: "14px", bottom: "68px",
+        pointerEvents: "none",
+      }}>
+        <svg width="56" height="42" viewBox="0 0 56 42" fill="none">
+          {/* Semicircle arc: front(left) → overhead(top) → back(right) */}
+          <path d="M 4,38 A 24,24 0 0,1 52,38" stroke="rgba(26,26,26,0.12)" strokeWidth="1" />
+          {/* End-cap ticks */}
+          <line x1="4" y1="35" x2="4" y2="38" stroke="rgba(26,26,26,0.18)" strokeWidth="1" />
+          <line x1="52" y1="35" x2="52" y2="38" stroke="rgba(26,26,26,0.18)" strokeWidth="1" />
+          {/* Labels */}
+          <text x="4"  y="42" textAnchor="middle" fontSize="6" fontFamily="monospace" fill="rgba(26,26,26,0.22)">F</text>
+          <text x="52" y="42" textAnchor="middle" fontSize="6" fontFamily="monospace" fill="rgba(26,26,26,0.22)">B</text>
+          {/* Moving dot */}
+          <circle ref={arcDotRef} cx="4" cy="38" r="3" fill="rgba(26,26,26,0.45)" />
+        </svg>
       </div>
 
-      {/* ── Bottom strip: left/right track indicator ── */}
+      {/* ── Bottom strip: track indicator, centered ── */}
       <div
         ref={trackStripRef}
         style={{
-          position: "absolute", bottom: 0, left: 0, right: "52px", height: "60px",
+          position: "absolute", bottom: 0, left: 0, right: 0, height: "60px",
           pointerEvents: "none",
         }}
       >
@@ -342,6 +375,21 @@ export function AudioDome() {
         />
       </div>
 
+      {/* Source selector dots — tap card to cycle */}
+      <div style={{
+        position: "absolute", top: "16px", right: "16px",
+        display: "flex", gap: "6px", alignItems: "center",
+        pointerEvents: "none",
+      }}>
+        {([0x1a1a1a, 0x5c2a10, 0x10284a] as const).map((color, i) => (
+          <div key={i} style={{
+            width: "7px", height: "7px", borderRadius: "50%",
+            background: `#${color.toString(16).padStart(6, "0")}`,
+            opacity: 0.5,
+          }} />
+        ))}
+      </div>
+
       {/* Hint pill */}
       <div style={{
         position: "absolute", top: "20px", left: "50%", transform: "translateX(-50%)",
@@ -351,7 +399,7 @@ export function AudioDome() {
         pointerEvents: "none", whiteSpace: "nowrap",
       }}>
         <p style={{ margin: 0, fontSize: "12px", color: "rgba(0,0,0,0.4)", lineHeight: 1.5 }}>
-          ↔ swipe to switch track &nbsp;·&nbsp; ↕ swipe to move position
+          tap to select &nbsp;·&nbsp; swipe to move
         </p>
       </div>
     </div>
