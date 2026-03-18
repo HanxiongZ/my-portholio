@@ -1,6 +1,7 @@
 import React from "react";
 import { Project } from "../Projects";
 import { PaperScanPrototype } from "./PaperScanPrototype";
+import { PaperWritebackPrototype } from "./PaperWritebackPrototype";
 
 interface Props {
   project: Project;
@@ -21,6 +22,10 @@ export function Project1_VolvoThesis({ project }: Props) {
 
       <div className="mb-24">
         <PaperScanPrototype />
+      </div>
+
+      <div className="mb-24">
+        <PaperWritebackPrototype />
       </div>
     </>
   );
