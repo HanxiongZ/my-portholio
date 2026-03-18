@@ -84,7 +84,8 @@ STEP 2 — If consent is true, read and interpret the handwritten notes with med
 - Handwriting may be rushed, abbreviated, or partially illegible — use clinical context to infer what was written. For example, "HTN" means hypertension, "SOB" means shortness of breath, "bid" means twice daily, a number next to "mg" is a dosage, etc.
 - If a word is unclear, make your best medical inference and note it with a "?" suffix (e.g. "amoxicillin?").
 - Do NOT produce nonsensical output. If something is unreadable, skip it or infer from surrounding context.
-- Separate the content into structured fields: chief complaint, symptoms, medications with dosages, working diagnosis, and follow-up plan.
+- Separate the content into structured fields: chief complaint, symptoms, medications (as plain strings like "ibuprofen 400mg bid"), working diagnosis, and follow-up plan.
+- All array items must be plain strings, never objects.
 
 Return ONLY this JSON (no markdown, no explanation):
 {
@@ -105,7 +106,22 @@ No consent: { "consent": false, "tags": [], "notes": { "chiefComplaint": "", "sy
     }],
   });
   const text = resp.choices[0]?.message?.content ?? "{}";
-  try { return JSON.parse(text) as AIResult; }
+  try {
+    const parsed = JSON.parse(text) as AIResult;
+    // Normalize array fields — AI sometimes returns objects instead of strings
+    const normalize = (arr: unknown[]): string[] =>
+      arr.map((item) =>
+        typeof item === "string" ? item
+        : typeof item === "object" && item !== null
+          ? Object.values(item).filter(Boolean).join(" ")
+          : String(item)
+      );
+    if (parsed.notes) {
+      parsed.notes.symptoms    = normalize(parsed.notes.symptoms    ?? []);
+      parsed.notes.medications = normalize(parsed.notes.medications ?? []);
+    }
+    return parsed;
+  }
   catch { return { consent: false, tags: [], notes: { chiefComplaint: "", symptoms: [], medications: [], diagnosis: "", followUp: "", rawTranscription: "" } }; }
 }
 
