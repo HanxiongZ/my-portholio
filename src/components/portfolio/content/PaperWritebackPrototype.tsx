@@ -76,14 +76,20 @@ async function analyseNotes(base64: string): Promise<AIResult> {
       role: "user",
       content: [
         { type: "image_url", image_url: { url: `data:image/jpeg;base64,${base64}`, detail: "high" } },
-        { type: "text", text: `You are assisting a doctor during a patient consultation.
+        { type: "text", text: `You are a clinical AI assistant helping a doctor during a patient consultation. The doctor is taking handwritten notes in real time — content will always be medically relevant: symptoms, diagnoses, medications, dosages, patient history, follow-up instructions, vitals, etc.
 
-STEP 1 — Consent check: Look for a gray circular object placed anywhere on the paper. If present, set "consent": true. If not, set "consent": false and return empty data.
+STEP 1 — Consent check: Look for a gray circular object placed anywhere on the paper. If present, set "consent": true. If not, set "consent": false and return empty data immediately.
 
-STEP 2 — If consent is true, analyse the handwritten notes and return ONLY this JSON:
+STEP 2 — If consent is true, read and interpret the handwritten notes with medical expertise:
+- Handwriting may be rushed, abbreviated, or partially illegible — use clinical context to infer what was written. For example, "HTN" means hypertension, "SOB" means shortness of breath, "bid" means twice daily, a number next to "mg" is a dosage, etc.
+- If a word is unclear, make your best medical inference and note it with a "?" suffix (e.g. "amoxicillin?").
+- Do NOT produce nonsensical output. If something is unreadable, skip it or infer from surrounding context.
+- Separate the content into structured fields: chief complaint, symptoms, medications with dosages, working diagnosis, and follow-up plan.
+
+Return ONLY this JSON (no markdown, no explanation):
 {
   "consent": true,
-  "tags": [{ "label": "Symptom|Medication|Diagnosis|Follow-up|Patient Info|Other", "text": "exact text", "cx": 0.0, "cy": 0.0 }],
+  "tags": [{ "label": "Symptom|Medication|Diagnosis|Follow-up|Patient Info|Other", "text": "inferred text", "cx": 0.0, "cy": 0.0 }],
   "notes": {
     "chiefComplaint": "",
     "symptoms": [],
