@@ -300,12 +300,25 @@ export function AudioDome() {
     };
 
     const onPointerUp = (e: PointerEvent) => {
-      // Short tap (no drag) → cycle to next source
+      // Short tap (no drag) → select the closest source dot
       const dist = Math.hypot(e.clientX - dragStartPos.x, e.clientY - dragStartPos.y);
       if (Date.now() - pointerDownTime < 260 && dist < 8) {
-        activeIdx = (activeIdx + 1) % sources.length;
-        initialTrackIndex = active().targetTrackIndex;
-        setActiveIdxRef.current(activeIdx);  // sync to React for UI
+        const rect = container.getBoundingClientRect();
+        let closestIdx = -1;
+        let closestDist = 64; // px tap threshold
+        sources.forEach((src, i) => {
+          const pos = src.group.position.clone();
+          pos.project(camera);
+          const sx = (pos.x + 1) / 2 * rect.width  + rect.left;
+          const sy = (-pos.y + 1) / 2 * rect.height + rect.top;
+          const d  = Math.hypot(e.clientX - sx, e.clientY - sy);
+          if (d < closestDist) { closestDist = d; closestIdx = i; }
+        });
+        if (closestIdx !== -1) {
+          activeIdx = closestIdx;
+          initialTrackIndex = active().targetTrackIndex;
+          setActiveIdxRef.current(activeIdx);
+        }
       }
       isDragging = false;
       lockedAxis = null;
@@ -414,6 +427,7 @@ export function AudioDome() {
         position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
         borderRadius: "16px", overflow: "hidden", touchAction: "none",
         background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif",
       }}
     >
       {/* 3D canvas */}
@@ -460,7 +474,7 @@ export function AudioDome() {
         </div>
         <span style={{
           position: "absolute", bottom: "8px", left: "50%", transform: "translateX(-50%)",
-          fontSize: "8px", fontFamily: "monospace", letterSpacing: "0.08em", textTransform: "uppercase",
+          fontSize: "8px", letterSpacing: "0.08em", textTransform: "uppercase",
           color: "rgba(0,0,0,0.22)", userSelect: "none", whiteSpace: "nowrap",
         }}>track</span>
         <div
@@ -505,7 +519,7 @@ export function AudioDome() {
                 transition: "all 0.2s",
               }} />
               <span style={{
-                fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.04em",
+                fontSize: "11px", letterSpacing: "0.04em",
                 color: isActive && !isMuted ? hex : "rgba(0,0,0,0.4)",
                 fontWeight: isActive && !isMuted ? 600 : 400,
                 textDecoration: isMuted ? "line-through" : "none",
@@ -533,7 +547,7 @@ export function AudioDome() {
         border: "1px solid rgba(0,0,0,0.08)",
         pointerEvents: "none", whiteSpace: "nowrap",
       }}>
-        <p style={{ margin: 0, fontSize: "10px", fontFamily: "monospace", color: "rgba(0,0,0,0.35)", lineHeight: 1.5 }}>
+        <p style={{ margin: 0, fontSize: "10px", color: "rgba(0,0,0,0.35)", lineHeight: 1.5 }}>
           tap · drag
         </p>
       </div>
@@ -561,7 +575,7 @@ export function AudioDome() {
         </span>
       </button>
       <span style={{
-        fontSize: "10px", fontFamily: "monospace", letterSpacing: "0.1em",
+        fontSize: "10px", letterSpacing: "0.1em",
         textTransform: "uppercase", color: "rgba(0,0,0,0.3)",
         border: "1px solid rgba(0,0,0,0.15)", borderRadius: "20px",
         padding: "4px 12px", userSelect: "none",
