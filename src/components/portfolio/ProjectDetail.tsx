@@ -489,9 +489,9 @@ export function ProjectDetail() {
             onClick={() =>
               window.scrollTo({ top: 0, behavior: "smooth" })
             }
-            className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 p-2 sm:p-4 bg-background border border-foreground/10 text-foreground hover:bg-foreground hover:text-background transition-colors backdrop-blur-sm"
+            className="scroll-top-btn fixed bottom-6 right-4 md:bottom-8 md:right-8 z-50 flex items-center justify-center bg-background border border-foreground/10 text-foreground hover:bg-foreground hover:text-background transition-colors backdrop-blur-sm"
           >
-            <ArrowUp className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
+            <ArrowUp className="w-4 h-4" />
           </motion.button>
         )}
       </AnimatePresence>
