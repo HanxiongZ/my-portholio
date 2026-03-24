@@ -124,7 +124,8 @@ export function AudioDome() {
 
 
     // ── Geometry ───────────────────────────────────────────────────
-    const R = 6.5;
+    const R   = 6.5;
+    const INK = 0x1a1a1a;
 
     function createArc(
       radius: number,
@@ -133,17 +134,16 @@ export function AudioDome() {
       mat: THREE.LineBasicMaterial
     ) {
       const curve = new THREE.EllipseCurve(0, 0, radius, radius, startAngle, endAngle, false, 0);
-      const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(64));
+      const geo   = new THREE.BufferGeometry().setFromPoints(curve.getPoints(64));
       return new THREE.Line(geo, mat);
     }
 
-    const INK = 0x1a1a1a;
     const baseLineMaterial = new THREE.LineBasicMaterial({
-      color: INK, transparent: true, opacity: 0.15,
+      color: INK, transparent: true, opacity: 0.28,
       depthWrite: false, blending: THREE.NormalBlending,
     });
 
-    const boundaryGeo = new THREE.BufferGeometry().setFromPoints(
+    const boundaryGeo  = new THREE.BufferGeometry().setFromPoints(
       new THREE.EllipseCurve(0, 0, R, R, 0, Math.PI * 2, false, 0).getPoints(128)
     );
     const boundaryLine = new THREE.LineLoop(boundaryGeo, baseLineMaterial.clone());
@@ -155,8 +155,8 @@ export function AudioDome() {
 
     for (let i = 0; i < numSlices; i++) {
       const phi = (i / (numSlices - 1)) * Math.PI - Math.PI / 2;
-      const x = R * Math.sin(phi);
-      const r = R * Math.cos(phi);
+      const x   = R * Math.sin(phi);
+      const r   = R * Math.cos(phi);
       if (r > 0.05) {
         const mat = baseLineMaterial.clone();
         const arc = createArc(r, 0, Math.PI, mat);
@@ -167,42 +167,33 @@ export function AudioDome() {
       }
     }
 
-    // ── Avatar — line-based, matches dome visual language ──────────
+    // ── Avatar ─────────────────────────────────────────────────────
     const avatarGroup = new THREE.Group();
-
-    const avatarMat = new THREE.LineBasicMaterial({
-      color: INK, transparent: true, opacity: 0.22, depthWrite: false,
+    const avatarMat   = new THREE.LineBasicMaterial({
+      color: INK, transparent: true, opacity: 0.45, depthWrite: false,
     });
 
-    // Head: low-poly sphere edges — same line style as dome arcs
     const headSphereGeo = new THREE.SphereGeometry(0.6, 9, 6);
     const headEdgesGeo  = new THREE.EdgesGeometry(headSphereGeo, 8);
     const head = new THREE.LineSegments(headEdgesGeo, avatarMat.clone());
     head.scale.set(0.9, 1.12, 0.85);
     head.position.y = 1.66;
 
-    // Shoulders: two arcs curving outward from neck
-    const shoulderCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-0.22, 1.08, 0),
-      new THREE.Vector3(-0.55, 1.0,  0),
-      new THREE.Vector3(-0.88, 0.78, 0),
-      new THREE.Vector3(-1.05, 0.5,  0),
+    const shoulderCurve  = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-0.22, 1.08, 0), new THREE.Vector3(-0.55, 1.0,  0),
+      new THREE.Vector3(-0.88, 0.78, 0), new THREE.Vector3(-1.05, 0.5,  0),
     ]);
     const shoulderCurveR = new THREE.CatmullRomCurve3([
-      new THREE.Vector3( 0.22, 1.08, 0),
-      new THREE.Vector3( 0.55, 1.0,  0),
-      new THREE.Vector3( 0.88, 0.78, 0),
-      new THREE.Vector3( 1.05, 0.5,  0),
+      new THREE.Vector3( 0.22, 1.08, 0), new THREE.Vector3( 0.55, 1.0,  0),
+      new THREE.Vector3( 0.88, 0.78, 0), new THREE.Vector3( 1.05, 0.5,  0),
     ]);
     const mkLine = (curve: THREE.CatmullRomCurve3) => {
       const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(20));
       return new THREE.Line(geo, avatarMat.clone());
     };
 
-    // Neck: short vertical segment
-    const neckGeo = new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(0, 1.06, 0),
-      new THREE.Vector3(0, 1.28, 0),
+    const neckGeo  = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 1.06, 0), new THREE.Vector3(0, 1.28, 0),
     ]);
     const neckLine = new THREE.Line(neckGeo, avatarMat.clone());
 
@@ -213,13 +204,13 @@ export function AudioDome() {
     const sources = SOURCE_DEFS.map(cfg => {
       const group = new THREE.Group();
       const dot = new THREE.Mesh(
-        new THREE.SphereGeometry(0.18, 16, 16),
+        new THREE.SphereGeometry(0.26, 16, 16),
         new THREE.MeshBasicMaterial({ color: cfg.color })
       );
       const halo = new THREE.Mesh(
-        new THREE.SphereGeometry(0.32, 16, 16),
+        new THREE.SphereGeometry(0.46, 16, 16),
         new THREE.MeshBasicMaterial({
-          color: cfg.color, transparent: true, opacity: 0.12,
+          color: cfg.color, transparent: true, opacity: 0.2,
           blending: THREE.NormalBlending, depthWrite: false,
         })
       );
@@ -350,7 +341,7 @@ export function AudioDome() {
 
       sliceTracks.forEach((track, i) => {
         const mat = track.mesh.material as THREE.LineBasicMaterial;
-        mat.opacity += ((i === act.targetTrackIndex ? 0.85 : 0.12) - mat.opacity) * 0.1;
+        mat.opacity += ((i === act.targetTrackIndex ? 1.0 : 0.2) - mat.opacity) * 0.1;
       });
 
       // Update all sources
