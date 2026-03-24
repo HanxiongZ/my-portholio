@@ -1,12 +1,97 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
+import audioMusic   from "../../../assets/audio_music.mp3";
+import audioPhone   from "../../../assets/audio_phone.mp3";
+import audioPodcast from "../../../assets/audio_podcast.mp3";
+
+// ── Source definitions ─────────────────────────────────────────────
+const SOURCE_DEFS = [
+  { name: "Music",   color: 0x8b5cf6, trackIdx: 5, angle: Math.PI / 2 - 0.3, file: audioMusic,   muted: false, volume: 2.0 },
+  { name: "Phone",   color: 0x16a34a, trackIdx: 2, angle: Math.PI / 3.5,     file: audioPhone,   muted: true,  volume: 1.0 },
+  { name: "Podcast", color: 0xef4444, trackIdx: 8, angle: Math.PI * 0.68,    file: audioPodcast, muted: false, volume: 1.0 },
+];
+
 
 export function AudioDome() {
-  const containerRef  = useRef<HTMLDivElement>(null);
-  const wrapperRef    = useRef<HTMLDivElement>(null);
-  const arcDotRef     = useRef<SVGCircleElement>(null);
-  const trackThumbRef = useRef<HTMLDivElement>(null);
-  const trackStripRef = useRef<HTMLDivElement>(null);
+  const containerRef    = useRef<HTMLDivElement>(null);
+  const wrapperRef      = useRef<HTMLDivElement>(null);
+  const arcDotRef       = useRef<SVGCircleElement>(null);
+  const trackThumbRef   = useRef<HTMLDivElement>(null);
+  const trackStripRef   = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const setActiveIdxRef = useRef(setActiveIdx);
+
+  // ── Spatial audio ──────────────────────────────────────────────
+  const [audioState, setAudioState]   = useState<"off" | "loading" | "playing">("off");
+  const [mutedSources, setMutedSources] = useState<boolean[]>(SOURCE_DEFS.map(d => d.muted));
+  const mutedSourcesRef = useRef(mutedSources);
+  mutedSourcesRef.current = mutedSources;
+
+  const audioCtxRef   = useRef<AudioContext | null>(null);
+  const pannersRef    = useRef<PannerNode[]>([]);
+  const gainNodesRef  = useRef<GainNode[]>([]);
+  const bufSourcesRef = useRef<AudioBufferSourceNode[]>([]);
+
+  const toggleMute = (i: number) => {
+    const next = mutedSourcesRef.current.map((m, idx) => idx === i ? !m : m);
+    setMutedSources(next);
+    const g = gainNodesRef.current[i];
+    if (g) g.gain.value = next[i] ? 0 : SOURCE_DEFS[i].volume;
+  };
+
+  const togglePreview = async () => {
+    if (audioState === "playing" || audioState === "loading") {
+      bufSourcesRef.current.forEach(s => { try { s.stop(); } catch { /* already stopped */ } });
+      audioCtxRef.current?.close();
+      audioCtxRef.current   = null;
+      pannersRef.current    = [];
+      gainNodesRef.current  = [];
+      bufSourcesRef.current = [];
+      setAudioState("off");
+      return;
+    }
+
+    setAudioState("loading");
+    const ctx = new AudioContext();
+    await ctx.resume();
+    audioCtxRef.current = ctx;
+
+    const panners: PannerNode[]              = [];
+    const gains: GainNode[]                  = [];
+    const bufSources: AudioBufferSourceNode[] = [];
+
+    for (let i = 0; i < SOURCE_DEFS.length; i++) {
+      const def = SOURCE_DEFS[i];
+
+      const panner = ctx.createPanner();
+      panner.panningModel  = "HRTF";
+      panner.distanceModel = "inverse";
+      panner.refDistance   = 6;
+      panner.rolloffFactor = 0.6;
+      panner.connect(ctx.destination);
+      panners.push(panner);
+
+      const gainNode = ctx.createGain();
+      gainNode.gain.value = mutedSourcesRef.current[i] ? 0 : def.volume;
+      gainNode.connect(panner);
+      gains.push(gainNode);
+
+      const res      = await fetch(def.file);
+      const arrBuf   = await res.arrayBuffer();
+      const audioBuf = await ctx.decodeAudioData(arrBuf);
+      const source   = ctx.createBufferSource();
+      source.buffer  = audioBuf;
+      source.loop    = true;
+      source.connect(gainNode);
+      source.start();
+      bufSources.push(source);
+    }
+
+    pannersRef.current    = panners;
+    gainNodesRef.current  = gains;
+    bufSourcesRef.current = bufSources;
+    setAudioState("playing");
+  };
 
   useEffect(() => {
     const container  = containerRef.current;
@@ -125,13 +210,7 @@ export function AudioDome() {
     sphereGroup.add(avatarGroup);
 
     // ── Three audio sources ────────────────────────────────────────
-    const sourceConfigs = [
-      { color: 0x1a1a1a, trackIdx: 5, angle: Math.PI / 2 - 0.3 },  // neutral dark
-      { color: 0x5c2a10, trackIdx: 2, angle: Math.PI / 3.5 },       // warm sienna
-      { color: 0x10284a, trackIdx: 8, angle: Math.PI * 0.68 },      // cool navy
-    ];
-
-    const sources = sourceConfigs.map(cfg => {
+    const sources = SOURCE_DEFS.map(cfg => {
       const group = new THREE.Group();
       const dot = new THREE.Mesh(
         new THREE.SphereGeometry(0.18, 16, 16),
@@ -157,7 +236,7 @@ export function AudioDome() {
     });
 
     // ── Interaction state ──────────────────────────────────────────
-    let activeIdx         = 0;
+    let activeIdx         = 0;  // local mutable for animation loop
     let isDragging        = false;
     let dragStartPos      = { x: 0, y: 0 };
     let pointerDownTime   = 0;
@@ -226,6 +305,7 @@ export function AudioDome() {
       if (Date.now() - pointerDownTime < 260 && dist < 8) {
         activeIdx = (activeIdx + 1) % sources.length;
         initialTrackIndex = active().targetTrackIndex;
+        setActiveIdxRef.current(activeIdx);  // sync to React for UI
       }
       isDragging = false;
       lockedAxis = null;
@@ -277,6 +357,19 @@ export function AudioDome() {
       });
 
       renderer.render(scene, camera);
+
+      // ── Spatial audio: sync panner positions every frame ──────
+      if (pannersRef.current.length) {
+        sources.forEach((src, i) => {
+          const p = pannersRef.current[i];
+          if (!p) return;
+          const px = R * Math.sin(src.visualPhi);
+          const pr = R * Math.cos(src.visualPhi);
+          p.positionX.value =  px;
+          p.positionY.value =  pr * Math.sin(src.visualAngle);
+          p.positionZ.value = -pr * Math.cos(src.visualAngle);
+        });
+      }
 
       // ── Arc indicator — tracks active source ──────────────────
       if (arcDotRef.current) {
@@ -382,38 +475,91 @@ export function AudioDome() {
         />
       </div>
 
-      {/* Source selector dots — tap card to cycle */}
+      {/* Source selector chips — top left */}
       <div style={{
-        position: "absolute", top: "16px", right: "16px",
-        display: "flex", gap: "6px", alignItems: "center",
-        pointerEvents: "none",
+        position: "absolute", top: "16px", left: "16px",
+        display: "flex", flexDirection: "column", gap: "6px",
       }}>
-        {([0x1a1a1a, 0x5c2a10, 0x10284a] as const).map((color, i) => (
-          <div key={i} style={{
-            width: "7px", height: "7px", borderRadius: "50%",
-            background: `#${color.toString(16).padStart(6, "0")}`,
-            opacity: 0.5,
-          }} />
-        ))}
+        {SOURCE_DEFS.map((src, i) => {
+          const hex    = `#${src.color.toString(16).padStart(6, "0")}`;
+          const isActive = i === activeIdx;
+          const isMuted  = mutedSources[i];
+          return (
+            <button
+              key={i}
+              onClick={() => toggleMute(i)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "5px",
+                background: isActive && !isMuted ? `${hex}22` : "rgba(255,255,255,0.55)",
+                backdropFilter: "blur(6px)",
+                border: `1px solid ${isActive && !isMuted ? `${hex}66` : "rgba(0,0,0,0.08)"}`,
+                borderRadius: "20px", padding: "4px 8px 4px 7px",
+                cursor: "pointer", transition: "all 0.2s",
+                opacity: isMuted ? 0.45 : 1,
+              }}
+            >
+              <div style={{
+                width: "8px", height: "8px", borderRadius: "50%",
+                background: isMuted ? "rgba(0,0,0,0.25)" : hex,
+                boxShadow: isActive && !isMuted ? `0 0 0 2px ${hex}44` : "none",
+                transition: "all 0.2s",
+              }} />
+              <span style={{
+                fontSize: "11px", fontFamily: "monospace", letterSpacing: "0.04em",
+                color: isActive && !isMuted ? hex : "rgba(0,0,0,0.4)",
+                fontWeight: isActive && !isMuted ? 600 : 400,
+                textDecoration: isMuted ? "line-through" : "none",
+              }}>
+                {src.name}
+              </span>
+              {/* mute/unmute icon */}
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"
+                stroke={isMuted ? "rgba(0,0,0,0.3)" : hex} strokeWidth="1.2" strokeLinecap="round">
+                {isMuted
+                  ? <><line x1="1" y1="1" x2="8" y2="8"/><line x1="8" y1="1" x2="1" y2="8"/></>
+                  : <><path d="M1.5 3H0.75a.25.25 0 0 0-.25.25v2.5c0 .138.112.25.25.25H1.5l2 1.5V1.5L1.5 3z"/><path d="M6 3a2 2 0 0 1 0 3"/></>
+                }
+              </svg>
+            </button>
+          );
+        })}
       </div>
 
       {/* Hint pill */}
       <div style={{
-        position: "absolute", top: "20px", left: "50%", transform: "translateX(-50%)",
+        position: "absolute", top: "20px", right: "16px",
         background: "rgba(255,255,255,0.7)", backdropFilter: "blur(6px)",
-        padding: "8px 16px", borderRadius: "20px",
+        padding: "6px 12px", borderRadius: "20px",
         border: "1px solid rgba(0,0,0,0.08)",
         pointerEvents: "none", whiteSpace: "nowrap",
       }}>
-        <p style={{ margin: 0, fontSize: "12px", color: "rgba(0,0,0,0.4)", lineHeight: 1.5 }}>
-          tap to select &nbsp;·&nbsp; swipe to move
+        <p style={{ margin: 0, fontSize: "10px", fontFamily: "monospace", color: "rgba(0,0,0,0.35)", lineHeight: 1.5 }}>
+          tap · drag
         </p>
       </div>
 
+
     </div>
 
-    {/* "Optimised for phone" tag */}
-    <div style={{ display: "flex", justifyContent: "center", marginTop: "12px" }}>
+    {/* Preview button + tag */}
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", marginTop: "16px" }}>
+      <button
+        onClick={togglePreview}
+        style={{
+          background: audioState === "playing" ? "#1a1a1a" : "#060606",
+          borderRadius: "62px", padding: "16px 40px",
+          border: "none", cursor: audioState === "loading" ? "wait" : "pointer",
+          display: "inline-flex", alignItems: "center", gap: "10px",
+          whiteSpace: "nowrap", transition: "opacity 0.2s",
+        }}
+      >
+        <span style={{ fontSize: "18px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
+          {audioState === "loading" ? "Loading…" : audioState === "playing" ? "Stop" : "Preview"}
+        </span>
+        <span style={{ fontSize: "11px", fontWeight: 400, color: "rgba(255,255,255,0.5)", lineHeight: 1 }}>
+          {audioState === "playing" ? "(spatial audio on)" : "(best with headphones)"}
+        </span>
+      </button>
       <span style={{
         fontSize: "10px", fontFamily: "monospace", letterSpacing: "0.1em",
         textTransform: "uppercase", color: "rgba(0,0,0,0.3)",
