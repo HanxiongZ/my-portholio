@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 export function AudioDome() {
@@ -7,59 +7,6 @@ export function AudioDome() {
   const arcDotRef     = useRef<SVGCircleElement>(null);
   const trackThumbRef = useRef<HTMLDivElement>(null);
   const trackStripRef = useRef<HTMLDivElement>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  // ── Fullscreen logic ───────────────────────────────────────────
-  // Android Chrome / Desktop: use native Fullscreen API on document.documentElement
-  //   so the entire browser UI disappears.
-  // iOS Safari & iOS Chrome: Fullscreen API is not supported at all.
-  //   We fall back to CSS position:fixed + body scroll lock for an immersive feel.
-  //   The browser address bar cannot be hidden on iOS via JavaScript — OS limitation.
-  const enterFullscreen = () => {
-    const root = document.documentElement as HTMLElement & {
-      webkitRequestFullscreen?: () => void;
-    };
-    if (root.requestFullscreen) {
-      root.requestFullscreen().catch(() => {
-        // Native failed — use CSS fallback (iOS)
-        setIsFullscreen(true);
-        document.body.style.overflow = "hidden";
-      });
-    } else if (root.webkitRequestFullscreen) {
-      root.webkitRequestFullscreen();
-    } else {
-      // iOS: CSS fixed overlay
-      setIsFullscreen(true);
-      document.body.style.overflow = "hidden";
-    }
-  };
-
-  const exitFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else {
-      setIsFullscreen(false);
-      document.body.style.overflow = "";
-    }
-  };
-
-  useEffect(() => {
-    const onFSChange = () => {
-      if (document.fullscreenElement) {
-        setIsFullscreen(true);
-      } else {
-        setIsFullscreen(false);
-        document.body.style.overflow = "";
-      }
-    };
-    document.addEventListener("fullscreenchange", onFSChange);
-    document.addEventListener("webkitfullscreenchange", onFSChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", onFSChange);
-      document.removeEventListener("webkitfullscreenchange", onFSChange);
-      document.body.style.overflow = "";
-    };
-  }, []);
 
   useEffect(() => {
     const container  = containerRef.current;
@@ -366,24 +313,21 @@ export function AudioDome() {
 
   const N = 11;
 
-  const wrapperStyle: React.CSSProperties = isFullscreen
-    ? { position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
-        zIndex: 9999, maxWidth: "none", borderRadius: 0,
-        overflow: "hidden", touchAction: "none",
-        background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)" }
-    : { position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
-        borderRadius: "16px", overflow: "hidden", touchAction: "none",
-        background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)" };
-
-  const canvasStyle: React.CSSProperties = isFullscreen
-    ? { position: "absolute", inset: 0, width: "100%", height: "100%", display: "block", pointerEvents: "none" }
-    : { width: "100%", aspectRatio: "3 / 4", display: "block", pointerEvents: "none" };
-
   return (
   <div>
-    <div ref={wrapperRef} style={wrapperStyle}>
+    <div
+      ref={wrapperRef}
+      style={{
+        position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
+        borderRadius: "16px", overflow: "hidden", touchAction: "none",
+        background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)",
+      }}
+    >
       {/* 3D canvas */}
-      <div ref={containerRef} style={canvasStyle} />
+      <div
+        ref={containerRef}
+        style={{ width: "100%", aspectRatio: "3 / 4", display: "block", pointerEvents: "none" }}
+      />
 
       {/* ── Arc position indicator — SVG semicircle, bottom-right ── */}
       <div style={{
@@ -466,44 +410,19 @@ export function AudioDome() {
         </p>
       </div>
 
-      {/* Exit button — shown inside the dome when fullscreen */}
-      {isFullscreen && (
-        <div style={{ position: "absolute", bottom: "32px", left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 10 }}>
-          <button
-            onClick={exitFullscreen}
-            style={{
-              background: "#060606", borderRadius: "62px", padding: "14px 36px",
-              border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "10px",
-            }}
-          >
-            <span style={{ fontSize: "16px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
-              Exit full screen
-            </span>
-          </button>
-        </div>
-      )}
     </div>
 
-    {/* Enter fullscreen button — shown below the dome when not fullscreen */}
-    {!isFullscreen && (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
-        <button
-          onClick={enterFullscreen}
-          style={{
-            background: "#060606", borderRadius: "62px", padding: "16px 40px",
-            border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "10px",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <span style={{ fontSize: "18px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
-            Full screen
-          </span>
-          <span style={{ fontSize: "11px", fontWeight: 400, color: "rgba(255,255,255,0.55)", lineHeight: 1 }}>
-            (Optimised for phone)
-          </span>
-        </button>
-      </div>
-    )}
+    {/* "Optimised for phone" tag */}
+    <div style={{ display: "flex", justifyContent: "center", marginTop: "12px" }}>
+      <span style={{
+        fontSize: "10px", fontFamily: "monospace", letterSpacing: "0.1em",
+        textTransform: "uppercase", color: "rgba(0,0,0,0.3)",
+        border: "1px solid rgba(0,0,0,0.15)", borderRadius: "20px",
+        padding: "4px 12px", userSelect: "none",
+      }}>
+        Optimised for phone
+      </span>
+    </div>
   </div>
   );
 }
