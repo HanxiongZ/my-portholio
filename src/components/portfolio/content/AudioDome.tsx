@@ -10,30 +10,33 @@ export function AudioDome() {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // ── Fullscreen logic ───────────────────────────────────────────
+  // iOS (Safari & Chrome) does not support the Fullscreen API at all.
+  // We use CSS position:fixed as the primary approach, and try native API
+  // as a progressive enhancement for Android Chrome / desktop.
   const enterFullscreen = () => {
+    setIsFullscreen(true);
+    // Trigger Three.js resize after layout settles
+    setTimeout(() => window.dispatchEvent(new Event("resize")), 50);
     const el = wrapperRef.current;
     if (!el) return;
     if (el.requestFullscreen) {
-      el.requestFullscreen().catch(() => setIsFullscreen(true));
+      el.requestFullscreen().catch(() => {/* CSS fallback already active */});
     } else if ((el as HTMLDivElement & { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
       (el as HTMLDivElement & { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
-    } else {
-      // iOS Safari fallback: CSS fixed overlay
-      setIsFullscreen(true);
     }
   };
 
   const exitFullscreen = () => {
+    setIsFullscreen(false);
+    setTimeout(() => window.dispatchEvent(new Event("resize")), 50);
     if (document.fullscreenElement) {
       document.exitFullscreen();
-    } else {
-      setIsFullscreen(false);
     }
   };
 
   useEffect(() => {
     const onFSChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      if (!document.fullscreenElement) setIsFullscreen(false);
     };
     document.addEventListener("fullscreenchange", onFSChange);
     document.addEventListener("webkitfullscreenchange", onFSChange);
@@ -342,26 +345,24 @@ export function AudioDome() {
 
   const N = 11;
 
-  const fullscreenStyle: React.CSSProperties = isFullscreen && !document.fullscreenElement
-    ? { position: "fixed", inset: 0, zIndex: 9999, maxWidth: "none", borderRadius: 0 }
-    : {};
+  const wrapperStyle: React.CSSProperties = isFullscreen
+    ? { position: "fixed", inset: 0, zIndex: 9999, maxWidth: "none", borderRadius: 0,
+        width: "100%", height: "100%",
+        overflow: "hidden", touchAction: "none",
+        background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)" }
+    : { position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
+        borderRadius: "16px", overflow: "hidden", touchAction: "none",
+        background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)" };
+
+  const canvasStyle: React.CSSProperties = isFullscreen
+    ? { position: "absolute", inset: 0, width: "100%", height: "100%", display: "block", pointerEvents: "none" }
+    : { width: "100%", aspectRatio: "3 / 4", display: "block", pointerEvents: "none" };
 
   return (
   <div>
-    <div
-      ref={wrapperRef}
-      style={{
-        position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
-        borderRadius: "16px", overflow: "hidden", touchAction: "none",
-        background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)",
-        ...fullscreenStyle,
-      }}
-    >
+    <div ref={wrapperRef} style={wrapperStyle}>
       {/* 3D canvas */}
-      <div
-        ref={containerRef}
-        style={{ width: "100%", aspectRatio: "3 / 4", display: "block", pointerEvents: "none" }}
-      />
+      <div ref={containerRef} style={canvasStyle} />
 
       {/* ── Arc position indicator — SVG semicircle, bottom-right ── */}
       <div style={{
@@ -444,31 +445,44 @@ export function AudioDome() {
         </p>
       </div>
 
+      {/* Exit button — shown inside the dome when fullscreen */}
+      {isFullscreen && (
+        <div style={{ position: "absolute", bottom: "32px", left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 10 }}>
+          <button
+            onClick={exitFullscreen}
+            style={{
+              background: "#060606", borderRadius: "62px", padding: "14px 36px",
+              border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "16px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
+              Exit full screen
+            </span>
+          </button>
+        </div>
+      )}
     </div>
-    {/* Fullscreen button — centered below the dome */}
-    <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
-      <button
-        onClick={isFullscreen ? exitFullscreen : enterFullscreen}
-        style={{
-          background: "#060606",
-          borderRadius: "62px",
-          padding: "16px 40px",
-          border: "none",
-          cursor: "pointer",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "10px",
-          whiteSpace: "nowrap",
-        }}
-      >
-        <span style={{ fontSize: "18px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
-          {isFullscreen ? "Exit full screen" : "Full screen"}
-        </span>
-        <span style={{ fontSize: "11px", fontWeight: 400, color: "rgba(255,255,255,0.55)", lineHeight: 1 }}>
-          {isFullscreen ? "" : "(Optimised for phone)"}
-        </span>
-      </button>
-    </div>
+
+    {/* Enter fullscreen button — shown below the dome when not fullscreen */}
+    {!isFullscreen && (
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+        <button
+          onClick={enterFullscreen}
+          style={{
+            background: "#060606", borderRadius: "62px", padding: "16px 40px",
+            border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "10px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <span style={{ fontSize: "18px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
+            Full screen
+          </span>
+          <span style={{ fontSize: "11px", fontWeight: 400, color: "rgba(255,255,255,0.55)", lineHeight: 1 }}>
+            (Optimised for phone)
+          </span>
+        </button>
+      </div>
+    )}
   </div>
   );
 }
