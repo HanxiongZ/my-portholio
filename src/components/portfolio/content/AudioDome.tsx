@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
 export function AudioDome() {
@@ -7,6 +7,41 @@ export function AudioDome() {
   const arcDotRef     = useRef<SVGCircleElement>(null);
   const trackThumbRef = useRef<HTMLDivElement>(null);
   const trackStripRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // ── Fullscreen logic ───────────────────────────────────────────
+  const enterFullscreen = () => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    if (el.requestFullscreen) {
+      el.requestFullscreen().catch(() => setIsFullscreen(true));
+    } else if ((el as HTMLDivElement & { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
+      (el as HTMLDivElement & { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
+    } else {
+      // iOS Safari fallback: CSS fixed overlay
+      setIsFullscreen(true);
+    }
+  };
+
+  const exitFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      setIsFullscreen(false);
+    }
+  };
+
+  useEffect(() => {
+    const onFSChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", onFSChange);
+    document.addEventListener("webkitfullscreenchange", onFSChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFSChange);
+      document.removeEventListener("webkitfullscreenchange", onFSChange);
+    };
+  }, []);
 
   useEffect(() => {
     const container  = containerRef.current;
@@ -307,13 +342,19 @@ export function AudioDome() {
 
   const N = 11;
 
+  const fullscreenStyle: React.CSSProperties = isFullscreen && !document.fullscreenElement
+    ? { position: "fixed", inset: 0, zIndex: 9999, maxWidth: "none", borderRadius: 0 }
+    : {};
+
   return (
+  <div>
     <div
       ref={wrapperRef}
       style={{
         position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
         borderRadius: "16px", overflow: "hidden", touchAction: "none",
         background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)",
+        ...fullscreenStyle,
       }}
     >
       {/* 3D canvas */}
@@ -402,6 +443,32 @@ export function AudioDome() {
           tap to select &nbsp;·&nbsp; swipe to move
         </p>
       </div>
+
     </div>
+    {/* Fullscreen button — centered below the dome */}
+    <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+      <button
+        onClick={isFullscreen ? exitFullscreen : enterFullscreen}
+        style={{
+          background: "#060606",
+          borderRadius: "62px",
+          padding: "16px 40px",
+          border: "none",
+          cursor: "pointer",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "10px",
+          whiteSpace: "nowrap",
+        }}
+      >
+        <span style={{ fontSize: "18px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
+          {isFullscreen ? "Exit full screen" : "Full screen"}
+        </span>
+        <span style={{ fontSize: "11px", fontWeight: 400, color: "rgba(255,255,255,0.55)", lineHeight: 1 }}>
+          {isFullscreen ? "" : "(Optimised for phone)"}
+        </span>
+      </button>
+    </div>
+  </div>
   );
 }

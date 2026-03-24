@@ -95,16 +95,16 @@ export const mainProjects: Project[] = [
   },
   {
     id: 5,
-    title: "Silent Form",
-    category: "Editorial",
+    title: "Holo Audio",
+    category: "USER EXPERIENCE INTERFACE",
     year: "2022",
     image: getThumbnail(5),
     description:
-      "A printed publication celebrating silence in a noisy world.",
+      "A user interface design focused on spatial interaction",
     content:
-      "Silent Form is a limited-edition art book that explores the concept of silence through photography and typography. The layout utilizes aggressive negative space, forcing the reader to slow down and appreciate the void between elements. The paper selection—a heavy, uncoated stock—adds a tactile dimension to the reading experience, grounding the abstract concepts in physical reality.",
+      "Originally designed during my time as an UX Designer at OPPO, this feature enables users to adjust the spatial placement of audio. In 2026, I revisited the experience through vibe coding, exploring a more intuitive interaction model—one that feels natural, reduces frustration, and brings a greater sense of clarity and control to the listening experience.",
     toc: ["Editorial", "Typography", "Photography"],
-    tags: ["Print", "Art Direction"],
+    tags: ["Spatial Interaction", "UX/UI","vibe coding"],
   },
 ];
 
