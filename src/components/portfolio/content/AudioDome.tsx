@@ -10,39 +10,54 @@ export function AudioDome() {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // ── Fullscreen logic ───────────────────────────────────────────
-  // iOS (Safari & Chrome) does not support the Fullscreen API at all.
-  // We use CSS position:fixed as the primary approach, and try native API
-  // as a progressive enhancement for Android Chrome / desktop.
+  // Android Chrome / Desktop: use native Fullscreen API on document.documentElement
+  //   so the entire browser UI disappears.
+  // iOS Safari & iOS Chrome: Fullscreen API is not supported at all.
+  //   We fall back to CSS position:fixed + body scroll lock for an immersive feel.
+  //   The browser address bar cannot be hidden on iOS via JavaScript — OS limitation.
   const enterFullscreen = () => {
-    setIsFullscreen(true);
-    // Trigger Three.js resize after layout settles
-    setTimeout(() => window.dispatchEvent(new Event("resize")), 50);
-    const el = wrapperRef.current;
-    if (!el) return;
-    if (el.requestFullscreen) {
-      el.requestFullscreen().catch(() => {/* CSS fallback already active */});
-    } else if ((el as HTMLDivElement & { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
-      (el as HTMLDivElement & { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
+    const root = document.documentElement as HTMLElement & {
+      webkitRequestFullscreen?: () => void;
+    };
+    if (root.requestFullscreen) {
+      root.requestFullscreen().catch(() => {
+        // Native failed — use CSS fallback (iOS)
+        setIsFullscreen(true);
+        document.body.style.overflow = "hidden";
+      });
+    } else if (root.webkitRequestFullscreen) {
+      root.webkitRequestFullscreen();
+    } else {
+      // iOS: CSS fixed overlay
+      setIsFullscreen(true);
+      document.body.style.overflow = "hidden";
     }
   };
 
   const exitFullscreen = () => {
-    setIsFullscreen(false);
-    setTimeout(() => window.dispatchEvent(new Event("resize")), 50);
     if (document.fullscreenElement) {
       document.exitFullscreen();
+    } else {
+      setIsFullscreen(false);
+      document.body.style.overflow = "";
     }
   };
 
   useEffect(() => {
     const onFSChange = () => {
-      if (!document.fullscreenElement) setIsFullscreen(false);
+      if (document.fullscreenElement) {
+        setIsFullscreen(true);
+      } else {
+        setIsFullscreen(false);
+        document.body.style.overflow = "";
+      }
     };
     document.addEventListener("fullscreenchange", onFSChange);
     document.addEventListener("webkitfullscreenchange", onFSChange);
     return () => {
       document.removeEventListener("fullscreenchange", onFSChange);
       document.removeEventListener("webkitfullscreenchange", onFSChange);
+      document.body.style.overflow = "";
     };
   }, []);
 
@@ -274,10 +289,15 @@ export function AudioDome() {
     window.addEventListener("pointerup",    onPointerUp);
 
     const onResize = () => {
+      if (!container.clientWidth || !container.clientHeight) return;
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
     };
+    // ResizeObserver reacts to CSS fullscreen layout changes
+    // (window resize event alone misses element-level size changes on iOS)
+    const ro = new ResizeObserver(onResize);
+    ro.observe(container);
     window.addEventListener("resize", onResize);
 
     // ── Animation loop ─────────────────────────────────────────────
@@ -338,6 +358,7 @@ export function AudioDome() {
       window.removeEventListener("pointermove",  onPointerMove);
       window.removeEventListener("pointerup",    onPointerUp);
       window.removeEventListener("resize",       onResize);
+      ro.disconnect();
       renderer.dispose();
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
     };
@@ -346,8 +367,8 @@ export function AudioDome() {
   const N = 11;
 
   const wrapperStyle: React.CSSProperties = isFullscreen
-    ? { position: "fixed", inset: 0, zIndex: 9999, maxWidth: "none", borderRadius: 0,
-        width: "100%", height: "100%",
+    ? { position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
+        zIndex: 9999, maxWidth: "none", borderRadius: 0,
         overflow: "hidden", touchAction: "none",
         background: "radial-gradient(ellipse 70% 60% at 55% 45%, rgba(200,200,205,0.6) 0%, #f2f2f4 70%)" }
     : { position: "relative", width: "100%", maxWidth: "400px", margin: "0 auto",
