@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   ArrowLeft,
@@ -115,8 +115,9 @@ export function ProjectDetail() {
     window.scrollTo(0, 0);
   }, [projectId]);
 
-  const [showScrollTop, setShowScrollTop] =
-    React.useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const btnSize = isMobile ? 36 : 40;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -489,7 +490,8 @@ export function ProjectDetail() {
             onClick={() =>
               window.scrollTo({ top: 0, behavior: "smooth" })
             }
-            className="scroll-top-btn fixed bottom-6 right-4 md:bottom-8 md:right-8 z-50 flex items-center justify-center bg-background border border-foreground/10 text-foreground hover:bg-foreground hover:text-background transition-colors backdrop-blur-sm"
+            className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-50 flex items-center justify-center bg-background border border-foreground/10 text-foreground hover:bg-foreground hover:text-background transition-colors backdrop-blur-sm"
+            style={{ width: btnSize, height: btnSize }}
           >
             <ArrowUp className="w-4 h-4" />
           </motion.button>
