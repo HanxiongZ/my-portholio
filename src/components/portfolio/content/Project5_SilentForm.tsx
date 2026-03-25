@@ -1,7 +1,5 @@
 import React from "react";
-import { ImageWithFallback } from "../../figma/ImageWithFallback";
 import { Project } from "../Projects";
-import { getContentImage } from "../projectImages";
 import { AudioDome } from "./AudioDome";
 
 interface Props {
@@ -10,54 +8,100 @@ interface Props {
 }
 
 export function Project5_SilentForm({ project, slugify }: Props) {
-  const img = {
-    hero:  getContentImage(5, "hero"),
-    fig01: getContentImage(5, "fig01"),
-    fig02: getContentImage(5, "fig02"),
-    fig03: getContentImage(5, "fig03"),
+  const T = {
+    body:    { fontSize: "16px", fontWeight: 300, lineHeight: "28px" } as React.CSSProperties,
+    caption: { fontSize: "14px", fontWeight: 300, lineHeight: "22px" } as React.CSSProperties,
+    label:   { fontSize: "11px", fontFamily: "monospace", fontWeight: 400, letterSpacing: "0.1em", textTransform: "uppercase" as const } as React.CSSProperties,
   };
-  const figKeys = ["fig01", "fig02", "fig03"];
+
+  // Fill in once uploaded:
+  // const demoVideoSrc = "https://your-cdn.com/holo-audio-demo.mp4";
+  const demoVideoSrc: string | undefined = undefined;
+
+  const Placeholder = ({ ratio = "16/9", label = "Image — Coming Soon" }: { ratio?: string; label?: string }) => (
+    <div
+      className="w-full bg-foreground/5 border border-foreground/10 flex items-center justify-center"
+      style={{ aspectRatio: ratio }}
+    >
+      <span style={{ ...T.label, opacity: 0.3 }}>{label}</span>
+    </div>
+  );
 
   return (
     <>
-      <div className="mb-16">
+      {/* ── PROTOTYPE ────────────────────────────────────────────── */}
+      <div style={{ marginBottom: "64px" }}>
         <AudioDome />
       </div>
 
-      {project.toc?.map((section, index) => (
-        <div
-          key={section}
-          className="grid grid-cols-1 md:grid-cols-12 gap-x-6 mb-16 md:mb-24"
-        >
-          {/* Left 4 cols: Section title */}
-          <div
-            id={slugify(section)}
-            className="col-span-1 md:col-span-4 border-t border-foreground/10 pt-6 mb-4 md:mb-0 scroll-mt-32"
-          >
-            <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
-              0{index + 1} — {section}
-            </span>
-          </div>
+      {/* ── 01 BACKGROUND ────────────────────────────────────────── */}
+      <div
+        id={slugify("Background")}
+        className="border-t border-foreground/10 pt-6 mb-6 scroll-mt-32"
+      >
+        <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
+          01 — Background
+        </span>
+      </div>
 
-          {/* Right 8 cols: Content */}
-          <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 md:border-t-0 md:pt-6">
-            <p className="text-base leading-7 font-light text-foreground/80 text-pretty">
-              {index === 0 ? project.content : project.description}
-            </p>
+      <p style={{ ...T.body, opacity: 0.8, marginBottom: "24px" }}>
+        Originally designed at OPPO, this feature lets users place audio sources
+        spatially — making sound feel like something you can reach out and move.
+      </p>
 
-            {figKeys[index] && img[figKeys[index] as keyof typeof img] && (
-              <div className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden mt-8">
-                <ImageWithFallback
-                  src={img[figKeys[index] as keyof typeof img]}
-                  alt={`${project.title} - ${section}`}
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-            )}
+      <div style={{ marginBottom: "64px" }}>
+        <Placeholder ratio="3/2" />
+      </div>
+
+      {/* ── 02 DESIGN ────────────────────────────────────────────── */}
+      <div
+        id={slugify("Design")}
+        className="border-t border-foreground/10 pt-6 mb-6 scroll-mt-32"
+      >
+        <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
+          02 — Design
+        </span>
+      </div>
+
+      <p style={{ ...T.body, opacity: 0.8, marginBottom: "24px" }}>
+        Each source maps to a point on a 3D dome. HRTF spatialization renders
+        the position in real time through headphones.
+      </p>
+
+      {/* Full-width design shot */}
+      <div style={{ marginBottom: "16px" }}>
+        <Placeholder ratio="3/2" />
+      </div>
+
+      {/* 2-col detail shots */}
+      <div className="grid grid-cols-2 gap-4" style={{ marginBottom: "64px" }}>
+        <Placeholder ratio="4/3" />
+        <Placeholder ratio="4/3" />
+      </div>
+
+      {/* ── 03 DEMO ──────────────────────────────────────────────── */}
+      <div
+        id={slugify("Demo")}
+        className="border-t border-foreground/10 pt-6 mb-6 scroll-mt-32"
+      >
+        <span className="inline-block text-xs font-mono uppercase tracking-widest text-foreground/40">
+          03 — Demo
+        </span>
+      </div>
+
+      <p style={{ ...T.body, opacity: 0.8, marginBottom: "24px" }}>
+        Best experienced with headphones.
+      </p>
+
+      <div style={{ marginBottom: "64px" }}>
+        {demoVideoSrc ? (
+          <div className="w-full bg-black border border-foreground/10 overflow-hidden" style={{ aspectRatio: "16/9" }}>
+            <video src={demoVideoSrc} controls playsInline className="w-full h-full object-cover" />
           </div>
-        </div>
-      ))}
+        ) : (
+          <Placeholder ratio="16/9" label="Demo Video — Coming Soon" />
+        )}
+      </div>
     </>
   );
 }

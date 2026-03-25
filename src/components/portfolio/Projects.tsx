@@ -103,7 +103,7 @@ export const mainProjects: Project[] = [
       "A user interface design focused on spatial interaction",
     content:
       "Originally designed during my time as an UX Designer at OPPO, this feature enables users to adjust the spatial placement of audio. In 2026, I revisited the experience through vibe coding, exploring a more intuitive interaction model—one that feels natural, reduces frustration, and brings a greater sense of clarity and control to the listening experience.",
-    toc: ["Editorial", "Typography", "Photography"],
+    toc: ["Background", "Design", "Demo"],
     tags: ["Spatial Interaction", "UX/UI","vibe coding"],
   },
 ];
@@ -166,6 +166,7 @@ export function Projects() {
   const activeProject =
     mainProjects.find((p) => p.id === activeId) ||
     mainProjects[0];
+
 
   // ── Playground hover — zero React state, pure DOM ──────────────
   // Using refs means mouse-move and row-enter never trigger a
@@ -381,7 +382,7 @@ export function Projects() {
                     {activeId === 5 && (
                       <ImageWithFallback
                         src={getThumbnail(5)}
-                        alt="Silent Form"
+                        alt="Holo Audio"
                         className="w-full h-full object-cover"
                         loading="eager"
                       />

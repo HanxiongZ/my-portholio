@@ -19,6 +19,9 @@ import image_BeyondClicks_TN_sm from "figma:asset/50fe6443ca11a0c1a8a16fd06fffcd
 import image_Coact_TN from "figma:asset/9b5361a5bb51f315ff390d2a3a392efc986f156f.png";
 import image_coact_Hero from "figma:asset/667dd29c6938bb7bf6fc70283db47ce7fe648940.png";
 
+// ─── Local asset imports ─────────────────────────────────────────
+import image_HoloAudio_TN from "../../assets/holoaudio_tn.jpg";
+
 // ─────────────────────────────────────────────────────────────────
 // TYPE
 // ─────────────────────────────────────────────────────────────────
@@ -110,7 +113,7 @@ const registry: Record<number, ProjectImages> = {
   // PROJECT 5 — Silent Form
   // ═══════════════════════════════════════════════════════════════
   5: {
-    thumbnail: "REPLACE_P5_THUMBNAIL",
+    thumbnail: image_HoloAudio_TN,
     content: {
       hero: "REPLACE_P5_HERO",
       fig01: "REPLACE_P5_FIG01",
