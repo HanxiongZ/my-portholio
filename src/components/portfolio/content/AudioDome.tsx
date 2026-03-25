@@ -550,29 +550,21 @@ export function AudioDome() {
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", marginTop: "16px" }}>
       <button
         onClick={togglePreview}
+        className="bg-foreground"
         style={{
-          background: audioState === "playing" ? "#1a1a1a" : "#060606",
           borderRadius: "62px", padding: "16px 40px",
           border: "none", cursor: audioState === "loading" ? "wait" : "pointer",
           display: "inline-flex", alignItems: "center", gap: "10px",
           whiteSpace: "nowrap", transition: "opacity 0.2s",
         }}
       >
-        <span style={{ fontSize: "18px", fontWeight: 500, color: "#ffffff", lineHeight: 1 }}>
+        <span className="text-background" style={{ fontSize: "18px", fontWeight: 500, lineHeight: 1 }}>
           {audioState === "loading" ? "Loading…" : audioState === "playing" ? "Stop" : "Preview"}
         </span>
-        <span style={{ fontSize: "11px", fontWeight: 400, color: "rgba(255,255,255,0.5)", lineHeight: 1 }}>
+        <span className="text-background/50" style={{ fontSize: "11px", fontWeight: 400, lineHeight: 1 }}>
           {audioState === "playing" ? "(spatial audio on)" : "(best with headphones)"}
         </span>
       </button>
-      <span style={{
-        fontSize: "10px", letterSpacing: "0.1em",
-        textTransform: "uppercase", color: "rgba(0,0,0,0.3)",
-        border: "1px solid rgba(0,0,0,0.15)", borderRadius: "20px",
-        padding: "4px 12px", userSelect: "none",
-      }}>
-        Optimised for phone
-      </span>
     </div>
   </div>
   );
