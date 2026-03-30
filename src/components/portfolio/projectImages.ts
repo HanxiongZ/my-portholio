@@ -21,6 +21,11 @@ import image_coact_Hero from "figma:asset/667dd29c6938bb7bf6fc70283db47ce7fe6489
 
 // ─── Local asset imports ─────────────────────────────────────────
 import image_HoloAudio_TN from "../../assets/holoaudio_tn.jpg";
+import image_Inside_TN from "../../assets/inside_tn.png";
+import image_Inside_Hero from "../../assets/inside_hero_2x.jpg";
+import image_Ethno_1 from "../../assets/fig_ethnography_1.jpg";
+import image_Ethno_2 from "../../assets/fig_ethnography_2.jpg";
+import image_Ethno_3 from "../../assets/fig_ethnography_3.jpg";
 
 // ─────────────────────────────────────────────────────────────────
 // TYPE
@@ -100,9 +105,16 @@ const registry: Record<number, ProjectImages> = {
   // PROJECT 4 — Chronos
   // ═══════════════════════════════════════════════════════════════
   4: {
-    thumbnail: "REPLACE_P4_THUMBNAIL",
+    thumbnail: image_Inside_TN,
     content: {
-      hero: "REPLACE_P4_HERO",
+      hero: image_Inside_Hero,
+      fig_ethnography_1: image_Ethno_1,
+      fig_ethnography_2: image_Ethno_2,
+      fig_ethnography_3: image_Ethno_3,
+      fig_synthesis_1: "REPLACE_P4_SYNTHESIS_1",
+      fig_synthesis_2: "REPLACE_P4_SYNTHESIS_2",
+      fig_synthesis_3: "REPLACE_P4_SYNTHESIS_3",
+      fig_synthesis_4: "REPLACE_P4_SYNTHESIS_4",
       fig01: "REPLACE_P4_FIG01",
       fig02: "REPLACE_P4_FIG02",
       fig03: "REPLACE_P4_FIG03",

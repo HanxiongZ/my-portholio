@@ -82,16 +82,16 @@ export const mainProjects: Project[] = [
   },
   {
     id: 4,
-    title: "Chronos",
-    category: "Interface",
-    year: "2022",
+    title: "Inside the Machine",
+    category: "Design for Service",
+    year: "2024",
     image: getThumbnail(4),
     description:
-      "A time-management system designed for deep work.A time-management system designed for deep",
+      "Reframeing the sick leave experience with Försäkringskassan to make government bureaucracy transparent, inclusive, and empathetic.",
     content:
-      "Chronos challenges the conventional calendar interface. Instead of viewing time as a series of rigid blocks, Chronos visualizes it as a fluid resource. The interface is designed to support 'deep work' states, minimizing notifications and highlighting contiguous blocks of focus time. The dark-mode-first aesthetic reduces eye strain during late-night sessions, while the typography emphasizes clarity and hierarchy.",
-    toc: ["Problem", "Design System", "Interface"],
-    tags: ["UI/UX", "Mobile"],
+      "Navigating government bureaucracy shouldn't feel like fighting a cold machine. Inside the Machine tackles the systemic distrust and frustration citizens face during sick leave applications in Sweden. Through in-depth user research and co-creation workshops, we designed a solution that demystifies the bureaucracy. By making hidden processes visible and giving citizens clear control over their data and rights, we aim to rebuild trust and reframe the relationship between citizens and the government.\n\n\nTeam up with: Ece Günesen, Xingyu Liu",
+    toc: ["Collaborator", "Ethnography", "Problem", "Design System", "Interface"],
+    tags: ["Strategic Design", "Participatory Design","UX/UI"],
   },
   {
     id: 5,
