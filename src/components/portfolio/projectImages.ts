@@ -21,6 +21,7 @@ import image_coact_Hero from "figma:asset/667dd29c6938bb7bf6fc70283db47ce7fe6489
 
 // ─── Local asset imports ─────────────────────────────────────────
 import image_HoloAudio_TN from "../../assets/holoaudio_tn.jpg";
+import image_Obfuscation_TN from "../../assets/obfuscation_tn.jpg";
 import image_Inside_TN from "../../assets/inside_tn.png";
 import image_Inside_Hero from "../../assets/inside_hero_2x.jpg";
 import image_Ethno_1 from "../../assets/fig_ethnography_1.jpg";
@@ -138,8 +139,7 @@ const registry: Record<number, ProjectImages> = {
   // PROJECT 6 — Glyph Studies
   // ═══════════════════════════════════════════════════════════════
   6: {
-    thumbnail: "REPLACE_P6_THUMBNAIL",
-    playgroundPreview: "REPLACE_P6_PREVIEW_GIF",
+    thumbnail: image_Obfuscation_TN,
     content: {
       hero: "REPLACE_P6_HERO",
       fig01: "REPLACE_P6_FIG01",

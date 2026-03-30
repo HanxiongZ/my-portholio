@@ -111,7 +111,7 @@ export const mainProjects: Project[] = [
 export const sideProjects: Project[] = [
   {
     id: 6,
-    title: "Glyph Studies",
+    title: "Obfuscation",
     category: "Type Design",
     year: "2024",
     image: getThumbnail(6),
@@ -147,8 +147,8 @@ export const sideProjects: Project[] = [
   },
   {
     id: 9,
-    title: "Raw Material",
-    category: "Photography",
+    title: "Shape Perspectives",
+    category: "Poster",
     year: "2022",
     image: getThumbnail(9),
     description: "Texture studies.",

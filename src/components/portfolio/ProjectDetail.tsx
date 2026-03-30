@@ -149,6 +149,7 @@ export function ProjectDetail() {
   const WIP_PROJECT_IDS = [1];
   const isWIP = WIP_PROJECT_IDS.includes(project.id);
 
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
