@@ -12,10 +12,21 @@ import ecomapOverlap from "../../../assets/inside_ecomap_overlap.png";
 import workshopPhoto from "../../../assets/inside_workshop.jpg";
 import workshopMockup from "../../../assets/inside_workshop_mockup.png";
 import insideConcept from "../../../assets/inside_concept.png";
+import insideHero2 from "../../../assets/inside_hero2.png";
 
 interface Props {
   project: Project;
   slugify: (text: string) => string;
+}
+
+function useIsMobile() {
+  const [mobile, setMobile] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const fn = () => setMobile(window.innerWidth < 768);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return mobile;
 }
 
 const METHODS = [
@@ -147,7 +158,7 @@ function EcomapReveal() {
           style={{ opacity: progress }}
         />
       </div>
-      <h3 className="text-base font-bold mb-4" style={{ letterSpacing: "-0.01em" }}>
+      <h3 className="text-base font-semibold mb-4" style={{ letterSpacing: "-0.01em" }}>
         A complex ecosystem
       </h3>
       <p className="text-base font-light leading-relaxed text-foreground/70 max-w-2xl">
@@ -162,59 +173,72 @@ const INTERFACES = [
   {
     label: "01",
     title: "Onboarding",
-    caption: "A desktop interface that outlines the case journey and connects citizens with support.",
-    video: "", // add video URL when ready
+    caption: "A desktop interface for the Försäkringskassan website that outlines the case journey",
+    video: "https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/inside_onboarding.mp4",
   },
   {
     label: "02",
     title: "Ongoing Cases",
     caption: "The application process mapped like a metro line — showing where you are and all possible routes ahead.",
-    video: "",
+    video: "https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/Insidethemachine/inside_ongoing.mp4",
   },
   {
     label: "03",
     title: "Consent Center",
-    caption: "See exactly what private information you've shared, with whom, and why.",
-    video: "",
+    caption: "Applying for a service requires multiple consents and permissions for different private information. At the consent center, people are able to see exactly what private information they gave and to whom, and why is it important.",
+    video: "https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/Insidethemachine/inside_consent.mp4",
+  },
+  {
+    label: "04",
+    title: "No Need to Panic",
+    caption: "People can see what may influence the decision — case handler review records, organisational changes, policy changes, and more.",
+    video: "https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/Insidethemachine/inside_caseodd.mp4",
   },
 ];
 
 function InterfaceShowcase() {
+  const isMobile = useIsMobile();
   return (
     <div className="mb-16 md:mb-24">
-      {/* Section label + intro */}
-      <div className="border-t border-foreground/10 pt-6 mb-6">
-        <span className="text-xs font-mono uppercase tracking-widest text-foreground/40">05 — Interface</span>
-      </div>
-      <h2 className="text-2xl md:text-3xl font-light leading-snug text-foreground/80 max-w-xl mb-24" style={{ letterSpacing: "-0.02em" }}>
-        Reframe the citizen-government relationship
-      </h2>
+   
 
-      {/* Interface screens */}
-      <div className="flex flex-col" style={{ gap: "8rem" }}>
-        {INTERFACES.map((item) => (
-          <div key={item.label}>
-            {/* Header row */}
-            <div className="flex items-baseline gap-4 mb-6">
-              <span className="text-xs font-mono text-foreground/30">{item.label}</span>
-              <h3 className="text-base font-semibold" style={{ letterSpacing: "-0.01em" }}>{item.title}</h3>
-              <p className="text-sm font-light text-foreground/50 ml-2">{item.caption}</p>
+      <div className="flex flex-col" style={{ gap: isMobile ? "4rem" : "7rem" }}>
+        {INTERFACES.map((item, i) => {
+          const isEven = i % 2 === 1;
+          return (
+            <div key={item.label}>
+              {/* Top row: title + caption — stack on mobile */}
+              <div className={isMobile ? "mb-4" : "flex items-baseline gap-6 mb-6"}>
+                <h3 className="text-lg font-semibold mb-2" style={{ letterSpacing: "-0.02em" }}>
+                  {item.title}
+                </h3>
+                <p className="font-light text-foreground/45 leading-snug" style={{ fontSize: 16 }}>
+                  {item.caption}
+                </p>
+              </div>
+
+              {/* Video — no indent on mobile */}
+              <div style={{ paddingLeft: isMobile ? 0 : isEven ? "60px" : 0 }}>
+                <div
+                  className="overflow-hidden bg-foreground/5"
+                  style={{
+                    aspectRatio: "16/10",
+                    borderRadius: 14,
+                    boxShadow: "0 4px 40px rgba(0,0,0,0.08)",
+                  }}
+                >
+                  {item.video ? (
+                    <video
+                      src={item.video}
+                      autoPlay loop muted playsInline
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                  ) : null}
+                </div>
+              </div>
             </div>
-            {/* Video / placeholder */}
-            <div
-              className="w-full overflow-hidden bg-foreground/5 border border-foreground/10"
-              style={{ aspectRatio: "16/10", borderRadius: 12 }}
-            >
-              {item.video ? (
-                <video
-                  src={item.video}
-                  autoPlay loop muted playsInline
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
-              ) : null}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -223,6 +247,7 @@ function InterfaceShowcase() {
 const DESIGN_TAGS = ["Process Transparency", "Services", "Interfaces", "Algorithms"];
 
 function DesignConcepts() {
+  const isMobile = useIsMobile();
   return (
     <div className="mb-16 md:mb-24">
       {/* Section label */}
@@ -231,7 +256,7 @@ function DesignConcepts() {
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-10">
+      <div className="flex flex-wrap gap-2 mb-16">
         {DESIGN_TAGS.map((tag, i) => (
           <span
             key={tag}
@@ -251,20 +276,30 @@ function DesignConcepts() {
         ))}
       </div>
 
-      {/* Content: image left, text right */}
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "3rem", alignItems: "start" }}>
-        {/* Concept image */}
-        <div className="w-full overflow-hidden" style={{ aspectRatio: "4/3" }}>
-          <img src={insideConcept} alt="Next Station concept" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-        </div>
-
-        {/* Text */}
+      {/* Concept: left text, right diagram */}
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 2fr", gap: isMobile ? "2rem" : "4rem", alignItems: "center", marginBottom: isMobile ? "4rem" : "8rem" }}>
         <div>
-          <h3 className="text-base font-bold mb-4" style={{ letterSpacing: "-0.01em" }}>
+          <h3 className="text-xl font-semibold mb-5 leading-snug" style={{ letterSpacing: "-0.02em" }}>
             Next Station
           </h3>
           <p className="text-base font-light leading-relaxed text-foreground/70">
-            Like navigating a metro system, the sick leave journey is rarely linear. Currently, the government holds the "map" to the process, while citizens are left <strong className="font-semibold text-foreground/90">walking in the dark</strong>, reacting only to unexpected hurdles. By adopting a <strong className="font-semibold text-foreground/90">metro map metaphor</strong>, we illuminate the entire process—clarifying the actions needed to go from point A to B and revealing all possible routes for every individual.
+            Like navigating a metro system, the sick leave journey is rarely linear. Citizens are left <strong className="font-semibold text-foreground/90">walking in the dark</strong>, reacting only to unexpected hurdles. The <strong className="font-semibold text-foreground/90">metro map metaphor</strong> illuminates the entire process — clarifying every possible route for every individual.
+          </p>
+        </div>
+        <div className="w-full overflow-hidden" style={{ borderRadius: 12 }}>
+          <img src={insideConcept} alt="Next Station concept diagram" style={{ width: "100%", height: "auto", display: "block" }} />
+        </div>
+      </div>
+
+      {/* Interface heroshot: full-width image, caption below */}
+      <div style={{ marginBottom: "2rem" }}>
+        <div className="w-full overflow-hidden" style={{ borderRadius: 12, marginBottom: "2rem" }}>
+          <img src={insideHero2} alt="Interface" style={{ width: "100%", height: "auto", display: "block" }} />
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 2fr", gap: "1.5rem" }}>
+          <p className="text-xs font-mono uppercase tracking-widest text-foreground/30">Interface</p>
+          <p className="text-base font-light leading-relaxed text-foreground/60">
+            A desktop interface that walks citizens through the entire journey — from onboarding to decision — making the process visible, navigable, and human.
           </p>
         </div>
       </div>
@@ -273,9 +308,7 @@ function DesignConcepts() {
 }
 
 export function Project4_Chronos({ project, slugify }: Props) {
-  const remainingSections = project.toc?.filter(
-    (s) => s !== "Ethnography" && s !== "Collaborator"
-  ) ?? [];
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -312,7 +345,7 @@ export function Project4_Chronos({ project, slugify }: Props) {
         <div className="md:hidden flex flex-col gap-10">
           {METHODS.map((m) => (
             <div key={m.title}>
-              <h3 className="text-base font-bold mb-2" style={{ letterSpacing: "-0.01em" }}>{m.title}</h3>
+              <h3 className="text-base font-semibold mb-2" style={{ letterSpacing: "-0.01em" }}>{m.title}</h3>
               <p className="text-base leading-relaxed font-light text-foreground/70">{m.desc}</p>
             </div>
           ))}
@@ -325,7 +358,7 @@ export function Project4_Chronos({ project, slugify }: Props) {
             <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
               {METHODS.map((m) => (
                 <div key={m.title}>
-                  <h3 className="text-base font-bold mb-2" style={{ letterSpacing: "-0.01em" }}>{m.title}</h3>
+                  <h3 className="text-base font-semibold mb-2" style={{ letterSpacing: "-0.01em" }}>{m.title}</h3>
                   <p className="text-base leading-relaxed font-light text-foreground/70">{m.desc}</p>
                 </div>
               ))}
@@ -339,7 +372,7 @@ export function Project4_Chronos({ project, slugify }: Props) {
       <div className="mb-16 md:mb-24">
         {/* Intro */}
         <div className="mb-8">
-          <h3 className="text-base font-bold mb-4" style={{ letterSpacing: "-0.01em" }}>
+          <h3 className="text-base font-semibold mb-4" style={{ letterSpacing: "-0.01em" }}>
             Three stories from people's life
           </h3>
           <p className="text-base font-light leading-relaxed text-foreground/70 max-w-2xl">
@@ -389,14 +422,14 @@ export function Project4_Chronos({ project, slugify }: Props) {
 
       {/* Synthesis */}
       <div className="mb-16 md:mb-24">
-        <h3 className="text-base font-bold mb-4" style={{ letterSpacing: "-0.01em" }}>
+        <h3 className="text-base font-semibold mb-4" style={{ letterSpacing: "-0.01em" }}>
           Synthesis
         </h3>
         <p className="text-base font-light leading-relaxed text-foreground/70 max-w-lg mb-12">
           We made the synthesis of what we discovered and what we learnt. From reaching people's life, we think there are four crucial insights when people dealing with this bureaucratic system.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: "10px" }}>
           {[
             { title: "Trans-\nparency", color: "#EF704F", items: ["Fingers crossed", "Opaque process", "AI or human?", "What else?"] },
             { title: "Feeling\nHuman",  color: "#B8A8C7", items: ["Stigma", "Dehumanising", "Dismissible", "In dialogue"] },
@@ -457,7 +490,7 @@ export function Project4_Chronos({ project, slugify }: Props) {
       </div>
 
       {/* 03 — Involve People */}
-      <div className="mb-16 md:mb-24">
+      <div id={slugify("Involve People")} className="mb-16 md:mb-24 scroll-mt-32">
         <div className="border-t border-foreground/10 pt-6 mb-12">
           <span className="text-xs font-mono uppercase tracking-widest text-foreground/40">
             03 — Involve People
@@ -470,9 +503,9 @@ export function Project4_Chronos({ project, slugify }: Props) {
       <div className="mb-16 md:mb-24">
 
         {/* Row 1: workshop title + photo */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start", marginBottom: "3rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? "1.5rem" : "3rem", alignItems: "start", marginBottom: "3rem" }}>
           <div>
-            <h3 className="text-base font-bold mb-3" style={{ letterSpacing: "-0.01em" }}>
+            <h3 className="text-base font-semibold mb-3" style={{ letterSpacing: "-0.01em" }}>
               A hybrid co-creation workshop
             </h3>
             <p className="text-base font-light leading-relaxed text-foreground/70">
@@ -486,14 +519,14 @@ export function Project4_Chronos({ project, slugify }: Props) {
         </div>
 
         {/* Row 2: browser mockup + caption */}
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "3rem", alignItems: "center" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr", gap: isMobile ? "1.5rem" : "3rem", alignItems: "center" }}>
           <BrowserChrome
             mockupSrc={workshopMockup}
             videoSrc="https://hs67ubfgy9ypqo06.public.blob.vercel-storage.com/inside_workshop.mp4"
           />
 
           <div>
-            <h3 className="text-base font-bold mb-3" style={{ letterSpacing: "-0.01em" }}>
+            <h3 className="text-base font-semibold mb-3" style={{ letterSpacing: "-0.01em" }}>
               An online tool
             </h3>
             <p className="text-base font-light leading-relaxed text-foreground/70">
@@ -505,17 +538,81 @@ export function Project4_Chronos({ project, slugify }: Props) {
       </div>
 
       {/* 04 — Design */}
-      <DesignConcepts />
+      <div id={slugify("Design")} className="scroll-mt-32">
+        <DesignConcepts />
+      </div>
 
-      {/* 05 — Interface */}
       <InterfaceShowcase />
 
-      {/* 06 — Takeaways */}
-      <div className="mb-16 md:mb-24">
-        <div className="border-t border-foreground/10 pt-6 mb-12">
-          <span className="text-xs font-mono uppercase tracking-widest text-foreground/40">06 — Takeaways</span>
+      {/* Accessibility */}
+      <div className="mb-24">
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 2fr 1fr", gap: isMobile ? "2rem" : "3rem", alignItems: "center" }}>
+
+          {/* Left — title + description */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4" style={{ letterSpacing: "-0.01em" }}>Inclusivity is crucial</h3>
+            <p className="text-base font-light leading-relaxed text-foreground/70">
+              Design for public sector — inclusivity and diversity should also be considered.
+            </p>
+          </div>
+
+          {/* Center — two consent cards + contrast info */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            {[
+              { bg: "#4B52B6", textBg: "#E3E4FB", swatch1: "#4B52B6", swatch2: "#E3E4FB", ratio: "5.26:1" },
+              { bg: "#426A54", textBg: "#D3E7D5", swatch1: "#426A54", swatch2: "#D3E7D5", ratio: "4.72:1" },
+            ].map(({ bg, textBg, swatch1, swatch2, ratio }) => (
+              <div key={bg}>
+                {/* Card */}
+                <div style={{ background: bg, borderRadius: 10, padding: "20px 18px", marginBottom: 10 }}>
+                  <div style={{ color: "#fff", fontWeight: 700, fontSize: 16, marginBottom: 10, display: "flex", alignItems: "center", gap: 6 }}>
+                    Consent <span style={{ fontSize: 14 }}>✦</span>
+                  </div>
+                  <p style={{ color: "#fff", fontSize: 13, fontWeight: 300, lineHeight: 1.5, opacity: 0.92 }}>
+                    Learn more about your data and how to manage it.
+                  </p>
+                </div>
+                {/* Swatches */}
+                <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+                  {[swatch1, swatch2].map((c) => (
+                    <div key={c} style={{ flex: 1 }}>
+                      <div style={{ height: 28, borderRadius: 6, background: c, border: "1px solid rgba(0,0,0,0.08)", marginBottom: 4 }} />
+                      <span style={{ fontSize: 10, color: "var(--foreground)", opacity: 0.4, fontFamily: "monospace" }}>{c}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* Contrast ratio */}
+                <div style={{ textAlign: "center", marginBottom: 8 }}>
+                  <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.02em" }}>{ratio}</span>
+                  <p style={{ fontSize: 10, opacity: 0.4, marginTop: 2 }}>Simple Contrast (WCAG)</p>
+                </div>
+                {/* WCAG badges */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 12px", fontSize: 10 }}>
+                  {[["Normal Text", "4.5:1", true], ["Large Text", "3:1", true], ["AAA", "7:1", false], ["AAA", "4.5:1", true]].map(([label, val, pass], i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 4, opacity: 0.7 }}>
+                      <span style={{ color: pass ? "#22c55e" : "#ef4444", fontSize: 12 }}>{pass ? "✓" : "✗"}</span>
+                      <span style={{ fontWeight: 600 }}>AA{i >= 2 ? "A" : ""}</span>
+                      <span style={{ opacity: 0.6 }}>{val}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Right — WCAG note */}
+          <div>
+            <p className="text-base font-light text-foreground/70">Score AA level of WCAG guidelines</p>
+          </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "3rem" }}>
+      </div>
+
+      {/* 05 — Takeaways */}
+      <div id={slugify("Takeaways")} className="mb-16 md:mb-24 scroll-mt-32">
+        <div className="border-t border-foreground/10 pt-6 mb-12">
+          <span className="text-xs font-mono uppercase tracking-widest text-foreground/40">05 — Takeaways</span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: isMobile ? "2rem" : "3rem" }}>
           {[
             {
               title: "A different kind of interaction design",
@@ -532,7 +629,7 @@ export function Project4_Chronos({ project, slugify }: Props) {
           ].map(({ title, body }) => (
             <div key={title}>
               <h3 className="text-base font-semibold mb-4" style={{ letterSpacing: "-0.01em" }}>{title}</h3>
-              <p className="text-sm font-light leading-relaxed text-foreground/60">{body}</p>
+              <p className="text-base font-light leading-relaxed text-foreground/60">{body}</p>
             </div>
           ))}
         </div>

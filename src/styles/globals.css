@@ -205,6 +205,11 @@ html {
   font-size: var(--font-size);
   overscroll-behavior: none;
   background-color: var(--background);
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
 }
 
 /* ── Illustration adaptive tint ── */

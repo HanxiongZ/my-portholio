@@ -1044,51 +1044,71 @@ export function Project3_DigitalEntropy({
         {/* Right 8 cols: Video player */}
         <div className="col-span-1 md:col-span-8 border-t border-foreground/10 pt-6 md:border-t-0 md:pt-6">
           <div
-              className="aspect-video w-full bg-foreground/5 border border-foreground/10 overflow-hidden relative group cursor-pointer"
-              onMouseMove={cvHandleMouseMove}
-              onMouseLeave={() => { if (cvPlaying) setCvShowControls(false); }}
-              onClick={cvTogglePlay}
-            >
-              {/* YouTube IFrame API mounts here */}
-              <div ref={ytContainerRef} className="w-full h-full pointer-events-none" />
+            className="aspect-video w-full bg-foreground/5 overflow-hidden relative cursor-pointer"
+            onMouseMove={cvHandleMouseMove}
+            onMouseLeave={() => { if (cvPlaying) setCvShowControls(false); }}
+            onClick={cvTogglePlay}
+          >
+            {/* YouTube IFrame API mounts here */}
+            <div ref={ytContainerRef} className="w-full h-full pointer-events-none" />
 
-              {/* Centre play button — only when paused */}
-              {!cvPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center bg-foreground/15">
-                  <div className="w-16 h-16 rounded-full border border-foreground/30 flex items-center justify-center bg-background/70">
-                    <Play className="w-6 h-6 text-foreground ml-0.5" />
-                  </div>
-                </div>
-              )}
-
-              {/* Bottom control bar */}
-              <div
-                className={`absolute bottom-0 left-0 right-0 px-4 pb-3 pt-8 bg-gradient-to-t from-background/80 via-background/30 to-transparent transition-opacity duration-300 ${cvShowControls || !cvPlaying ? "opacity-100" : "opacity-0"}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="w-full h-1 bg-foreground/20 mb-3 cursor-pointer group/progress" onClick={cvHandleSeek}>
-                  <div className="h-full bg-foreground/70 transition-[width] duration-100 relative" style={{ width: `${cvProgress}%` }}>
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-foreground opacity-0 group-hover/progress:opacity-100 transition-opacity" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <button onClick={cvTogglePlay} className="p-1.5 hover:bg-foreground/10 transition-colors rounded-sm cursor-pointer">
-                      {cvPlaying ? <Pause className="w-3.5 h-3.5 text-foreground/80" /> : <Play className="w-3.5 h-3.5 text-foreground/80 ml-0.5" />}
-                    </button>
-                    <button onClick={cvToggleMute} className="p-1.5 hover:bg-foreground/10 transition-colors rounded-sm cursor-pointer">
-                      {cvMuted ? <VolumeX className="w-3.5 h-3.5 text-foreground/80" /> : <Volume2 className="w-3.5 h-3.5 text-foreground/80" />}
-                    </button>
-                    <span className="text-[10px] font-mono text-foreground/50 uppercase tracking-widest">
-                      Co-Act — Concept Video
-                    </span>
-                  </div>
-                  <button onClick={cvHandleFullscreen} className="p-1.5 hover:bg-foreground/10 transition-colors rounded-sm cursor-pointer">
-                    <Maximize className="w-3.5 h-3.5 text-foreground/80" />
-                  </button>
+            {/* Centre play button — only when paused */}
+            {!cvPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center bg-foreground/10">
+                <div className="w-14 h-14 border border-foreground/25 flex items-center justify-center bg-background/60 backdrop-blur-sm">
+                  <Play className="w-5 h-5 text-foreground/80 ml-0.5" />
                 </div>
               </div>
+            )}
+
+            {/* Bottom control bar */}
+            <div
+              className={`absolute bottom-0 left-0 right-0 transition-opacity duration-300 ${cvShowControls || !cvPlaying ? "opacity-100" : "opacity-0"}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Progress bar — flush to bottom of video */}
+              <div
+                className="w-full h-px bg-foreground/15 cursor-pointer group/progress"
+                onClick={cvHandleSeek}
+              >
+                <div
+                  className="h-full bg-foreground/60 transition-[width] duration-100"
+                  style={{ width: `${cvProgress}%` }}
+                />
+              </div>
+
+              {/* Controls strip */}
+              <div className="flex items-center justify-between px-3 py-2 bg-background/85 backdrop-blur-sm border-t border-foreground/8">
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={cvTogglePlay}
+                    className="w-7 h-7 flex items-center justify-center hover:bg-foreground/8 transition-colors cursor-pointer"
+                  >
+                    {cvPlaying
+                      ? <Pause className="w-3 h-3 text-foreground/70" />
+                      : <Play className="w-3 h-3 text-foreground/70 ml-px" />}
+                  </button>
+                  <button
+                    onClick={cvToggleMute}
+                    className="w-7 h-7 flex items-center justify-center hover:bg-foreground/8 transition-colors cursor-pointer"
+                  >
+                    {cvMuted
+                      ? <VolumeX className="w-3 h-3 text-foreground/70" />
+                      : <Volume2 className="w-3 h-3 text-foreground/70" />}
+                  </button>
+                  <span className="ml-1 text-[10px] font-mono text-foreground/35 uppercase tracking-widest select-none">
+                    Co-Act — Concept Video
+                  </span>
+                </div>
+                <button
+                  onClick={cvHandleFullscreen}
+                  className="w-7 h-7 flex items-center justify-center hover:bg-foreground/8 transition-colors cursor-pointer"
+                >
+                  <Maximize className="w-3 h-3 text-foreground/70" />
+                </button>
+              </div>
             </div>
+          </div>
         </div>
       </div>
     </>

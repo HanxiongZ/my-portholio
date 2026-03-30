@@ -90,7 +90,7 @@ export const mainProjects: Project[] = [
       "Reframeing the sick leave experience with Försäkringskassan to make government bureaucracy transparent, inclusive, and empathetic.",
     content:
       "Navigating government bureaucracy shouldn't feel like fighting a cold machine. Inside the Machine tackles the systemic distrust and frustration citizens face during sick leave applications in Sweden. Through in-depth user research and co-creation workshops, we designed a solution that demystifies the bureaucracy. By making hidden processes visible and giving citizens clear control over their data and rights, we aim to rebuild trust and reframe the relationship between citizens and the government.\n\n\nTeam up with: Ece Günesen, Xingyu Liu",
-    toc: ["Collaborator", "Ethnography", "Problem", "Design System", "Interface"],
+    toc: ["Collaborator", "Ethnography", "Involve People", "Design", "Takeaways"],
     tags: ["Strategic Design", "Participatory Design","UX/UI"],
   },
   {

@@ -324,7 +324,7 @@ export function ProjectDetail() {
       </div>
 
       {/* --- FOOTER: HORIZONTAL SCROLL NAVIGATOR --- */}
-      <div className="border-t border-foreground/10 bg-background/50 backdrop-blur-md py-12 md:py-16">
+      <div className="border-t border-foreground/10 bg-background/50 backdrop-blur-md py-12 md:py-16 overflow-x-hidden">
         <div className="container mx-auto px-6 md:px-12">
           {/* Section labels */}
           <div className="flex items-center gap-6 mb-6">
