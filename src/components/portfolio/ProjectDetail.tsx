@@ -116,8 +116,7 @@ export function ProjectDetail() {
   }, [projectId]);
 
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-  const btnSize = isMobile ? 36 : 40;
+  const btnSize = 40;
 
   useEffect(() => {
     const handleScroll = () => {

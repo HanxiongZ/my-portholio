@@ -251,8 +251,8 @@ export function Experience() {
                 <div>
                   <h4 className="text-[10px] font-mono uppercase text-foreground/40 mb-4 pl-0">Recognition</h4>
                   <div>
-                    {recognition.map((item, i) => (
-                      <ExperienceItem key={i} item={item} />
+                    {recognition.map((item) => (
+                      <ExperienceItem key={item.id} item={item} />
                     ))}
                   </div>
                 </div>

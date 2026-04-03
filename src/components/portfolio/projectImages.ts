@@ -20,6 +20,16 @@ import image_Coact_TN from "figma:asset/9b5361a5bb51f315ff390d2a3a392efc986f156f
 import image_coact_Hero from "figma:asset/667dd29c6938bb7bf6fc70283db47ce7fe648940.png";
 
 // ─── Local asset imports ─────────────────────────────────────────
+import image_P2_Hero       from "../../assets/p2_hero.jpg";
+import image_P2_Fig01      from "../../assets/p2_fig01.jpg";
+import image_P2_Fig02      from "../../assets/p2_fig02.jpg";
+import image_P2_Fig03      from "../../assets/p2_fig03.jpg";
+import image_P2_Ground1    from "../../assets/p2_ground_1.jpg";
+import image_P2_Ground2    from "../../assets/p2_ground_2.jpg";
+import image_P2_Ground3    from "../../assets/p2_ground_3.jpg";
+import image_P2_Fidelity1  from "../../assets/p2_fidelity_1.jpg";
+import image_P2_Fidelity2  from "../../assets/p2_fidelity_2.jpg";
+import image_P2_Fidelity3  from "../../assets/p2_fidelity_3.jpg";
 import image_HoloAudio_TN from "../../assets/holoaudio_tn.jpg";
 import image_Obfuscation_TN from "../../assets/obfuscation_tn.jpg";
 import image_Inside_TN from "../../assets/inside_tn.png";
@@ -74,15 +84,16 @@ const registry: Record<number, ProjectImages> = {
   2: {
     thumbnail: image_BeyondClicks_TN_sm,
     content: {
-      hero: "REPLACE_P2_HERO",
-      fig01: "REPLACE_P2_FIG01",
-      fig02: "REPLACE_P2_FIG02",
-      fig03: "REPLACE_P2_FIG03",
-      fig04: "REPLACE_P2_FIG04",
-      fig05: "REPLACE_P2_FIG05",
-      fig06: "REPLACE_P2_FIG06",
-      fig07: "REPLACE_P2_FIG07",
-      fig08: "REPLACE_P2_FIG08",
+      hero:           image_P2_Hero,
+      fig01:          image_P2_Fig01,        // Section 03 — large prototype setup
+      fig02:          image_P2_Fig02,        // Section 03 — tactile surface
+      fig03:          image_P2_Fig03,        // Section 03 — testing with team
+      fig_ground_1:   image_P2_Ground1,      // Section 03 Grounding — left top
+      fig_ground_2:   image_P2_Ground2,      // Section 03 Grounding — left bottom
+      fig_ground_3:   image_P2_Ground3,      // Section 03 Grounding — right tall
+      fig_fidelity_1: image_P2_Fidelity1,    // Section 04 — haptic engines
+      fig_fidelity_2: image_P2_Fidelity2,    // Section 04 — Hapticlabs kit
+      fig_fidelity_3: image_P2_Fidelity3,    // Section 04 — experienced prototype (full width)
     },
   },
 

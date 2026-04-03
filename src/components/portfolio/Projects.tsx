@@ -24,7 +24,7 @@ export interface Project {
 export const mainProjects: Project[] = [
   {
     id: 1,
-    title: "From Novelity to Normality",
+    title: "From Novelty to Normality",
     category: "Master Thesis Project",
     year: "2026",
     image: getThumbnail(1),
@@ -50,7 +50,7 @@ export const mainProjects: Project[] = [
     year: "2025",
     image: getThumbnail(2),
     description:
-      "Designing haptics to extend the possiblities of physical controls at Volvo Cars",
+      "Designing haptics to extend the possibilities of physical controls at Volvo Cars",
     content:
       "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls.",
     toc: [
@@ -87,7 +87,7 @@ export const mainProjects: Project[] = [
     year: "2024",
     image: getThumbnail(4),
     description:
-      "Reframeing the sick leave experience with Försäkringskassan to make government bureaucracy transparent, inclusive, and empathetic.",
+      "Reframing the sick leave experience with Försäkringskassan to make government bureaucracy transparent, inclusive, and empathetic.",
     content:
       "Navigating government bureaucracy shouldn't feel like fighting a cold machine. Inside the Machine tackles the systemic distrust and frustration citizens face during sick leave applications in Sweden. Through in-depth user research and co-creation workshops, we designed a solution that demystifies the bureaucracy. By making hidden processes visible and giving citizens clear control over their data and rights, we aim to rebuild trust and reframe the relationship between citizens and the government.\n\n\nTeam up with: Ece Günesen, Xingyu Liu",
     toc: ["Collaborator", "Ethnography", "Involve People", "Design", "Takeaways"],
@@ -350,7 +350,7 @@ export function Projects() {
                     {activeId === 1 && (
                       <ImageWithFallback
                         src={getThumbnail(1)}
-                        alt="From Novelity to Normality"
+                        alt="From Novelty to Normality"
                         className="w-full h-full object-cover"
                         loading="eager"
                       />
@@ -572,91 +572,30 @@ export function Projects() {
             ))}
           </div>
 
-          {/* Mobile Playground — each card written separately */}
+          {/* Mobile Playground */}
           <div className="md:hidden grid grid-cols-2 gap-4 pl-2 bg-transparent">
-            {/* Mobile Playground — Project 6 */}
-            <Link
-              to="/project/6"
-              className="group cursor-pointer block"
-            >
-              <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(6)}
-                  alt="Glyph Studies"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <h4 className="text-xs font-bold uppercase tracking-wider">
-                {sideProjects[0].title}
-              </h4>
-              <span className="text-[10px] font-mono text-foreground/40 tracking-wide">
-                {sideProjects[0].category}
-              </span>
-            </Link>
-
-            {/* Mobile Playground — Project 7 */}
-            <Link
-              to="/project/7"
-              className="group cursor-pointer block"
-            >
-              <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(7)}
-                  alt="Flora Generative"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <h4 className="text-xs font-bold uppercase tracking-wider">
-                {sideProjects[1].title}
-              </h4>
-              <span className="text-[10px] font-mono text-foreground/40 tracking-wide">
-                {sideProjects[1].category}
-              </span>
-            </Link>
-
-            {/* Mobile Playground — Project 8 */}
-            <Link
-              to="/project/8"
-              className="group cursor-pointer block"
-            >
-              <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(8)}
-                  alt="Echo Chamber"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <h4 className="text-xs font-bold uppercase tracking-wider">
-                {sideProjects[2].title}
-              </h4>
-              <span className="text-[10px] font-mono text-foreground/40 tracking-wide">
-                {sideProjects[2].category}
-              </span>
-            </Link>
-
-            {/* Mobile Playground — Project 9 */}
-            <Link
-              to="/project/9"
-              className="group cursor-pointer block"
-            >
-              <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
-                <ImageWithFallback
-                  src={getThumbnail(9)}
-                  alt="Raw Material"
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <h4 className="text-xs font-bold uppercase tracking-wider">
-                {sideProjects[3].title}
-              </h4>
-              <span className="text-[10px] font-mono text-foreground/40 tracking-wide">
-                {sideProjects[3].category}
-              </span>
-            </Link>
+            {sideProjects.map((project) => (
+              <Link
+                key={project.id}
+                to={`/project/${project.id}`}
+                className="group cursor-pointer block"
+              >
+                <div className="aspect-[3/2] relative overflow-hidden bg-foreground/5 mb-3 border border-foreground/10">
+                  <ImageWithFallback
+                    src={getThumbnail(project.id)}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                </div>
+                <h4 className="text-xs font-bold uppercase tracking-wider">
+                  {project.title}
+                </h4>
+                <span className="text-[10px] font-mono text-foreground/40 tracking-wide">
+                  {project.category}
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ export function Hero() {
   ) => {
     e.preventDefault();
     const projectsSection =
-      document.getElementById("selected works");
+      document.getElementById("projects");
     if (projectsSection) {
       projectsSection.scrollIntoView({ behavior: "smooth" });
     }
