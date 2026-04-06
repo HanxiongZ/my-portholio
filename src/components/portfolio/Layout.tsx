@@ -7,17 +7,47 @@ export interface OutletContextType {
   isDark: boolean;
 }
 
+/** Returns true if the current local time is between sunrise and sunset. */
+function isDaytime(lat: number, lng: number): boolean {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.round((now.getTime() - start.getTime()) / 86400000);
+
+  const rad = (d: number) => (d * Math.PI) / 180;
+
+  // Solar declination angle for this day of year
+  const declination = -23.45 * Math.cos(rad((360 / 365) * (dayOfYear + 10)));
+
+  // Hour angle at sunrise/sunset (90.833° accounts for atmospheric refraction)
+  const cosHA =
+    (Math.cos(rad(90.833)) -
+      Math.sin(rad(lat)) * Math.sin(rad(declination))) /
+    (Math.cos(rad(lat)) * Math.cos(rad(declination)));
+
+  if (cosHA >= 1) return false; // polar night
+  if (cosHA <= -1) return true; // midnight sun
+
+  const ha = (Math.acos(cosHA) * 180) / Math.PI; // degrees
+
+  // Solar noon in local hours
+  const tzHours = -now.getTimezoneOffset() / 60;
+  const solarNoon = 12 + tzHours - lng / 15;
+
+  const sunrise = solarNoon - ha / 15;
+  const sunset = solarNoon + ha / 15;
+
+  const currentHour = now.getHours() + now.getMinutes() / 60;
+  return currentHour >= sunrise && currentHour < sunset;
+}
+
 export function Layout() {
   const [isDark, setIsDark] = useState(true);
 
-  // Initialize theme based on local time
+  // Initialize theme based on Umeå sunrise/sunset
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour >= 6 && hour < 18) {
-      setIsDark(false);
-    } else {
-      setIsDark(true);
-    }
+    const UMEA_LAT = 63.8258;
+    const UMEA_LNG = 20.2630;
+    setIsDark(!isDaytime(UMEA_LAT, UMEA_LNG));
   }, []);
 
   return (

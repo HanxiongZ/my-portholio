@@ -54,10 +54,11 @@ export const mainProjects: Project[] = [
     content:
       "This project came from my exploration and design work around haptics during my internship at Volvo Cars.Investigated how tactile feedback can extend interaction layers on physical controls.",
     toc: [
-      "Background and Focus",
-      "Research",
-      "Prototyping",
-      "Outcome",
+      "Background",
+      "Frame the Exploration",
+      "Learning through prototyping",
+      "Better fidelity",
+      "special thanks",
     ],
     tags: [
       "HAPTICS",
@@ -121,30 +122,8 @@ export const sideProjects: Project[] = [
     toc: ["Overview", "Details"],
     tags: [],
   },
-  {
-    id: 7,
-    title: "Flora Generative",
-    category: "Creative Coding",
-    year: "2023",
-    image: getThumbnail(7),
-    description: "Procedural plant growth.",
-    content:
-      "Simulating organic growth patterns using recursive functions and L-systems.",
-    toc: ["Overview", "Details"],
-    tags: [],
-  },
-  {
-    id: 8,
-    title: "Echo Chamber",
-    category: "Sound Design",
-    year: "2023",
-    image: getThumbnail(8),
-    description: "Audio-reactive visuals.",
-    content:
-      "Real-time visualization of sound frequencies using Web Audio API and Canvas.",
-    toc: ["Overview", "Details"],
-    tags: [],
-  },
+  // { id: 7, title: "Flora Generative", … hidden },
+  // { id: 8, title: "Echo Chamber", … hidden },
   {
     id: 9,
     title: "Shape Perspectives",

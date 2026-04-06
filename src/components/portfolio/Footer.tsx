@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Mail, Linkedin, Globe, ArrowUpRight } from 'lucide-react';
-import cvImage from 'figma:asset/149fafe8475e730ee9ea4e600054b26cbf00bbb3.png';
 
 export function Footer() {
   return (
@@ -54,10 +53,9 @@ export function Footer() {
                 <ArrowUpRight className="w-3 h-3 opacity-50 group-hover:opacity-100" />
               </a>
               
-              <a 
-                href={cvImage}
-                target="_blank"
-                rel="noopener noreferrer"
+              <a
+                href="/Hanx_CV_2026.pdf"
+                download="Hanx_CV_2026.pdf"
                 className="group flex items-center gap-3 px-6 py-4 border border-foreground/20 bg-background/50 backdrop-blur-sm text-foreground hover:bg-foreground hover:text-background transition-colors min-w-[200px] justify-center"
               >
                 <Globe className="w-4 h-4" />

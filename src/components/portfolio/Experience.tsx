@@ -50,29 +50,29 @@ const education: ResumeItem[] = [
 ];
 
 const awards: ResumeItem[] = [
-  {
-    id: 'awd-1',
-    year: '2024',
-    title: 'Core77 Design Awards',
-    subtitle: 'Student Runner Up',
-    link: 'https://designawards.core77.com',
+    {
+    id: 'exh-1',
+    year: '2025',
+    title: 'Waag Futurelab 2025',
+    subtitle: 'Exhibition',
+    link: 'https://waag.org/en/event/hyperlink/',
   },
   {
     id: 'awd-2',
-    year: '2023',
-    title: 'Red Dot Award',
-    subtitle: 'Best of the Best',
-    link: 'https://www.red-dot.org',
+    year: '2024',
+    title: 'UX Design Awards (Nominated)',
+    subtitle: 'New Talent',
+    link: 'https://ux-design-awards.com/winners/2024-2-co-act',
   },
 ];
 
 const publications: ResumeItem[] = [
   {
     id: 'pub-1',
-    year: '2024',
-    title: 'Tactile Interfaces in Auto',
-    subtitle: 'TEI \'24 WIP',
-    link: 'https://tei.acm.org',
+    year: '2025',
+    title: 'Agonistic Design In Practice',
+    subtitle: 'Co-author',
+    link: 'https://www.researchgate.net/publication/394095129_Agonistic_Design_In_Practice_Introducing_Agonism_to_Interaction_Design_Pedagogy',
   },
 ];
 
@@ -80,16 +80,16 @@ const exhibitions: ResumeItem[] = [
   {
     id: 'exh-1',
     year: '2024',
-    title: 'Dutch Design Week',
-    subtitle: 'UID Exhibition',
-    location: 'Eindhoven',
-    link: 'https://ddw.nl',
+    title: 'ThingsCon Exhibition',
+    subtitle: 'Exhibition',
+    location: 'Amsterdam',
+    link: 'https://thingscon.org/media/',
   },
 ];
 
 // Flattened Recognition List
 const recognition = [
-  { type: 'Award', ...awards[0] },
+  { type: 'Exh', ...awards[0] },
   { type: 'Award', ...awards[1] },
   { type: 'Pub', ...publications[0] },
   { type: 'Exh', ...exhibitions[0] },
