@@ -13,7 +13,12 @@ export function Home() {
   const { isDark } = useOutletContext<OutletContextType>();
 
   useLayoutEffect(() => {
-    if (location.state?.scrollToTop) {
+    if (location.state?.scrollToProjects) {
+      const timer = setTimeout(() => {
+        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+      }, 50);
+      return () => clearTimeout(timer);
+    } else if (location.state?.scrollToTop) {
       window.scrollTo(0, 0);
       // Double check to override any browser scroll restoration
       const timer = setTimeout(() => {

@@ -129,11 +129,7 @@ export function ProjectDetail() {
 
   const handleBack = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (location.key !== "default") {
-      navigate(-1);
-    } else {
-      navigate("/");
-    }
+    navigate("/", { state: { scrollToProjects: true } });
   };
 
   if (!project) {

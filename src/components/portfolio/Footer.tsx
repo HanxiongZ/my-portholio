@@ -30,16 +30,16 @@ export function Footer() {
               Let's Connect
             </h2>
             <p className="text-base md:text-lg text-foreground/80 mb-12 max-w-xl mx-auto leading-relaxed font-light text-pretty">
-              I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+              I'm currently working on my master thesis project, and looking for jobs as a designer:).
             </p>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-20">
               <a 
-                href="mailto:echo1lin03@gmail.com"
+                href="mailto:hanxiongzhang@hotmail.com"
                 className="group flex items-center gap-3 px-6 py-4 border border-foreground/20 bg-background/50 backdrop-blur-sm text-foreground hover:bg-foreground hover:text-background transition-colors min-w-[200px] justify-center"
               >
                 <Mail className="w-4 h-4" />
-                <span className="text-xs font-mono uppercase tracking-widest">echo1lin03@gmail.com</span>
+                <span className="text-xs font-mono uppercase tracking-widest">hanxiongzhang@hotmail.com</span>
               </a>
               
               <a 
@@ -65,8 +65,8 @@ export function Footer() {
             </div>
 
             <div className="border-t border-foreground/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono uppercase text-foreground/40 tracking-wider">
-              <span>© {new Date().getFullYear()} Hanxiong Zhang</span>
-              <span>All Rights Reserved</span>
+              <span>© {new Date().getFullYear()} Hanxiong Zhang 张翰雄</span>
+              <span></span>
             </div>
           </div>
         </motion.div>
