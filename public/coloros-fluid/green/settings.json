@@ -1,0 +1,15 @@
+{
+  "design": "Version 2, grain reduced by 25 percent",
+  "primaryColor": "#00990F",
+  "grainFine": 0.024,
+  "grainMedium": 0.027,
+  "speed": 3.375,
+  "shaderTimeScale": 0.045,
+  "fps": 30,
+  "staticSize": [
+    3840,
+    2160
+  ],
+  "savedOn": "2026-10-05",
+  "integrationStatus": "Standalone green variant; original portfolio remains unchanged"
+}

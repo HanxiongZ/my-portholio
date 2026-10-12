@@ -1,0 +1,32 @@
+.oc-opening{padding-top:30px;color:#191919}
+.oc-kicker{display:flex;justify-content:space-between;gap:24px;font-size:11px;letter-spacing:.06em}
+.oc-kicker a{letter-spacing:0;color:#666;text-decoration:none}
+.oc-kicker a:hover{color:#0668ff}
+.oc-heading{display:grid;grid-template-columns:1.45fr 1fr;align-items:end;gap:40px;padding:34px 0 48px}
+.oc-heading h1{margin:0;font-size:clamp(72px,9vw,138px);font-weight:500;line-height:.96;letter-spacing:-.045em}
+.oc-heading h1 span{color:#0668ff;letter-spacing:0;margin-left:.035em}
+.oc-intro{font-size:clamp(20px,2vw,28px);line-height:1.25;letter-spacing:-.035em;margin:0 0 20px}
+.oc-meta{font-size:12px;line-height:1.6;color:#686868;margin:0}
+.oc-gallery{display:grid;grid-template-columns:1.8fr 1fr;gap:16px}
+.oc-gallery figure{margin:0;min-width:0}
+.oc-gallery figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding-top:14px;font-size:10px;line-height:1.6;color:#656565}
+.oc-gallery figcaption span:first-child{color:#252525}
+.oc-stage{position:relative;overflow:hidden}
+.oc-stage--audio{aspect-ratio:720/450;background:radial-gradient(ellipse at 20% 0%,#a3c7ed,transparent 65%),linear-gradient(140deg,#6b9ada,#2c63c0)}
+.oc-stage--writing{aspect-ratio:400/450;background:linear-gradient(155deg,#eef2f8,#d6e2ef)}
+.oc-stage .oa-art-1>.oa-art-2,.oc-stage .oa-art-171{display:none}
+.oc-stage--audio .oa-art-126,.oc-stage--audio .oa-art-166{display:none}
+.oc-stage--audio .oa-art-3{left:90px;top:45px;transform:scale(1.2);transform-origin:top left}
+.oc-stage--audio .oa-art-100{left:310px;top:90px;transform:scale(1.2);transform-origin:top left}
+.oc-stage--audio .oa-art-90{left:500px;top:90px;transform:scale(1.2);transform-origin:top left}
+.oc-stage--audio .oa-art-103{left:500px;top:289px;transform:scale(1.2);transform-origin:top left}
+.oc-stage--audio .oa-art-124{left:258px;top:356px;transform:scale(.65);transform-origin:top left}
+.oc-stage--writing .oa-art-3,.oc-stage--writing .oa-art-90,.oc-stage--writing .oa-art-100,.oc-stage--writing .oa-art-103,.oc-stage--writing .oa-art-124{display:none}
+.oc-stage--writing .oa-art-126{left:-140px;top:88px;transform:scale(.85);transform-origin:top left;background:rgba(123,158,200,.13);border-color:#a9bed9}
+.oc-stage--writing .oa-art-166{left:15px;top:0;transform:scale(.75);transform-origin:top left;filter:drop-shadow(0 1px 1px #8098b2)}
+@media(max-width:767px){
+ .oc-opening{padding-top:12px}.oc-heading{grid-template-columns:1fr;gap:24px;padding:28px 0 32px}.oc-heading h1{font-size:clamp(64px,17vw,104px)}
+ .oc-heading>div{display:flex;justify-content:space-between;gap:16px}.oc-intro{font-size:20px;margin:0}.oc-meta{font-size:10px;flex-shrink:0}
+ .oc-gallery{grid-template-columns:1fr;gap:28px}.oc-stage--writing{aspect-ratio:400/320}.oc-stage--writing .oa-art-canvas{margin-top:-36px}
+ .oc-gallery figcaption{font-size:10px}.oc-kicker{font-size:10px}
+}

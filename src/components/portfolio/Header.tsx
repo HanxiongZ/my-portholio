@@ -86,7 +86,7 @@ export function Header({
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
+      className={`${["/project/oppo-audio", "/project/oppo-audio-cover"].includes(location.pathname) ? "oppo-coloros-header" : ""} fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
         scrolled
           ? "bg-background/80 backdrop-blur-xl border-foreground/5 py-4"
           : "bg-transparent border-transparent py-8"
@@ -120,14 +120,14 @@ export function Header({
 
         {/* Desktop Nav & Tools - Aligns to Right */}
         <div className="col-span-1 md:col-span-6 lg:col-span-5 pl-2 md:pl-3 flex items-center justify-end">
-          <div className="hidden md:flex items-center gap-8">
-            <nav className="flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
+            <nav className="flex items-center gap-4">
               {navItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-[12px] font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-2 py-1 whitespace-nowrap cursor-pointer"
+                  className="portfolio-button"
                 >
                   {item.name}
                 </a>

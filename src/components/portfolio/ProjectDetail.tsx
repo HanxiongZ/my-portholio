@@ -35,6 +35,7 @@ const Project3_DigitalEntropy = React.lazy(() =>
     }),
   ),
 );
+const CoActOriginal = React.lazy(() => import("./content/Project3_CoActOriginal").then(m => ({ default: m.Project3_DigitalEntropy })));
 const Project4_Chronos = React.lazy(() =>
   import("./content/Project4_Chronos").then((module) => ({
     default: module.Project4_Chronos,
@@ -88,7 +89,7 @@ export function ProjectDetail() {
   const location = useLocation();
 
   // Extract project ID from params or from the URL path directly (for explicit routes)
-  const projectId = id
+  const projectId = location.pathname === "/project/co-act-original" ? 3 : id
     ? Number(id)
     : Number(location.pathname.split("/").pop());
   const project = allProjects.find((p) => p.id === projectId);
@@ -150,7 +151,7 @@ export function ProjectDetail() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="relative w-full min-h-screen pt-32 pb-12 md:pt-40 md:pb-0"
+      className={`relative w-full min-h-screen pt-32 pb-12 md:pt-40 md:pb-0 ${projectId === 3 && location.pathname !== "/project/co-act-original" ? "coact-original-layout" : ""}`}
     >
       {/* BACKGROUND GRID — full-height lines: 1, 3, 4 */}
       <div className="absolute left-0 right-0 top-0 bottom-0 pointer-events-none z-0">
@@ -303,7 +304,7 @@ export function ProjectDetail() {
             >
               {ProjectComponents[project.id] ? (
                 React.createElement(
-                  ProjectComponents[project.id],
+                  location.pathname === "/project/co-act-original" ? CoActOriginal : ProjectComponents[project.id],
                   {
                     project,
                     slugify,

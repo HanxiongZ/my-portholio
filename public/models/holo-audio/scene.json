@@ -1,0 +1,757 @@
+{
+  "assemblies": [
+    {
+      "name": "01 Avatar | assembly",
+      "location": [
+        0.0,
+        0.18000000715255737,
+        0.014999999664723873
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.675000011920929,
+        -0.3330000042915344,
+        0.014999999664723873
+      ],
+      "max": [
+        0.675000011920929,
+        0.6930000185966492,
+        1.7709999084472656
+      ]
+    },
+    {
+      "name": "02 Play cube left | assembly",
+      "location": [
+        -1.3700000047683716,
+        1.25,
+        3.4200000762939453
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.2617993950843811
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.7631195783615112,
+        0.9205200672149658,
+        3.080000162124634
+      ],
+      "max": [
+        -0.9768804907798767,
+        1.5794799327850342,
+        3.759999990463257
+      ]
+    },
+    {
+      "name": "03 Play cube upper | assembly",
+      "location": [
+        1.0800000429153442,
+        1.2000000476837158,
+        4.079999923706055
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.3141592741012573
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.6905622482299805,
+        0.8522948026657104,
+        3.740000009536743
+      ],
+      "max": [
+        1.469437837600708,
+        1.5477052927017212,
+        4.420000076293945
+      ]
+    },
+    {
+      "name": "04 Notification bell | assembly",
+      "location": [
+        -3.0999999046325684,
+        0.3499999940395355,
+        2.5
+      ],
+      "rotation": [
+        -0.6108652353286743,
+        -0.3141592741012573,
+        -0.13962633907794952
+      ],
+      "scale": [
+        1.1100000143051147,
+        1.1100000143051147,
+        1.1100000143051147
+      ],
+      "min": [
+        -3.717111587524414,
+        -0.22466136515140533,
+        1.906124234199524
+      ],
+      "max": [
+        -2.5037481784820557,
+        0.9983149766921997,
+        3.1889991760253906
+      ]
+    },
+    {
+      "name": "05 Headphones | assembly",
+      "location": [
+        -2.880000114440918,
+        -0.6200000047683716,
+        0.07999999821186066
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.05235987901687622
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.100000023841858
+      ],
+      "min": [
+        -3.4999749660491943,
+        -0.787223219871521,
+        0.08100052177906036
+      ],
+      "max": [
+        -2.2608625888824463,
+        -0.527161180973053,
+        1.017199993133545
+      ]
+    },
+    {
+      "name": "06 Telephone handset | assembly",
+      "location": [
+        2.880000114440918,
+        1.100000023841858,
+        2.9200000762939453
+      ],
+      "rotation": [
+        0.06981316953897476,
+        -0.6632251143455505,
+        -0.0872664600610733
+      ],
+      "scale": [
+        1.034999966621399,
+        1.034999966621399,
+        1.034999966621399
+      ],
+      "min": [
+        2.2871859073638916,
+        0.9640660881996155,
+        2.275789260864258
+      ],
+      "max": [
+        3.280254602432251,
+        1.2527806758880615,
+        3.4131920337677
+      ]
+    },
+    {
+      "name": "07 Wireless microphone | assembly",
+      "location": [
+        1.4800000190734863,
+        0.699999988079071,
+        1.2699999809265137
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.13962633907794952
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.059999942779541
+      ],
+      "min": [
+        1.1627451181411743,
+        0.5480075478553772,
+        1.0935099124908447
+      ],
+      "max": [
+        1.7972549200057983,
+        0.8519924283027649,
+        2.217639923095703
+      ]
+    },
+    {
+      "name": "08 Alarm clock | assembly",
+      "location": [
+        3.240000009536743,
+        -0.8799999952316284,
+        0.36000001430511475
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.471238911151886
+      ],
+      "scale": [
+        1.1399999856948853,
+        1.1399999856948853,
+        1.1399999856948853
+      ],
+      "min": [
+        2.7642531394958496,
+        -1.254591941833496,
+        0.07730564475059509
+      ],
+      "max": [
+        3.7647829055786133,
+        -0.5087767243385315,
+        1.1070066690444946
+      ]
+    },
+    {
+      "name": "09 Location pin | assembly",
+      "location": [
+        -1.0299999713897705,
+        -3.359999895095825,
+        0.03999999910593033
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.41887903213500977
+      ],
+      "scale": [
+        1.0499999523162842,
+        1.0499999523162842,
+        1.0499999523162842
+      ],
+      "min": [
+        -1.4250987768173218,
+        -3.737830400466919,
+        0.028974995017051697
+      ],
+      "max": [
+        -0.6349011659622192,
+        -2.9821693897247314,
+        0.9209499955177307
+      ]
+    },
+    {
+      "name": "10 Music note | assembly",
+      "location": [
+        1.2899999618530273,
+        -3.5299999713897705,
+        0.03999999910593033
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.41887903213500977
+      ],
+      "scale": [
+        1.0399999618530273,
+        1.0399999618530273,
+        1.0399999618530273
+      ],
+      "min": [
+        0.934616208076477,
+        -3.765251874923706,
+        0.022337384521961212
+      ],
+      "max": [
+        1.6644014120101929,
+        -3.303215265274048,
+        1.0477598905563354
+      ]
+    },
+    {
+      "name": "11 Hemisphere and stage | assembly",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -4.804000377655029,
+        -4.804000377655029,
+        -0.025200001895427704
+      ],
+      "max": [
+        4.804000377655029,
+        4.804000377655029,
+        5.215688228607178
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "Accent | inner indigo",
+      "diffuse": [
+        0.03200000151991844,
+        0.04699999839067459,
+        0.375,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Accent | saturated indigo",
+      "diffuse": [
+        0.06499999761581421,
+        0.10000000149011612,
+        0.6600000262260437,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Avatar head | charcoal",
+      "diffuse": [
+        0.04500000178813934,
+        0.0430000014603138,
+        0.052000001072883606,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Avatar shoulders | soft stone gray",
+      "diffuse": [
+        0.47999998927116394,
+        0.48500001430511475,
+        0.5099999904632568,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Clock dial | warm chalk",
+      "diffuse": [
+        0.8899999856948853,
+        0.9049999713897705,
+        0.9380000233650208,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Dome meridian | pale lilac",
+      "diffuse": [
+        0.7200000286102295,
+        0.6899999976158142,
+        0.8600000143051147,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Dome | translucent lilac atmospheric shell",
+      "diffuse": [
+        0.7799999713897705,
+        0.7300000190734863,
+        0.9599999785423279,
+        0.18000000715255737
+      ],
+      "nodes": [
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        },
+        {
+          "name": "Mix Shader",
+          "type": "MIX_SHADER"
+        },
+        {
+          "name": "Transparent BSDF",
+          "type": "BSDF_TRANSPARENT"
+        },
+        {
+          "name": "Geometry",
+          "type": "NEW_GEOMETRY"
+        },
+        {
+          "name": "Separate XYZ",
+          "type": "SEPXYZ"
+        },
+        {
+          "name": "Map Range",
+          "type": "MAP_RANGE"
+        },
+        {
+          "name": "Color Ramp",
+          "type": "VALTORGB"
+        },
+        {
+          "name": "Map Range.001",
+          "type": "MAP_RANGE"
+        },
+        {
+          "name": "Math",
+          "type": "MATH"
+        },
+        {
+          "name": "Math.001",
+          "type": "MATH"
+        },
+        {
+          "name": "Emission",
+          "type": "EMISSION"
+        }
+      ]
+    },
+    {
+      "name": "HD | book page edges",
+      "diffuse": [
+        0.8100000023841858,
+        0.8100000023841858,
+        0.800000011920929,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "HD | clock bell underside",
+      "diffuse": [
+        0.41999998688697815,
+        0.4300000071525574,
+        0.5099999904632568,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "HD | collar seam",
+      "diffuse": [
+        0.3199999928474426,
+        0.33000001311302185,
+        0.3499999940395355,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "HD | molded panel recess",
+      "diffuse": [
+        0.6800000071525574,
+        0.699999988079071,
+        0.7599999904632568,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "HD | music note blue side",
+      "diffuse": [
+        0.3100000023841858,
+        0.42500001192092896,
+        0.8100000023841858,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "HD | neck porcelain",
+      "diffuse": [
+        0.7699999809265137,
+        0.7599999904632568,
+        0.7300000190734863,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Material",
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        }
+      ]
+    },
+    {
+      "name": "Porcelain | warm white",
+      "diffuse": [
+        0.8899999856948853,
+        0.8999999761581421,
+        0.925000011920929,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Review | gray labels",
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Emission",
+          "type": "EMISSION"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Soft padding | ivory",
+      "diffuse": [
+        0.9150000214576721,
+        0.925000011920929,
+        0.9449999928474426,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    },
+    {
+      "name": "Stage | porcelain to violet gradient",
+      "diffuse": [
+        0.8600000143051147,
+        0.8399999737739563,
+        0.9800000190734863,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        },
+        {
+          "name": "Geometry",
+          "type": "NEW_GEOMETRY"
+        },
+        {
+          "name": "Separate XYZ",
+          "type": "SEPXYZ"
+        },
+        {
+          "name": "Map Range",
+          "type": "MAP_RANGE"
+        },
+        {
+          "name": "Color Ramp",
+          "type": "VALTORGB"
+        }
+      ]
+    },
+    {
+      "name": "Studio | pure white",
+      "diffuse": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "nodes": [
+        {
+          "name": "Emission",
+          "type": "EMISSION"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL"
+        }
+      ]
+    }
+  ],
+  "camera": {
+    "matrix": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.5000000596046448,
+        -0.8660253882408142,
+        -17.32050895690918
+      ],
+      [
+        0.0,
+        0.8660253882408142,
+        0.5000000596046448,
+        11.729999542236328
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "type": "ORTHO",
+    "ortho_scale": 10.449999809265137
+  }
+}

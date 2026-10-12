@@ -379,7 +379,7 @@ export function PaperWritebackPrototype() {
                   style={{ left: `${tag.cx * 100}%`, top: `${tag.cy * 100}%`, transform: "translate(-50%, -100%)" }}>
                   <div style={{
                     backgroundColor: cfg.bg, border: `1px solid ${cfg.color}`,
-                    padding: "2px 6px", fontSize: "9px", fontFamily: "monospace",
+                    padding: "2px 6px", fontSize: "9px", fontFamily: "Manrope, sans-serif",
                     color: cfg.color, letterSpacing: "0.06em", textTransform: "uppercase",
                     whiteSpace: "nowrap", backdropFilter: "blur(2px)",
                   }}>{tag.label}</div>

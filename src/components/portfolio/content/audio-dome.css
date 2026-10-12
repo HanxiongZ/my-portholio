@@ -1,0 +1,35 @@
+.holo-prototype{box-sizing:border-box;width:100%;padding:32px;background:radial-gradient(ellipse at 70% 5%,#e6e3fc,transparent 65%),linear-gradient(130deg,#f2efff,#faf9ff);border-radius:24px;font-family:Manrope,-apple-system,BlinkMacSystemFont,sans-serif;color:#1a1a1a}
+.holo-card{max-width:540px;margin:0 auto;background:#fff;border-radius:30px;overflow:hidden;padding:18px 30px 36px}
+.holo-scene{position:relative;aspect-ratio:1.14;cursor:grab;touch-action:none;isolation:isolate}
+.holo-scene.is-dragging{cursor:grabbing}
+.holo-scene canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.holo-source-target{position:absolute;z-index:1;width:52px;height:52px;padding:0;transform:translate(-50%,-50%);border:1px solid transparent;border-radius:50%;background:transparent;cursor:inherit;transition:border-color .2s,background .2s}
+.holo-source-target:hover,.holo-source-target:focus-visible{border-color:#0066ff45;background:#0066ff09;outline:none}
+.holo-source-target.is-active:focus-visible{outline:2px solid #0066ff;outline-offset:4px}
+.holo-description{color:#929292;font-size:19px;line-height:1.4;margin:22px 0 44px;letter-spacing:-.4px}
+.holo-source-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;min-height:32px}
+.holo-select-wrap{position:relative;display:inline-flex;align-items:center}
+.holo-select-wrap select{appearance:none;background:none;border:0;font:inherit;font-size:25px;font-weight:600;color:#111;padding:0 34px 0 0;cursor:pointer;max-width:100%}
+.holo-select-wrap span{width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:7px solid #cecece;position:absolute;right:6px;pointer-events:none}
+.holo-select-wrap select:focus-visible{outline:2px solid #0066ff;outline-offset:7px;border-radius:4px}
+.holo-mute{background:#f2f2f4;border:0;border-radius:20px;padding:6px 12px;color:#666;font:inherit;font-size:13px;cursor:pointer}
+.holo-slider{display:block;margin:0 0 25px}
+.holo-slider:last-child{margin-bottom:0}
+.holo-slider-labels{display:flex;justify-content:space-between;font-size:19px;line-height:1.3;letter-spacing:-.3px;margin-bottom:20px}
+.holo-slider input{display:block;appearance:none;-webkit-appearance:none;width:100%;height:6px;padding:0;margin:0;border-radius:5px;background:linear-gradient(to right,#dedede 0 var(--segment-start),#0066ff var(--segment-start) var(--segment-end),#dedede var(--segment-end) 100%);cursor:pointer;touch-action:pan-y}
+.holo-slider input::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border:0;border-radius:50%;background:#0066ff;box-shadow:0 2px 5px #0066ff25;transition:box-shadow .18s}
+.holo-slider input::-moz-range-thumb{width:24px;height:24px;border:0;border-radius:50%;background:#0066ff}
+.holo-slider input:hover::-webkit-slider-thumb{box-shadow:0 0 0 5px #0066ff12}
+.holo-slider input:focus-visible{outline:2px solid #0066ff;outline-offset:10px}
+.holo-preview{display:flex;flex-direction:column;align-items:center;margin:22px auto 0;gap:10px;text-align:center}
+.holo-preview>button{font:inherit;font-size:14px;display:flex;align-items:center;gap:14px;border:0;border-radius:24px;background:#fff;color:#444;padding:10px 22px;cursor:pointer;transition:background .2s,color .2s}
+.holo-preview>button[aria-pressed=true]{background:#0066ff;color:white}
+.holo-preview>button:focus-visible{outline:2px solid #0066ff;outline-offset:4px}
+.holo-preview p{font-size:12px;line-height:1.5;margin:0;color:#888}
+@media(max-width:600px){.holo-prototype{padding:18px 12px;border-radius:18px}.holo-card{padding:10px 20px 28px;border-radius:24px}.holo-description{font-size:14px;margin:16px 0 26px}.holo-select-wrap select{font-size:20px}.holo-source-row{margin-bottom:22px}.holo-slider-labels{font-size:14px;margin-bottom:16px}.holo-slider{margin-bottom:24px}.holo-slider input::-webkit-slider-thumb{width:21px;height:21px}.holo-source-target{width:42px;height:42px}}
+.holo-model-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;transition:opacity .3s}
+.holo-scene canvas{opacity:0;transition:opacity .3s}
+.holo-scene.is-ready canvas{opacity:1}
+.holo-scene.is-ready .holo-model-preview{opacity:0}
+.holo-model-status{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:11px;line-height:1.4;color:#929292;pointer-events:none}
+.holo-source-target:disabled{visibility:hidden}

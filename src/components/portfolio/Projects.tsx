@@ -1,8 +1,9 @@
-import React, { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { PortfolioArrow } from "./PortfolioArrow";
+import { PortfolioTag } from "./PortfolioTag";
 import {
   getThumbnail,
   getPlaygroundPreview,
@@ -96,12 +97,12 @@ export const mainProjects: Project[] = [
   },
   {
     id: 5,
-    title: "Holo Audio",
-    category: "USER EXPERIENCE INTERFACE",
-    year: "2022",
+    title: "ColorOS",
+    category: "UX Design · OPPO",
+    year: "2023",
     image: getThumbnail(5),
     description:
-      "A user interface design focused on spatial interaction",
+      "Shaping everyday multimedia experiences for ColorOS",
     content:
       "Originally designed during my time as an UX Designer at OPPO, this feature enables users to adjust the spatial placement of audio. In 2026, I revisited the experience through vibe coding, exploring a more intuitive interaction model—one that feels natural, reduces frustration, and brings a greater sense of clarity and control to the listening experience.",
     toc: ["Prototype", "Spatial Interface", "Redesigned Interaction"],
@@ -222,22 +223,8 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="relative w-full py-24 md:py-32 overflow-hidden scroll-mt-24"
+      className="portfolio-projects-section relative w-full overflow-hidden scroll-mt-12"
     >
-      {/* BACKGROUND GRID */}
-      <div className="absolute inset-0 container mx-auto px-6 md:px-12 pointer-events-none">
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 h-full">
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="h-full border-l border-foreground/5 relative first:border-l-0 md:first:border-l"
-            ></div>
-          ))}
-          <div className="absolute right-6 md:right-12 top-0 bottom-0 w-px bg-foreground/5" />
-          <div className="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-foreground/5" />
-        </div>
-      </div>
-
       <div
         id="selected works"
         className="container mx-auto px-6 md:px-12 relative z-10"
@@ -245,15 +232,15 @@ export function Projects() {
         {/* --- HEADER --- */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-16">
           <div className="col-span-2 md:col-span-4 pl-2 md:pl-3 backdrop-blur-sm">
-            <span className="inline-block text-xs font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none">
+            <span className="type-section-label inline-block font-mono uppercase text-foreground/40 mb-3">
               Selected Works
             </span>
             <div className="h-px bg-foreground/10 w-full mt-2" />
           </div>
         </div>
 
-        {/* --- SPLIT LAYOUT --- */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-32 min-h-[500px]">
+        {/* --- PROJECT LIST --- */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-24 min-h-[500px]">
           {/* LEFT: LIST (Interactive - Inverted Hover) */}
           <div className="hidden md:flex col-span-1 md:col-span-4 flex-col pt-2 relative z-20 pl-2 md:pl-3 backdrop-blur-sm">
             {mainProjects.map((project) => (
@@ -261,32 +248,11 @@ export function Projects() {
                 key={project.id}
                 to={`/project/${project.id}`}
                 onMouseEnter={() => setActiveId(project.id)}
-                className={`
-                     group relative cursor-pointer block py-4 px-3 border-b border-foreground/10 last:border-0 transition-colors duration-300
-                     ${
-                       activeId === project.id
-                         ? "bg-foreground text-background border-transparent"
-                         : "hover:bg-foreground hover:text-background hover:border-transparent text-foreground"
-                     }
-                   `}
+                className={`project-list-button ${activeId === project.id ? "is-active" : ""}`}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col gap-1.5">
-                    <span
-                      className={`text-[10px] font-mono uppercase tracking-widest transition-colors ${activeId === project.id ? "text-background/60" : "text-foreground/40 group-hover:text-background/60"}`}
-                    >
-                      0{project.id}
-                    </span>
-                    <h3
-                      className={`text-base font-bold uppercase tracking-wide transition-all duration-300 ${activeId === project.id ? "text-background translate-x-2" : "group-hover:text-background group-hover:translate-x-2"}`}
-                    >
-                      {project.title}
-                    </h3>
-                  </div>
-
-                  <ArrowRight
-                    className={`w-4 h-4 transition-all duration-300 ${activeId === project.id ? "opacity-100 translate-x-0 text-background" : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-background"}`}
-                  />
+                <div className="flex flex-col gap-1.5">
+                  <span className="project-list-button__number">0{project.id}</span>
+                  <h3 className="project-list-button__title">{project.title}</h3>
                 </div>
               </Link>
             ))}
@@ -371,40 +337,37 @@ export function Projects() {
                   {/* Details - Grid Aligned */}
                   <div className="grid grid-cols-[64fr_36fr] gap-x-6 pt-6 border-t border-foreground/10">
                     <div className="col-span-1">
-                      <span className="block font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none text-[10px]">
+                      <span className="type-eyebrow block font-mono uppercase text-foreground/40 mb-3">
                         Context
                       </span>
-                      <p className="text-[12px] md:text-[14px] font-normal leading-relaxed text-left hyphens-auto text-foreground/80 mb-6 text-pretty">
+                      <p className="type-body-sm text-left hyphens-auto text-foreground/80 mb-6 text-pretty">
                         {activeProject.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {activeProject.tags.map((tag, i) => (
-                          <span
-                            key={i}
-                            className="inline-block text-[8px] font-mono text-foreground/60 uppercase border border-foreground/15 px-2 py-1 rounded bg-background/50"
-                          >
+                          <PortfolioTag key={i}>
                             {tag}
-                          </span>
+                          </PortfolioTag>
                         ))}
                       </div>
                     </div>
 
-                    <div className="col-span-1 flex flex-col items-end">
+                    <div className="col-span-1 flex flex-col items-end justify-between">
                       <div className="text-right mb-8">
-                        <span className="block text-xs font-mono uppercase text-foreground/40 mb-2 tracking-widest leading-none">
+                        <span className="type-meta-label block font-mono uppercase text-foreground/40 mb-2">
                           Year
                         </span>
-                        <span className="text-sm font-bold uppercase tracking-wider leading-none">
+                        <span className="type-meta-value uppercase">
                           {activeProject.year}
                         </span>
                       </div>
 
                       <Link
                         to={`/project/${activeProject.id}`}
-                        className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground/70 hover:text-background hover:bg-foreground transition-colors px-3 py-1.5 border border-transparent hover:border-foreground"
+                        className="portfolio-button portfolio-button--up"
                       >
                         View Case{" "}
-                        <ArrowUpRight className="w-3.5 h-3.5" />
+                        <PortfolioArrow direction="up" />
                       </Link>
                     </div>
                   </div>
@@ -432,7 +395,7 @@ export function Projects() {
                   />
                 </div>
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg font-bold uppercase tracking-wide">
+                  <h3 className="text-lg font-bold tracking-wide">
                     {project.title}
                   </h3>
                   <span className="text-xs font-mono uppercase text-foreground/40 tracking-widest">
@@ -442,8 +405,8 @@ export function Projects() {
                 <p className="text-sm text-foreground/70 mb-6 leading-relaxed font-light">
                   {project.description}
                 </p>
-                <span className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-foreground hover:bg-foreground hover:text-background px-3 py-1.5 border border-foreground/20">
-                  View Case
+                <span className="portfolio-button portfolio-button--up">
+                  View Case <PortfolioArrow direction="up" />
                 </span>
               </Link>
             ))}
@@ -454,7 +417,7 @@ export function Projects() {
         <div>
           <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 mb-12">
             <div className="col-span-2 md:col-span-4 pl-2 md:pl-3 backdrop-blur-sm">
-              <span className="inline-block text-xs font-mono uppercase text-foreground/40 mb-3 tracking-widest leading-none">
+              <span className="type-section-label inline-block font-mono uppercase text-foreground/40 mb-3">
                 Playground
               </span>
               <div className="h-px bg-foreground/10 w-full mt-2" />
@@ -463,10 +426,14 @@ export function Projects() {
 
           {/* Desktop: Minimal title list with hover image reveal */}
           <div
-            className="hidden md:block relative pl-2 md:pl-3"
-            onMouseMove={onContainerMouseMove}
-            onMouseLeave={onContainerMouseLeave}
+            className="hidden md:block"
           >
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6">
+              <div
+                className="relative col-span-1 md:col-span-8 md:col-start-5 pl-2 md:pl-3"
+                onMouseMove={onContainerMouseMove}
+                onMouseLeave={onContainerMouseLeave}
+              >
             {/*
               Floating preview — always in the DOM, never unmounts.
               Position:  driven by transform via direct DOM ref.
@@ -528,27 +495,29 @@ export function Projects() {
               <Link
                 key={project.id}
                 to={`/project/${project.id}`}
-                className="group cursor-pointer block border-b border-foreground/10 first:border-t first:border-foreground/10"
+                className="group playground-link portfolio-button portfolio-button--up portfolio-button--wide"
                 onMouseEnter={() => onRowMouseEnter(project.id)}
               >
-                <div className="flex items-center justify-between py-5 px-3 transition-colors duration-300 bg-transparent hover:bg-foreground hover:text-background backdrop-blur-sm">
-                  <div className="flex items-center gap-8">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-foreground/30 group-hover:text-background/50 transition-colors w-6">
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex items-center">
+                    <span className="portfolio-button__index type-list-index">
                       0{index + 1}
                     </span>
-                    <h4 className="text-sm md:text-base font-bold uppercase tracking-wide group-hover:translate-x-2 transition-transform duration-300">
+                    <h4 className="type-list-title">
                       {project.title}
                     </h4>
                   </div>
-                  <div className="flex items-center gap-6">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-foreground/40 group-hover:text-background/60 transition-colors hidden sm:inline">
+                  <div className="flex items-center">
+                    <span className="portfolio-button__meta type-list-meta hidden sm:inline">
                       {project.category}
                     </span>
-                    <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-1 group-hover:translate-x-0" />
+                    <PortfolioArrow direction="up" />
                   </div>
                 </div>
               </Link>
             ))}
+              </div>
+            </div>
           </div>
 
           {/* Mobile Playground */}
@@ -567,7 +536,7 @@ export function Projects() {
                     loading="eager"
                   />
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-wider">
+                <h4 className="text-xs font-bold tracking-wider">
                   {project.title}
                 </h4>
                 <span className="text-[10px] font-mono text-foreground/40 tracking-wide">

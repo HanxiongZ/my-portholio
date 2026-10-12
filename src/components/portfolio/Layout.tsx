@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import { Header } from "./Header";
 import { StarField } from "./StarField";
 
@@ -43,6 +43,9 @@ function isDaytime(lat: number, lng: number): boolean {
 export function Layout() {
   const [isDark, setIsDark] = useState(true);
 
+  // TEMPORARY: hide the StarField on the haptics sandbox page.
+  const hideStarField = useLocation().pathname === "/haptics-test";
+
   // Initialize theme based on Umeå sunrise/sunset
   useEffect(() => {
     const UMEA_LAT = 63.8258;
@@ -55,7 +58,7 @@ export function Layout() {
       className={`min-h-screen font-sans selection:bg-pink-500 selection:text-white transition-colors duration-1000 ${isDark ? "dark" : ""}`}
     >
       <div
-        className={`min-h-screen text-foreground relative transition-colors duration-1000 ${isDark ? "bg-[#0A0F1C]" : "bg-[#FAF9F7]"}`}
+        className={`min-h-screen text-foreground relative transition-colors duration-1000 ${isDark ? "bg-[#0A0F1C]" : "bg-[#F7F9FC]"}`}
         style={
           isDark
             ? {
@@ -69,7 +72,7 @@ export function Layout() {
             : {}
         }
       >
-        <StarField isDark={isDark} />
+        {!hideStarField && <StarField isDark={isDark} />}
 
         <div className="relative z-10">
           <Header isDark={isDark} setIsDark={setIsDark} />

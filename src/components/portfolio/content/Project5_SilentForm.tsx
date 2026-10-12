@@ -266,7 +266,7 @@ export function Project5_SilentForm({ project: _project, slugify }: Props) {
       <div
         style={{
           marginBottom: "64px",
-          fontFamily: "'Menlo', 'Monaco', 'Courier New', monospace",
+          fontFamily: "Manrope, sans-serif",
           fontSize: "13px",
           lineHeight: "22px",
           background: "#0d0d0d",

@@ -18,7 +18,7 @@ export function Project2_VolvoInternship({ project, slugify }: Props) {
     body:       { fontSize: "16px", fontWeight: 300, lineHeight: "28px" } as React.CSSProperties,
     subheading: { fontSize: "16px", fontWeight: 500, lineHeight: "28px" } as React.CSSProperties,
     caption:    { fontSize: "14px", fontWeight: 300, lineHeight: "22px" } as React.CSSProperties,
-    label:      { fontSize: "11px", fontFamily: "monospace", fontWeight: 400, letterSpacing: "0.1em", textTransform: "uppercase" as const } as React.CSSProperties,
+    label:      { fontSize: "11px", fontFamily: "Manrope, sans-serif", fontWeight: 400, letterSpacing: "0.1em", textTransform: "uppercase" as const } as React.CSSProperties,
   };
 
   const img = {

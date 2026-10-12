@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
+import { PortfolioArrow } from './PortfolioArrow';
 
 interface ResumeItem {
   id: string;
@@ -78,7 +78,7 @@ const publications: ResumeItem[] = [
 
 const exhibitions: ResumeItem[] = [
   {
-    id: 'exh-1',
+    id: 'exh-2',
     year: '2024',
     title: 'ThingsCon Exhibition',
     subtitle: 'Exhibition',
@@ -104,19 +104,19 @@ const ExperienceItem = ({ item }: { item: ResumeItem }) => {
         href={item.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="group block border-t border-foreground/10 py-3 px-0 hover:bg-foreground hover:text-background hover:px-3 hover:-mx-3 transition-all duration-300 cursor-pointer backdrop-blur-sm"
+        className="group recognition-link portfolio-arrow-context block py-3 px-0 hover:bg-foreground hover:text-background hover:px-3 hover:-mx-3 transition-all duration-300 cursor-pointer backdrop-blur-sm"
       >
         <div className="grid grid-cols-1 md:grid-cols-8 gap-4 items-baseline">
           {/* Year */}
           <div className="col-span-1 md:col-span-1">
-            <span className="text-[10px] font-mono text-foreground/40 group-hover:text-background/60 transition-colors uppercase">
+            <span className="type-resume-meta font-mono text-foreground/40 group-hover:text-background/60 transition-colors uppercase">
               {item.year}
             </span>
           </div>
           
           {/* Title */}
           <div className="col-span-1 md:col-span-3">
-             <h3 className="text-sm font-bold uppercase tracking-wide group-hover:text-background transition-colors">
+             <h3 className="type-resume-title group-hover:text-background transition-colors">
                {item.title}
              </h3>
           </div>
@@ -124,16 +124,16 @@ const ExperienceItem = ({ item }: { item: ResumeItem }) => {
           {/* Details */}
           <div className="col-span-1 md:col-span-4 flex justify-between items-baseline">
              <div className="flex items-center gap-2">
-               <span className="text-xs font-medium text-foreground/70 group-hover:text-background/80 transition-colors">
+               <span className="type-resume-detail text-foreground/70 group-hover:text-background/80 transition-colors">
                  {item.subtitle}
                </span>
                {item.type && (
-                 <span className="hidden sm:inline-block text-[9px] font-mono text-foreground/30 group-hover:text-background/40 transition-colors uppercase border border-foreground/10 group-hover:border-background/20 px-1 rounded">
+                 <span className="type-resume-secondary hidden sm:inline-block font-mono text-foreground/30 group-hover:text-background/40 transition-colors uppercase border border-foreground/10 group-hover:border-background/20 px-1 rounded">
                    {item.type}
                  </span>
                )}
              </div>
-             <ArrowUpRight className="w-3 h-3 text-foreground/40 group-hover:text-background transition-colors" />
+             <PortfolioArrow direction="up" />
            </div>
         </div>
       </a>
@@ -146,14 +146,14 @@ const ExperienceItem = ({ item }: { item: ResumeItem }) => {
       <div className="grid grid-cols-1 md:grid-cols-8 gap-4 items-baseline">
         {/* Year */}
         <div className="col-span-1 md:col-span-1">
-          <span className="text-[10px] font-mono text-foreground/40 uppercase">
+          <span className="type-resume-meta font-mono text-foreground/40 uppercase">
             {item.year}
           </span>
         </div>
         
         {/* Title */}
         <div className="col-span-1 md:col-span-3">
-           <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+           <h3 className="type-resume-title uppercase text-foreground">
              {item.title}
            </h3>
         </div>
@@ -161,17 +161,17 @@ const ExperienceItem = ({ item }: { item: ResumeItem }) => {
         {/* Details */}
         <div className="col-span-1 md:col-span-4">
            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-             <span className="text-xs font-medium text-foreground/70">
+             <span className="type-resume-detail text-foreground/70">
                {item.subtitle}
              </span>
              {item.location && (
-               <span className="text-[10px] font-mono text-foreground/40 uppercase">
+               <span className="type-resume-secondary font-mono text-foreground/40 uppercase">
                  {item.location}
                </span>
              )}
            </div>
            {item.description && (
-             <p className="text-[10px] text-foreground/50 leading-relaxed mt-1 max-w-md">
+             <p className="type-resume-description text-foreground/50 mt-1 max-w-md">
                {item.description}
              </p>
            )}
@@ -183,19 +183,8 @@ const ExperienceItem = ({ item }: { item: ResumeItem }) => {
 
 export function Experience() {
   return (
-    <section id="experience" className="relative w-full py-24 md:py-32 overflow-hidden">
+    <section id="experience" className="portfolio-experience-section relative w-full overflow-hidden">
       
-      {/* BACKGROUND GRID */}
-      <div className="absolute inset-0 container mx-auto px-6 md:px-12 pointer-events-none">
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 h-full">
-           {[...Array(12)].map((_, i) => (
-             <div key={i} className="h-full border-l border-foreground/5 relative first:border-l-0 md:first:border-l"></div>
-           ))}
-           <div className="absolute right-6 md:right-12 top-0 bottom-0 w-px bg-foreground/5" />
-           <div className="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-foreground/5" />
-        </div>
-      </div>
-
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         
         {/* --- HEADER (TOP) --- */}
@@ -207,7 +196,7 @@ export function Experience() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <span className="inline-block text-[12px] font-mono uppercase text-foreground/40 mb-2 leading-none">
+                <span className="type-section-label inline-block font-mono uppercase text-foreground/40 mb-2">
                   Experience
                 </span>
                 <div className="h-px bg-foreground/10 w-full mt-2" />
@@ -229,7 +218,7 @@ export function Experience() {
                 
                 {/* Work Experience */}
                 <div>
-                  <h4 className="text-[10px] font-mono uppercase text-foreground/40 mb-4 pl-0">Work Experience</h4>
+                  <h4 className="type-subsection-label font-mono uppercase text-foreground/40 mb-4 pl-0">Work Experience</h4>
                   <div>
                     {experiences.map((item) => (
                       <ExperienceItem key={item.id} item={item} />
@@ -239,7 +228,7 @@ export function Experience() {
 
                 {/* Education */}
                 <div>
-                  <h4 className="text-[10px] font-mono uppercase text-foreground/40 mb-4 pl-0">Education</h4>
+                  <h4 className="type-subsection-label font-mono uppercase text-foreground/40 mb-4 pl-0">Education</h4>
                   <div>
                     {education.map((item) => (
                       <ExperienceItem key={item.id} item={item} />
@@ -249,7 +238,7 @@ export function Experience() {
 
                 {/* Recognition */}
                 <div>
-                  <h4 className="text-[10px] font-mono uppercase text-foreground/40 mb-4 pl-0">Recognition</h4>
+                  <h4 className="type-subsection-label font-mono uppercase text-foreground/40 mb-4 pl-0">Recognition</h4>
                   <div>
                     {recognition.map((item) => (
                       <ExperienceItem key={item.id} item={item} />

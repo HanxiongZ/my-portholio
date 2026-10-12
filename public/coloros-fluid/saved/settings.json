@@ -1,0 +1,15 @@
+{
+  "design": "Version 2, grain reduced by 25 percent",
+  "primaryColor": "#0066FF",
+  "grainFine": 0.024,
+  "grainMedium": 0.027,
+  "speed": 2.25,
+  "shaderTimeScale": 0.045,
+  "fps": 30,
+  "staticSize": [
+    3840,
+    2160
+  ],
+  "savedOn": "2026-10-04",
+  "integrationStatus": "Saved for future portfolio integration"
+}

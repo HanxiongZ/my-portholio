@@ -577,7 +577,7 @@ export function Project4_Chronos({ project, slugify }: Props) {
                   {[swatch1, swatch2].map((c) => (
                     <div key={c} style={{ flex: 1 }}>
                       <div style={{ height: 28, borderRadius: 6, background: c, border: "1px solid rgba(0,0,0,0.08)", marginBottom: 4 }} />
-                      <span style={{ fontSize: 10, color: "var(--foreground)", opacity: 0.4, fontFamily: "monospace" }}>{c}</span>
+                      <span style={{ fontSize: 10, color: "var(--foreground)", opacity: 0.4, fontFamily: "Manrope, sans-serif" }}>{c}</span>
                     </div>
                   ))}
                 </div>

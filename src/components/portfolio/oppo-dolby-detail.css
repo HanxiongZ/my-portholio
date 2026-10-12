@@ -1,0 +1,109 @@
+.oa-page .oa-dolby-detail{padding:64px 0 80px;font-family:"Manrope",sans-serif;scroll-margin-top:120px;color:rgba(0,0,0,.9)}
+.oa-dolby-detail-row{display:grid;grid-template-columns:580px minmax(0,1fr);align-items:center}
+.oa-dolby-art-host{position:relative;width:100%;min-width:0}
+.oa-dolby-art-content{position:absolute;left:0;top:0;transform-origin:top left;overflow:hidden;border-radius:20px}
+.oa-dolby-product-art .oa-dolby-art-content{background:#f8f8f8}
+.oa-dolby-product-art img{position:absolute;object-fit:cover}
+.oa-page .oa-dolby-screen-image{left:93.72px;top:63.44px;width:228.761px;height:508.357px}
+.oa-page .oa-dolby-device-image{left:88px;top:52px;width:240px;height:535.046px}
+.oa-page .oa-dolby-earbuds-image{left:376.21px;top:257px;width:157px;height:135px;filter:drop-shadow(2px 4px 5.8px rgba(134,134,134,.25))}
+.oa-dolby-detail-copy{padding:0 40px}
+.oa-page .oa-dolby-detail-copy h2{margin:0 0 12px;width:336px;max-width:100%;font-size:32px;font-weight:500;line-height:44px;letter-spacing:-.96px;color:#1a1a1a}
+.oa-dolby-detail-copy p{width:500px;max-width:100%;font-size:16px;line-height:22px;font-weight:400;margin:0}
+.oa-dolby-detail-copy .oa-dolby-detail-lead{font-size:24px;line-height:36px;letter-spacing:-.24px;margin-bottom:36px}
+.oa-dolby-detail-copy .oa-dolby-detail-keywords{margin-top:12px;font-weight:500;color:rgba(0,0,0,.54)}
+.oa-dolby-detail-row--study{align-items:start;padding-top:24px}
+.oa-dolby-study-copy{padding:48px 40px 0;min-width:0}
+.oa-dolby-study-copy>p{width:500px;max-width:100%;font-size:16px;line-height:22px;margin:0}
+.oa-dolby-study-copy>p+p{margin-top:12px}
+.oa-dolby-study-copy .oa-dolby-study-label{color:rgba(0,0,0,.54);letter-spacing:-.48px;line-height:normal}
+.oa-page .oa-dolby-study-copy h3{width:500px;max-width:100%;font-size:24px;line-height:36px;font-weight:500;letter-spacing:-.24px;margin:12px 0 24px}
+.oa-dolby-component-study{padding-top:30px;width:590px;max-width:100%}
+.oa-dolby-component-study>p{font-size:14px;line-height:19px;font-weight:600;color:#a723ff;letter-spacing:-.14px;margin:0 0 6px}
+.oa-dolby-card-spec .oa-dolby-art-content{border:1px dashed #a723ff;border-radius:12px;font-family:"ColorOS Interface",sans-serif;font-size:8px;line-height:12px;color:#1a1a1a}
+.oa-dolby-spec-selected,.oa-dolby-spec-default{position:absolute;left:20px;top:20px;width:279px;height:138px}
+.oa-dolby-spec-default{left:329px;width:241px;height:142px}
+.oa-dolby-card-spec span,.oa-dolby-card-spec img{position:absolute}
+.oa-spec-button-type{left:53px;top:106px;font-weight:500}
+.oa-spec-theme{left:0;top:43px;color:#005ae0;line-height:14px}
+.oa-spec-state{left:60px;top:39px;background:linear-gradient(#0000001f,#0000001f),#0066ff;padding:4px;border-radius:4px;color:white}
+.oa-spec-ag{left:91px;top:107px;background:rgba(0,0,0,.9);padding:4px;border-radius:4px;color:white}
+.oa-spec-profile{position:absolute;left:119px;top:0;width:160px;font-size:12px;line-height:16px}
+.oa-spec-profile>div{height:98px;padding:75px 8px 6px;background:#ebebeb;border:1px solid #005ae0;border-radius:12px;font-weight:500}
+.oa-spec-profile>p{padding:0 8px;margin:8px 0 0;line-height:16px;color:#005ae0;font-weight:500;width:176px}
+.oa-spec-state-line{left:105.5px;top:49.5px}
+.oa-spec-selected-text-line{left:108px;top:112.5px}
+.oa-spec-radius-type{left:0;top:12px}
+.oa-spec-body-type{left:7px;top:110px}
+.oa-dolby-spec-default .oa-spec-ag{left:45px;top:111px}
+.oa-dolby-spec-default .oa-spec-profile{left:73px;top:6px}
+.oa-dolby-spec-default .oa-spec-profile>div{height:96px;border:0;padding-top:74px}
+.oa-dolby-spec-default .oa-spec-profile>p{margin-top:8px;color:black;font-weight:400}
+.oa-spec-radius-circle{left:73px;top:6px}
+.oa-spec-radius-vertical{left:84.75px;top:0}
+.oa-spec-radius-horizontal{left:75.75px;top:9px;transform:rotate(90deg);transform-origin:center}
+.oa-spec-default-text-line{left:62px;top:116.5px}
+.oa-dolby-wire-phone{position:absolute;left:178.79px;top:60.91px;width:180px;height:354px;background:#f0f1f2;border-radius:16px;overflow:hidden}
+.oa-dolby-wire-phone::after{content:"";position:absolute;left:0;right:0;top:0;height:48px;z-index:2;pointer-events:none;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);background:linear-gradient(to bottom,var(--oa-bg),transparent 65%);mask-image:radial-gradient(ellipse 140% 100% at 50% 100%,transparent 35%,#000 100%);-webkit-mask-image:radial-gradient(ellipse 140% 100% at 50% 100%,transparent 35%,#000 100%)}
+.oa-dolby-wire-toggle,.oa-dolby-wire-option{position:absolute;left:8px;top:6px;width:164px;height:35px;border:.5px dashed #cacaca;background:white;border-radius:6px}
+.oa-dolby-wire-toggle img{position:absolute;left:136.75px;top:11.25px}
+.oa-dolby-wire-option{top:49px;height:43px;border-radius:6px 6px 0 0}
+.oa-dolby-wire-option img{position:absolute;left:143.75px;top:15.75px}
+.oa-dolby-wire-option--selected{top:92px;height:25px;border-radius:0 0 6px 6px}
+.oa-dolby-wire-option--selected img{top:6.75px}
+.oa-dolby-wire-grid{position:absolute;left:8px;top:147px;width:164px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.oa-dolby-wire-grid>div{height:60px;border:.5px dashed #d4d4d4;border-radius:6px;background:white}
+.oa-dolby-wire-grid>div:first-child{border-style:solid;border-color:#b3b3b3}
+.oa-dolby-wire-alternatives{position:absolute;left:-.21px;top:207.91px;width:594px;height:207px;overflow:hidden}
+.oa-dolby-wire-list,.oa-dolby-wire-cards{position:absolute;left:0;top:0;width:164px;display:flex;flex-direction:column;gap:6px;font-size:10px;line-height:14px;letter-spacing:-.1px;font-weight:500;color:#1a1a1a}
+.oa-dolby-wire-list>div,.oa-dolby-wire-cards>div{height:34px;flex-shrink:0;border:.5px dashed rgba(0,0,0,.26);border-radius:6px;padding:5px;background:white}
+.oa-dolby-wire-cards{left:378px}.oa-dolby-wire-cards>div{height:68px;background:transparent}
+.oa-dolby-wire-label{position:absolute;top:445px;font-size:14px;line-height:19px;font-weight:500;letter-spacing:-.14px;color:rgba(0,0,0,.54)}
+.oa-dolby-wire-label strong{position:relative;display:block;margin-top:15px;font-weight:500;color:#1a1a1a}
+.oa-dolby-wire-label--list{left:39.79px}.oa-dolby-wire-label--list strong{left:18px}
+.oa-dolby-wire-label--grid{left:224.79px}.oa-dolby-wire-label--grid strong{left:15px}
+.oa-dolby-wire-label--cards{left:412.79px}.oa-dolby-wire-label--cards strong{left:-22px}
+@media(max-width:1400px){.oa-dolby-detail-row{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}.oa-dolby-detail-copy,.oa-dolby-study-copy{padding-left:32px;padding-right:0}}
+@media(max-width:900px){.oa-dolby-detail-row{grid-template-columns:1fr;gap:32px}.oa-dolby-detail-copy,.oa-dolby-study-copy{padding:0}.oa-dolby-art-host{justify-self:center}.oa-dolby-detail-row--study{padding-top:48px}.oa-dolby-detail-copy p,.oa-dolby-study-copy>p{width:auto}.oa-page .oa-dolby-detail{scroll-margin-top:178px;padding-top:48px}.oa-dolby-component-study{padding-top:24px}}
+/* Updated Figma studies: a shared product panel and separate layout/component rows. */
+.oa-dolby-detail-row{grid-template-columns:minmax(0,660px) minmax(0,1fr)}
+.oa-dolby-detail-row--product{background:#f8f8f8;border-radius:20px;overflow:hidden;min-height:518px}
+.oa-dolby-product-art .oa-dolby-art-content{border-radius:0}
+.oa-page .oa-dolby-screen-image{left:128.93px;top:63.18px}
+.oa-page .oa-dolby-device-image{left:123.21px;top:51.74px}
+.oa-page .oa-dolby-earbuds-image{left:414.63px;top:348.91px}
+.oa-dolby-detail-copy{padding:48px 24px 48px 64px}
+.oa-dolby-detail-copy p{width:auto}
+.oa-dolby-detail-row--study{padding-top:48px;align-items:center}
+.oa-dolby-study-copy{padding:0 24px 0 64px}
+.oa-dolby-study-copy>p,.oa-page .oa-dolby-study-copy h3{width:auto}
+.oa-dolby-wire-phone{left:240.21px;top:-65.69px}
+.oa-dolby-wire-phone::after{top:65.69px}
+.oa-dolby-wire-alternatives{left:.21px;top:81px;width:660px}
+.oa-dolby-wire-list{left:16px}
+.oa-dolby-wire-cards{left:480px}
+.oa-dolby-wire-label{top:318.4px;width:180px;font-size:16px;font-weight:700;color:rgba(0,0,0,.26)}
+.oa-dolby-wire-label strong{left:0;font-size:14px;font-weight:400;line-height:18px;margin-top:16px}
+.oa-dolby-wire-label--list{left:16.21px;width:164px}
+.oa-dolby-wire-label--grid{left:240.21px;color:#1a1a1a}
+.oa-dolby-wire-label--cards{left:480.21px}
+.oa-dolby-wire-label--list strong,.oa-dolby-wire-label--cards strong{color:rgba(0,0,0,.26);left:0}
+.oa-dolby-detail-row--component{padding-top:24px;align-items:start}
+.oa-dolby-detail-row--component .oa-dolby-study-copy{padding-top:48px;line-height:24px}
+.oa-dolby-detail-row--component .oa-dolby-study-copy>p{line-height:24px}
+.oa-dolby-card-spec .oa-dolby-art-content{border:0;font-size:12px}
+.oa-dolby-spec-default{left:20px;top:50px;width:277.01px}
+.oa-dolby-spec-selected{left:377px;top:50px;width:255.34px}
+.oa-dolby-spec-default .oa-spec-profile{left:109.01px}
+.oa-dolby-spec-default .oa-spec-radius-circle{left:109.01px}
+.oa-dolby-spec-default .oa-spec-radius-vertical{left:120.76px}
+.oa-dolby-spec-default .oa-spec-radius-horizontal{left:111.76px}
+.oa-spec-radius-type{top:9.09px}.oa-spec-body-type{left:.39px;top:109.09px;line-height:18px}
+.oa-dolby-spec-default .oa-spec-ag{left:57.39px}
+.oa-spec-default-text-line{left:75.39px;top:116.59px}
+.oa-spec-profile{left:95.34px}.oa-spec-button-type{left:.38px;line-height:18px}
+.oa-spec-state{left:.02px;top:36px}.oa-spec-theme{left:0;top:66.09px}
+.oa-spec-ag{left:56.38px;font-size:8px;line-height:12px}
+.oa-spec-state-line{left:67.02px;top:49.59px}.oa-spec-selected-text-line{left:75.38px;top:112.59px}
+@media(max-width:1400px){.oa-dolby-detail-row{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}.oa-dolby-detail-copy,.oa-dolby-study-copy{padding-left:40px}}
+@media(max-width:900px){.oa-dolby-detail-row{grid-template-columns:1fr}.oa-dolby-detail-copy{padding:0 24px 32px}.oa-dolby-study-copy,.oa-dolby-detail-row--component .oa-dolby-study-copy{padding:0}.oa-dolby-detail-row--product{gap:24px}.oa-dolby-detail-row--component{padding-top:32px}.oa-dolby-wire-label{font-size:16px}}

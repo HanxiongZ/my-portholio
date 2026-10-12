@@ -1,0 +1,18 @@
+{
+  "leftColor": "#0066FF",
+  "rightColor": "#00C8A6",
+  "transitionRange": [
+    0.35,
+    0.95
+  ],
+  "panelRatio": [
+    720,
+    400
+  ],
+  "staticSize": [
+    3840,
+    1716
+  ],
+  "speed": 3.375,
+  "grain": "V2, reduced 25%"
+}

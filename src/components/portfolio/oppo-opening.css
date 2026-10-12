@@ -1,0 +1,22 @@
+.oa-new-heading{display:flex;align-items:flex-start;gap:64px;padding:28px 0 24px;font-family:"Manrope",sans-serif;color:#191c1b}
+.oa-new-heading h1{margin:0;width:489px;flex-shrink:0;font-size:128px;font-weight:500;line-height:normal;letter-spacing:-8.96px;white-space:nowrap}
+.oa-new-heading h1{color:rgba(0,0,0,.9)}
+.oa-new-heading h1 span{color:#0066ff;margin-left:.09em}
+.oa-new-description{align-self:stretch;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:34px;gap:8px}
+.oa-new-description p{width:346px;margin:0;font-size:24px;font-weight:400;line-height:normal;letter-spacing:-.24px;white-space:nowrap}
+.oa-new-description p+p{width:240px;font-size:14px;letter-spacing:-.14px}
+.oa-opening-gallery{position:relative;display:grid;grid-template-columns:minmax(0,768fr) minmax(0,390fr);column-gap:1.697793%;overflow:hidden;isolation:isolate}
+.oa-opening-gallery::after{content:"";position:absolute;left:65.195246%;top:0;bottom:0;width:1.697793%;background:#fff;z-index:2;pointer-events:none}
+.oa-opening-background{position:absolute;inset:0;background:var(--oa-backdrop) center/cover no-repeat;z-index:-1}
+.oa-opening-panel{position:relative;aspect-ratio:768/525;overflow:hidden;min-width:0}
+.oa-opening-panel--creative{aspect-ratio:390/525}
+.oa-opening-canvas{position:absolute;left:0;top:0;transform-origin:top left}
+.oa-page .oa-new-figure>figcaption{margin:0;padding-top:12px;font:500 12px/16.5px "Manrope",sans-serif;color:rgba(0,0,0,.54)}
+@media(max-width:1279px){.oa-new-heading{gap:clamp(24px,5vw,64px)}.oa-new-heading h1{width:auto;font-size:clamp(72px,10vw,128px);letter-spacing:-.07em}.oa-new-description p{font-size:clamp(18px,2vw,24px)}}
+@media(max-width:767px){.oa-new-heading{flex-direction:column;gap:20px;padding:24px 0 32px}.oa-new-heading h1{font-size:clamp(56px,17vw,96px)}.oa-new-description{padding-bottom:0;gap:8px}.oa-new-description p{width:auto;font-size:20px;white-space:normal}.oa-opening-gallery{display:flex;flex-direction:column;gap:16px}.oa-opening-gallery::after{display:none}.oa-opening-background{display:none}.oa-opening-panel{background:var(--oa-backdrop-left) center/cover no-repeat}.oa-opening-panel--creative{background-image:var(--oa-backdrop-right)}}
+
+.oa-panel-mobile-motion{display:none;position:absolute;inset:0}
+@media(max-width:767px){.oa-panel-mobile-motion{display:block}}
+
+/* Preserve the SVG source size, scale its camera artwork to the Figma slot. */
+.oa-opening-canvas .oa-new-art-20,.oa-opening-canvas .oa-new-art-150{transform:scale(.3203125);transform-origin:top left}

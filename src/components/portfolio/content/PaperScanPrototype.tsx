@@ -279,7 +279,7 @@ export function PaperScanPrototype() {
                   color: cfg.color,
                   padding: "4px 8px",
                   fontSize: "10px",
-                  fontFamily: "monospace",
+                  fontFamily: "Manrope, sans-serif",
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
                   whiteSpace: "nowrap",
