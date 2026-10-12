@@ -30,7 +30,7 @@ import image_P2_Ground3    from "../../assets/p2_ground_3.jpg";
 import image_P2_Fidelity1  from "../../assets/p2_fidelity_1.jpg";
 import image_P2_Fidelity2  from "../../assets/p2_fidelity_2.jpg";
 import image_P2_Fidelity3  from "../../assets/p2_fidelity_3.jpg";
-import image_HoloAudio_TN from "../../assets/holoaudio_tn.jpg";
+import image_ColorOS_TN from "../../assets/coloros_cover.webp";
 import image_Obfuscation_TN from "../../assets/obfuscation_tn.jpg";
 import image_Inside_TN from "../../assets/inside_tn.png";
 import image_Inside_Hero from "../../assets/inside_hero_2x.jpg";
@@ -134,10 +134,10 @@ const registry: Record<number, ProjectImages> = {
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // PROJECT 5 — Silent Form
+  // PROJECT 5 — ColorOS
   // ═══════════════════════════════════════════════════════════════
   5: {
-    thumbnail: image_HoloAudio_TN,
+    thumbnail: image_ColorOS_TN,
     content: {
       hero: "REPLACE_P5_HERO",
       fig01: "REPLACE_P5_FIG01",

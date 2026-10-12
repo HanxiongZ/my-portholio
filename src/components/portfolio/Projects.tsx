@@ -24,25 +24,31 @@ export interface Project {
 
 export const mainProjects: Project[] = [
   {
-    id: 1,
-    title: "From Novelty to Normality",
-    category: "Master Thesis Project",
-    year: "2026",
-    image: getThumbnail(1),
+    id: 3,
+    title: "Co-Act",
+    category: "GUI Design",
+    year: "2023",
+    image: getThumbnail(3),
     description:
-      "Exploring the long term interactions with AI in the rural healthcare system",
-    content: "This project is working in progress.",
-    toc: [
-      "Background and Focus",
-      "Research",
-      "Prototyping",
-      "Outcome",
-    ],
-    tags: [
-      "Physical AI",
-      "Rural Healthcare",
-      "Long-term Interaction",
-    ],
+      "A collaborative GUI that empowers service mechanics to navigate machine complexity in forestry.",
+    content:
+      "Envisioning the forestry service in 5 years, CO-ACT is a collaborative GUI that facilitates the exchange of tacit knowledge in a shared digital space. The system uses AI to augment human judgement rather than replace it, supporting safe, precise and efficient operations.\n\n\nTeam up with: Anjuli Acharya, Dide Sevinçok, Lin Wang",
+
+    toc: ["Background", "Ethnography", "Design Strategy", "Collaborative Actions", "Concept Video"],
+    tags: ["GUI", "Tacit knowledge"],
+  },
+  {
+    id: 5,
+    title: "ColorOS",
+    category: "UX Design · OPPO",
+    year: "2023",
+    image: getThumbnail(5),
+    description:
+      "Shaping everyday multimedia experiences for ColorOS",
+    content:
+      "Originally designed during my time as an UX Designer at OPPO, this feature enables users to adjust the spatial placement of audio. In 2026, I revisited the experience through vibe coding, exploring a more intuitive interaction model—one that feels natural, reduces frustration, and brings a greater sense of clarity and control to the listening experience.",
+    toc: ["Prototype", "Spatial Interface", "Redesigned Interaction"],
+    tags: ["Spatial Interaction", "UX/UI","vibe coding"],
   },
   {
     id: 2,
@@ -69,20 +75,6 @@ export const mainProjects: Project[] = [
     ],
   },
   {
-    id: 3,
-    title: "Co-Act",
-    category: "GUI Design",
-    year: "2023",
-    image: getThumbnail(3),
-    description:
-      "A collaborative GUI that empowers service mechanics to navigate machine complexity in forestry.",
-    content:
-      "Envisioning the forestry service in 5 years, CO-ACT is a collaborative GUI that facilitates the exchange of tacit knowledge in a shared digital space. The system uses AI to augment human judgement rather than replace it, supporting safe, precise and efficient operations.\n\n\nTeam up with: Anjuli Acharya, Dide Sevinçok, Lin Wang",
-
-    toc: ["Background", "Ethnography", "Design Strategy", "Collaborative Actions", "Concept Video"],
-    tags: ["GUI", "Tacit knowledge"],
-  },
-  {
     id: 4,
     title: "Inside the Machine",
     category: "Design for Service",
@@ -96,17 +88,25 @@ export const mainProjects: Project[] = [
     tags: ["Strategic Design", "Participatory Design","UX/UI"],
   },
   {
-    id: 5,
-    title: "ColorOS",
-    category: "UX Design · OPPO",
-    year: "2023",
-    image: getThumbnail(5),
+    id: 1,
+    title: "From Novelty to Normality",
+    category: "Master Thesis Project",
+    year: "2026",
+    image: getThumbnail(1),
     description:
-      "Shaping everyday multimedia experiences for ColorOS",
-    content:
-      "Originally designed during my time as an UX Designer at OPPO, this feature enables users to adjust the spatial placement of audio. In 2026, I revisited the experience through vibe coding, exploring a more intuitive interaction model—one that feels natural, reduces frustration, and brings a greater sense of clarity and control to the listening experience.",
-    toc: ["Prototype", "Spatial Interface", "Redesigned Interaction"],
-    tags: ["Spatial Interaction", "UX/UI","vibe coding"],
+      "Exploring the long term interactions with AI in the rural healthcare system",
+    content: "This project is working in progress.",
+    toc: [
+      "Background and Focus",
+      "Research",
+      "Prototyping",
+      "Outcome",
+    ],
+    tags: [
+      "Physical AI",
+      "Rural Healthcare",
+      "Long-term Interaction",
+    ],
   },
 ];
 
@@ -142,7 +142,7 @@ export const sideProjects: Project[] = [
 export const allProjects = [...mainProjects, ...sideProjects];
 
 export function Projects() {
-  const [activeId, setActiveId] = useState<number>(1);
+  const [activeId, setActiveId] = useState<number>(mainProjects[0].id);
   const activeProject =
     mainProjects.find((p) => p.id === activeId) ||
     mainProjects[0];
@@ -243,15 +243,16 @@ export function Projects() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 items-start mb-24 min-h-[500px]">
           {/* LEFT: LIST (Interactive - Inverted Hover) */}
           <div className="hidden md:flex col-span-1 md:col-span-4 flex-col pt-2 relative z-20 pl-2 md:pl-3 backdrop-blur-sm">
-            {mainProjects.map((project) => (
+            {mainProjects.map((project, index) => (
               <Link
                 key={project.id}
                 to={`/project/${project.id}`}
                 onMouseEnter={() => setActiveId(project.id)}
+                onFocus={() => setActiveId(project.id)}
                 className={`project-list-button ${activeId === project.id ? "is-active" : ""}`}
               >
                 <div className="flex flex-col gap-1.5">
-                  <span className="project-list-button__number">0{project.id}</span>
+                  <span className="project-list-button__number">{String(index + 1).padStart(2, "0")}</span>
                   <h3 className="project-list-button__title">{project.title}</h3>
                 </div>
               </Link>
@@ -327,8 +328,9 @@ export function Projects() {
                     {activeId === 5 && (
                       <ImageWithFallback
                         src={getThumbnail(5)}
-                        alt="Holo Audio"
-                        className="w-full h-full object-cover"
+                        alt="ColorOS — Audio and Creative"
+                        className="w-full h-full"
+                        style={{ objectFit: "contain" }}
                         loading="eager"
                       />
                     )}
@@ -391,6 +393,7 @@ export function Projects() {
                     src={getThumbnail(project.id)}
                     alt={project.title}
                     className="w-full h-full object-cover"
+                    style={project.id === 5 ? { objectFit: "contain" } : undefined}
                     loading="eager"
                   />
                 </div>
