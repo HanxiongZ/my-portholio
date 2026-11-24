@@ -1,0 +1,32 @@
+[
+  {
+    "href" : "mailto:hanxiongzhang@hotmail.com",
+    "label" : "hanxiongzhang@hotmail.com",
+    "rect" : [
+      0.19635294117647062,
+      0.13064133016627077,
+      0.22045378151260511,
+      0.014251781472684086
+    ]
+  },
+  {
+    "href" : "https:\/\/hanxiongzhang.se",
+    "label" : "www.hanxiongzhang.se",
+    "rect" : [
+      0.19507563025210084,
+      0.1496437054631829,
+      0.17921008403361352,
+      0.014251781472684086
+    ]
+  },
+  {
+    "href" : "https:\/\/linkedin.com\/in\/hanxiongzhang",
+    "label" : "linkedin.com\/in\/hanxiongzhang",
+    "rect" : [
+      0.1957478991596639,
+      0.16864608076009502,
+      0.2337647058823531,
+      0.014251781472684086
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+import{j as o}from"./index-DqlqDg0A.js";function a({direction:r}){return o.jsx("span",{className:`portfolio-button__arrow portfolio-button__arrow--${r}`,"aria-hidden":"true",children:o.jsx("span",{className:"portfolio-button__arrow-rotation",children:o.jsx("img",{src:`/icons/button-arrow-${r}.svg`,alt:""})})})}export{a as P};

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head><base href="/current-desk/">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ded7c9">
+  <meta name="description" content="A small interactive room for Hanxiong Zhang’s interaction design portfolio. Desktop study.">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Hanxiong — Current desk</title>
+  <link rel="preload" as="image" href="./assets/final/noon/selected.jpg">
+  <link rel="stylesheet" href="/current-desk/base.css">
+<link rel="stylesheet" href="/current-desk/style.css?v=6c4527840934"></head>
+<body data-scene-version="current" data-final-stills="morning noon evening night-on" data-final-motion="morning noon evening night-on" data-sticker-detail="morning noon evening night-on" data-wall-photo-detail="morning noon evening night-on">
+  <header class="site-header" data-debug-only>
+    <div class="controls" aria-label="Scene controls">
+      <div class="segmented" aria-label="Time of day"><button data-time="morning" aria-pressed="false">早晨</button><button data-time="noon" aria-pressed="false">正午</button><button data-time="evening" aria-pressed="false">傍晚</button><button data-time="night" aria-pressed="false">夜晚</button><button data-time="auto" aria-label="跟随当地时间" aria-pressed="true" title="按浏览器当地时段自动选择光线">随时间</button></div>
+      <button class="quiet info-button" data-action="info" aria-label="查看验证说明">i</button>
+    </div>
+  </header>
+  <main class="viewport" aria-label="Hanxiong’s interactive desk">
+    <div class="scene-fit" id="scene-fit">
+      <div class="stage" id="stage">
+        <div class="scene-images" aria-hidden="true"><img src="./assets/final/noon/selected.jpg" id="noon-image" data-lighting="noon" alt="" fetchpriority="high"></div>
+        <canvas id="room-canvas" aria-hidden="true"></canvas>
+        <button class="hotspot floppy-hotspot" data-action="disk" aria-label="插入 Archived Works 软盘"></button><button class="hotspot work-hotspot" data-action="work" aria-label="电脑外壳：拉近查看"><span class="hotspot-caption">Selected work <b>↗</b></span></button>
+        <div class="screen" id="screen">
+          <nav class="screen-nav"><button data-action="work">Work</button><button data-action="experience">About</button><button data-action="notes">Notes</button><span class="screen-led" aria-hidden="true"></span></nav>
+          <div class="screen-heading"><span>HANXIONG</span><small>UX / INTERACTION DESIGN</small></div>
+          <div class="screen-projects" id="screen-projects"></div>
+          <button class="screen-bottom" data-action="work">SELECTED WORK · 05 <span>↗</span></button>
+          <button class="screen-back" id="back" hidden aria-label="返回房间">← Room</button>
+        </div>
+        <button class="console-screen" id="desk-clock" hidden data-action="clock" aria-label="桌面钟：时间和 Umeå 天气">
+          <span class="console-meta"><span>UMEÅ</span><span data-clock-date>—</span></span>
+          <span class="console-time" data-clock-time>—:—</span>
+          <span class="console-weather"><span class="console-weather-icon" data-clock-icon></span><span class="console-temperature" data-clock-temperature>—°</span><span class="console-condition" data-clock-weather-label>Loading</span></span>
+        </button>
+        <div class="physical-surface business-card" data-surface="contact" data-surface-width="500" data-surface-height="290" role="group" aria-label="Hanxiong Zhang 的名片">
+          <button class="surface-cover" data-action="contact" aria-label="拉近镜头，阅读名片"></button>
+          <div class="surface-content" inert>
+            <span class="sr-only">Hanxiong Zhang · 张翰雄 · UX Designer · Umeå, Sweden. Click the email to copy it, or the name to open LinkedIn.</span>
+            <a class="card-phone" href="tel:+46764424843" aria-label="Call +46 76 442 48 43">+46 76 442 48 43</a>
+            <a class="card-linkedin" aria-label="Hanxiong Zhang — open LinkedIn" title="Open LinkedIn" href="https://www.linkedin.com/in/hanxiongzhang" target="_blank" rel="noopener">linkedin.com/in/hanxiongzhang ↗</a>
+            <button class="card-copy" id="copy-card-email" aria-label="Copy hanxiongzhang@hotmail.com" title="Copy email">hanxiongzhang@hotmail.com</button>
+          </div>
+        </div>
+        <div class="physical-surface resume-paper" data-surface="resume" data-surface-width="595" data-surface-height="842" role="group" aria-label="A4 简历首页，点击纸张底部按钮下载完整两页 CV">
+          <span class="sr-only">Hanxiong Zhang 的简历：工作经历、教育经历、项目和奖项。内容印在场景里的纸张上，可下载原始 PDF。</span>
+          <button class="surface-cover" data-action="resume" aria-label="拉近镜头，阅读打印机上的简历"></button>
+          <div class="surface-content resume-links" inert>
+            <a class="paper-download" href="./assets/Hanx_CV_2026.pdf" download="Hanxiong-Zhang-CV-2026.pdf" aria-label="Download Full CV — 2 pages">Download Full CV</a>
+            <div id="resume-links"></div>
+          </div>
+        </div>
+        <button class="hotspot lamp-hotspot" data-action="lamp" aria-label="台灯：关闭灯光" aria-pressed="true"><span class="hotspot-dot"></span><span class="hotspot-caption">Light <b>↗</b></span></button>
+        <button class="hotspot clock-hotspot" data-action="clock" aria-label="桌面钟：查看时间和天气"><span class="hotspot-caption">Time & weather <b>↗</b></span></button>
+        <button class="hotspot resume-hotspot" data-action="resume" aria-label="打印机：查看和下载简历"><span class="hotspot-dot"></span><span class="hotspot-caption">Resume <b>↗</b></span></button>
+        <button class="hotspot experience-hotspot" data-action="experience" aria-label="拍立得：工作与教育经历"><span class="hotspot-dot"></span><span class="hotspot-caption">Experience <b>↗</b></span></button>
+        <button class="hotspot playground-hotspot" data-action="playground" aria-label="Arduino：Playground 小项目"><span class="hotspot-dot"></span><span class="hotspot-caption">Playground <b>↗</b></span></button>
+        <button class="hotspot contact-hotspot" data-action="contact" aria-label="名片：联系方式"><span class="hotspot-dot"></span><span class="hotspot-caption">Contact <b>↗</b></span></button>
+        <button class="hotspot notes-hotspot" data-action="notes" aria-label="笔记本：关于我和设计"><span class="hotspot-dot"></span><span class="hotspot-caption">Notes <b>↗</b></span></button>
+      </div>
+    </div>
+    <p class="loading" id="loading" role="status" data-debug-only>正在准备 3D 空间<span></span></p>
+  <aside id="object-description" class="object-description" aria-live="polite" hidden><p class="object-description-meta"></p><h2></h2><p class="object-description-copy"></p></aside></main>
+  <nav class="reading-controls" id="reading-controls" aria-label="纸面阅读" hidden><button id="reading-back">← Desk <small>Esc</small></button><span id="reading-hint">滚动阅读简历</span><span id="reading-feedback" hidden></span></nav>
+  <footer class="site-footer" data-debug-only><span id="instruction">移动鼠标探索 · 点击物品</span><div class="footer-controls"><button id="mode" class="quiet" aria-pressed="true">3D 空间</button><button id="motion" class="quiet" aria-pressed="true">视差 · 开</button><button class="quiet" data-action="info"><span id="render-status">桌面验证版</span></button></div></footer>
+  <dialog id="panel" class="panel" aria-labelledby="panel-title"><div class="panel-sheet"><button class="close-panel" aria-label="关闭">×</button><div id="panel-content"></div></div></dialog>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">请启用 JavaScript 以探索这个空间。<a href="./assets/Hanx_CV_2026.pdf">查看简历</a></div></noscript>
+  <script type="module" src="/current-desk/app.js?v=6c4527840934"></script>
+</body>
+</html>

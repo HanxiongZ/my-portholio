@@ -1,0 +1,1 @@
+import{j as o}from"./index-DqlqDg0A.js";import{O as p,a as r}from"./OppoAudio-08ON98zs.js";import"./holoaudio_concept3-DAJ9vBRV.js";import"./Projects-qgQz1EUv.js";import"./PortfolioArrow-DdF7upQ_.js";import"./projectImages-BUwrBosk.js";function u(){return o.jsx(p,{opening:o.jsx(r,{})})}export{u as OppoAudioCover};

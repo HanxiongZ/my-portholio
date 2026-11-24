@@ -1,0 +1,483 @@
+{
+  "version": "6c4527840934",
+  "localOnly": false,
+  "method": "One Cycles scene and camera path; original materials, light and animated focus; low-sample motion blur interiors, sharp still endpoints",
+  "assets": [
+    {
+      "file": "cv-reading.png",
+      "bytes": 3408971
+    },
+    {
+      "file": "cv-in.mp4",
+      "bytes": 1340507
+    },
+    {
+      "file": "cv-out.mp4",
+      "bytes": 1346879
+    },
+    {
+      "file": "scene.json",
+      "bytes": 9502
+    },
+    {
+      "file": "card-camera-path.json",
+      "bytes": 40228
+    },
+    {
+      "file": "card-reading.png",
+      "bytes": 1769819
+    },
+    {
+      "file": "card-in.mp4",
+      "bytes": 1290123
+    },
+    {
+      "file": "card-out.mp4",
+      "bytes": 1241895
+    },
+    {
+      "file": "cv-vista-in.mp4",
+      "bytes": 1378659
+    },
+    {
+      "file": "cv-vista-out.mp4",
+      "bytes": 1396785
+    },
+    {
+      "file": "card-vista-in.mp4",
+      "bytes": 1326471
+    },
+    {
+      "file": "card-vista-out.mp4",
+      "bytes": 1277340
+    },
+    {
+      "file": "night-on.jpg",
+      "bytes": 97165
+    },
+    {
+      "file": "night-off.jpg",
+      "bytes": 118891
+    },
+    {
+      "file": "cv-download-hover-noon.png",
+      "bytes": 6383
+    },
+    {
+      "file": "cv-download-hover-night-on.png",
+      "bytes": 6477
+    },
+    {
+      "file": "cv-download-hover-night-off.png",
+      "bytes": 5508
+    },
+    {
+      "file": "cv-download-hover-reading.png",
+      "bytes": 23229
+    },
+    {
+      "file": "noon-archive.jpg",
+      "bytes": 125751
+    },
+    {
+      "file": "noon-contact.jpg",
+      "bytes": 134645
+    },
+    {
+      "file": "noon-swap-archive.mp4",
+      "bytes": 105121
+    },
+    {
+      "file": "noon-swap-selected.mp4",
+      "bytes": 106743
+    },
+    {
+      "file": "noon-vista.jpg",
+      "bytes": 86005
+    },
+    {
+      "file": "noon-archive-vista.jpg",
+      "bytes": 86054
+    },
+    {
+      "file": "night-on-archive.jpg",
+      "bytes": 96041
+    },
+    {
+      "file": "night-on-contact.jpg",
+      "bytes": 38865
+    },
+    {
+      "file": "night-on-swap-archive.mp4",
+      "bytes": 31719
+    },
+    {
+      "file": "night-on-swap-selected.mp4",
+      "bytes": 31633
+    },
+    {
+      "file": "night-on-vista.jpg",
+      "bytes": 97165
+    },
+    {
+      "file": "night-on-archive-vista.jpg",
+      "bytes": 96041
+    },
+    {
+      "file": "night-off-archive.jpg",
+      "bytes": 118352
+    },
+    {
+      "file": "night-off-contact.jpg",
+      "bytes": 111419
+    },
+    {
+      "file": "night-off-swap-archive.mp4",
+      "bytes": 25836
+    },
+    {
+      "file": "night-off-swap-selected.mp4",
+      "bytes": 25668
+    },
+    {
+      "file": "night-off-vista.jpg",
+      "bytes": 78111
+    },
+    {
+      "file": "night-off-archive-vista.jpg",
+      "bytes": 77622
+    },
+    {
+      "file": "final/morning/selected.jpg",
+      "bytes": 172866
+    },
+    {
+      "file": "final/morning/archive.jpg",
+      "bytes": 171595
+    },
+    {
+      "file": "final/morning/stickers.png",
+      "bytes": 316951
+    },
+    {
+      "file": "final/morning/wall-photos.png",
+      "bytes": 1675020
+    },
+    {
+      "file": "final/morning/cv-reading.png",
+      "bytes": 3515831
+    },
+    {
+      "file": "final/morning/card-reading.png",
+      "bytes": 1774793
+    },
+    {
+      "file": "final/morning/cv-in.mp4",
+      "bytes": 1647519
+    },
+    {
+      "file": "final/morning/cv-out.mp4",
+      "bytes": 1637134
+    },
+    {
+      "file": "final/morning/card-in.mp4",
+      "bytes": 1509360
+    },
+    {
+      "file": "final/morning/card-out.mp4",
+      "bytes": 1492731
+    },
+    {
+      "file": "final/morning/swap-archive.mp4",
+      "bytes": 139326
+    },
+    {
+      "file": "final/morning/swap-selected.mp4",
+      "bytes": 139959
+    },
+    {
+      "file": "final/morning/contact.jpg",
+      "bytes": 39167
+    },
+    {
+      "file": "final/morning/ink-home.png",
+      "bytes": 10209
+    },
+    {
+      "file": "final/morning/ink-reading.png",
+      "bytes": 52163
+    },
+    {
+      "file": "final/morning/ink.json",
+      "bytes": 444
+    },
+    {
+      "file": "final/noon/selected.jpg",
+      "bytes": 137923
+    },
+    {
+      "file": "final/noon/archive.jpg",
+      "bytes": 137369
+    },
+    {
+      "file": "final/noon/stickers.png",
+      "bytes": 317517
+    },
+    {
+      "file": "final/noon/wall-photos.png",
+      "bytes": 1605366
+    },
+    {
+      "file": "final/noon/cv-reading.png",
+      "bytes": 3423447
+    },
+    {
+      "file": "final/noon/card-reading.png",
+      "bytes": 1768395
+    },
+    {
+      "file": "final/noon/cv-in.mp4",
+      "bytes": 1314851
+    },
+    {
+      "file": "final/noon/cv-out.mp4",
+      "bytes": 1341482
+    },
+    {
+      "file": "final/noon/card-in.mp4",
+      "bytes": 1276777
+    },
+    {
+      "file": "final/noon/card-out.mp4",
+      "bytes": 1266583
+    },
+    {
+      "file": "final/noon/swap-archive.mp4",
+      "bytes": 133904
+    },
+    {
+      "file": "final/noon/swap-selected.mp4",
+      "bytes": 135839
+    },
+    {
+      "file": "final/noon/contact.jpg",
+      "bytes": 42182
+    },
+    {
+      "file": "final/noon/ink-home.png",
+      "bytes": 10549
+    },
+    {
+      "file": "final/noon/ink-reading.png",
+      "bytes": 53418
+    },
+    {
+      "file": "final/noon/ink.json",
+      "bytes": 444
+    },
+    {
+      "file": "final/evening/selected.jpg",
+      "bytes": 165821
+    },
+    {
+      "file": "final/evening/archive.jpg",
+      "bytes": 164771
+    },
+    {
+      "file": "final/evening/stickers.png",
+      "bytes": 328072
+    },
+    {
+      "file": "final/evening/wall-photos.png",
+      "bytes": 1648888
+    },
+    {
+      "file": "final/evening/cv-reading.png",
+      "bytes": 3493250
+    },
+    {
+      "file": "final/evening/card-reading.png",
+      "bytes": 1755266
+    },
+    {
+      "file": "final/evening/cv-in.mp4",
+      "bytes": 1594410
+    },
+    {
+      "file": "final/evening/cv-out.mp4",
+      "bytes": 1601791
+    },
+    {
+      "file": "final/evening/card-in.mp4",
+      "bytes": 1498418
+    },
+    {
+      "file": "final/evening/card-out.mp4",
+      "bytes": 1505058
+    },
+    {
+      "file": "final/evening/swap-archive.mp4",
+      "bytes": 146109
+    },
+    {
+      "file": "final/evening/swap-selected.mp4",
+      "bytes": 145441
+    },
+    {
+      "file": "final/evening/contact.jpg",
+      "bytes": 36396
+    },
+    {
+      "file": "final/evening/ink-home.png",
+      "bytes": 10073
+    },
+    {
+      "file": "final/evening/ink-reading.png",
+      "bytes": 51295
+    },
+    {
+      "file": "final/evening/ink.json",
+      "bytes": 444
+    },
+    {
+      "file": "final/night-on/selected.jpg",
+      "bytes": 151853
+    },
+    {
+      "file": "final/night-on/archive.jpg",
+      "bytes": 150404
+    },
+    {
+      "file": "final/night-on/stickers.png",
+      "bytes": 321873
+    },
+    {
+      "file": "final/night-on/wall-photos.png",
+      "bytes": 1654398
+    },
+    {
+      "file": "final/night-on/cv-reading.png",
+      "bytes": 3523155
+    },
+    {
+      "file": "final/night-on/card-reading.png",
+      "bytes": 1774936
+    },
+    {
+      "file": "final/night-on/cv-in.mp4",
+      "bytes": 1684816
+    },
+    {
+      "file": "final/night-on/cv-out.mp4",
+      "bytes": 1683104
+    },
+    {
+      "file": "final/night-on/card-in.mp4",
+      "bytes": 1489793
+    },
+    {
+      "file": "final/night-on/card-out.mp4",
+      "bytes": 1491683
+    },
+    {
+      "file": "final/night-on/swap-archive.mp4",
+      "bytes": 147674
+    },
+    {
+      "file": "final/night-on/swap-selected.mp4",
+      "bytes": 145170
+    },
+    {
+      "file": "final/night-on/contact.jpg",
+      "bytes": 39095
+    },
+    {
+      "file": "final/night-on/ink-home.png",
+      "bytes": 10376
+    },
+    {
+      "file": "final/night-on/ink-reading.png",
+      "bytes": 52586
+    },
+    {
+      "file": "final/night-on/ink.json",
+      "bytes": 444
+    }
+  ],
+  "finalRender": {
+    "stills": [
+      "morning",
+      "noon",
+      "evening",
+      "night-on"
+    ],
+    "motion": [
+      "morning",
+      "noon",
+      "evening",
+      "night-on"
+    ],
+    "stickerDetail": [
+      "morning",
+      "noon",
+      "evening",
+      "night-on"
+    ],
+    "wallPhotoDetail": [
+      "morning",
+      "noon",
+      "evening",
+      "night-on"
+    ],
+    "resolution": [
+      1920,
+      1080
+    ],
+    "fps": 30
+  },
+  "memory": {
+    "profile": "compact",
+    "cvMedia": "on-demand; 15s idle release",
+    "homePaperSizes": {
+      "resume": [
+        1024,
+        1707
+      ],
+      "contact": [
+        768,
+        512
+      ]
+    }
+  },
+  "portfolio": {
+    "type": "native-selected-works",
+    "figmaNode": "3550:255",
+    "designSize": [
+      1230,
+      900
+    ],
+    "projectCoverCount": 5,
+    "caseFrames": "one on demand inside the project dialog",
+    "projectRoutes": {
+      "1": "/portfolio/project/1",
+      "2": "/portfolio/project/2",
+      "3": "/portfolio/project/3",
+      "4": "/portfolio/project/4",
+      "5": "/portfolio/project/5",
+      "6": "/portfolio/project/6",
+      "9": "/portfolio/project/9"
+    },
+    "galleryThumbs": {
+      "count": 6,
+      "size": [
+        320,
+        180
+      ],
+      "encodedBytes": 46973
+    },
+    "transition": "View Project opens the window with a 150ms entrance",
+    "routing": "One history entry per project window; shareable standalone cases",
+    "shellAction": "Shared 1000ms quintic close-up with physically attached gallery",
+    "exit": "Close over the unchanged desk, keeping the screen collection and scroll position"
+  }
+}
